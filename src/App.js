@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
 import { Switch, Route } from 'react-router-dom';
+import Adminconsole from './Components/Adminconsole/Adminconsole';
 
 class App extends Component {
   render() {
     return (
-      <div> </div>
+      <Switch>
+        <Route exact path="/admin" component={Adminconsole} />
+      </Switch>
     );
   }
 }
