@@ -10,7 +10,6 @@ class App extends Component {
       <Switch>
         <Route exact path="/admin" component={Adminconsole} />
         <Route path="/showProduct" component={ProductDisplay} />
-
       </Switch>
     );
   }

@@ -1,9 +1,8 @@
 import React from 'react';
-import './ProductContainer.css';
+import ContentLoader from 'react-content-loader';
 import { Grid, Row, Col, Image, Button, Table } from 'react-bootstrap';
 
-
-import ContentLoader from 'react-content-loader';
+import './ProductContainer.css';
 
 const requestUrlbyId = '/api/v1/products/';
 
@@ -47,19 +46,19 @@ class ProductContainer extends React.Component {
   componentDidMount() {
     const currentUrl = (window.location.href);
     const result = currentUrl.substring(currentUrl.lastIndexOf('/') + 1);
-    if (result != currentUrl) {
+    if (result !== currentUrl) {
       fetch(requestUrlbyId + result)
         .then((response) => {
           response.json().then((text) => {
-            if (text.statusCode == '200') {
-              const desc_array = text.data.description.split(';');
-              for (let i = 0; i < desc_array.length; i++) {
-                desc_array[i] = `${desc_array[i]}\n`;
+            if (text.statusCode === '200') {
+              const descArray = text.data.description.split(';');
+              for (let i = 0; i < descArray.length; i += 1) {
+                descArray[i] = `${descArray[i]}\n`;
               }
               this.setState({
                 productName: text.data.name,
                 productPrice: text.data.price,
-                productDesc: desc_array,
+                productDesc: descArray,
                 productMan: text.data.manufacturer,
                 prouctModel: text.data.model,
                 productimage: text.data.image,
@@ -81,7 +80,7 @@ class ProductContainer extends React.Component {
   render() {
     if (this.state.show === 'pre') {
       return (
-        <div className="ProductContainer-loader">
+        <div className="product-container-loader">
           <Grid>
             <MyLoader />
 
@@ -90,10 +89,10 @@ class ProductContainer extends React.Component {
       );
     }
     return (
-      <div className="ProductContainer-flex">
+      <div className="product-container-flex">
         <Grid>
 
-          <Row className="show-grid" className="ProductContainer-displaybody" className="card">
+          <Row className="show-grid product-container-display-body card">
             <Col xs={12} sm={3} md={3} lg={3} >
               <center> <Image src={this.state.productimage} responsive /> </center>
             </Col>
