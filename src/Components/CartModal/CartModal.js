@@ -1,6 +1,8 @@
 import React from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import PropTypes from 'prop-types';
+
+import CartProductContainer from '../CartProductContainer/CartProductContainer';
 import './CartModal.css';
 
 
@@ -8,9 +10,13 @@ class CartModal extends React.Component {
   render() {
     const cartItems = [];
     Object.entries(this.props.cartContents)
-      .forEach(([productId, { productName, cartId, imageUrl }]) => {
-        console.log(productId, productName, cartId, imageUrl);
-        cartItems.push((<p>{productName}</p>));
+      .forEach(([productId, { productName, price, imageUrl }]) => {
+        console.log(productId, productName, price, imageUrl);
+        cartItems.push((<CartProductContainer
+          imageUrl={imageUrl}
+          productName={productName}
+          productPrice={price}
+        />));
       });
     return (
       <div >
