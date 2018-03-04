@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import './CartProductContainer.css';
 
 
@@ -17,7 +18,7 @@ class CartProductContainer extends React.Component {
           <p>{this.props.productPrice}</p>
         </div>
         <div className="cart-product-remove-btn">
-          <button>Remove</button>
+          <button><FontAwesomeIcon icon="trash-alt" /></button>
         </div>
       </div>
     );

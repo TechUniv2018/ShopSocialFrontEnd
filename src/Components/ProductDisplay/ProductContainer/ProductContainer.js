@@ -75,7 +75,6 @@ class ProductContainer extends React.Component {
                 productName: 'No product to Show',
               });
             }
-
           // console.log(text);
           });
         });
@@ -93,6 +92,11 @@ class ProductContainer extends React.Component {
     })
       .then((addToCartResult) => {
         console.log(addToCartResult);
+        if (addToCartResult.statusCode === 201) {
+          this.setState({
+            productCartStatus: 1,
+          });
+        }
       })
       .catch((error) => {
         console.log(error);
