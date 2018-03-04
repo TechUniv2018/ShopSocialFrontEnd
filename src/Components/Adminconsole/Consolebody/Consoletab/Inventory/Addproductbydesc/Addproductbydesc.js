@@ -18,7 +18,6 @@ class AddProductByDesc extends React.Component {
   render() {
     return (
       <div>
-
         <select onChange={this.props.handlecategory} className="add-products-by-desc-dropdown">
           <option value="" disabled="disabled" selected="selected">Please select a Category</option>
           <option value="TVs">TV's</option>
@@ -44,14 +43,12 @@ class AddProductByDesc extends React.Component {
           <FieldGroup
             id="pricefrom"
             type="number"
-
             placeholder="Price From  "
             onChange={this.props.handlepricefrom}
           />
           <FieldGroup
             id="priceto"
             type="number"
-
             placeholder="Price To  "
             onChange={this.props.handlepriceto}
           />

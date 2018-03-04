@@ -40,8 +40,13 @@ class ProductContainer extends React.Component {
       prouctModel: '',
       productimage: '',
       productUpc: '',
+      productCartStatus: 0,
+      cartId: -1,
+      productId: -1,
+      userId: -1,
     };
-    setTimeout(() => { this.setState({ show: 'after' }); }, 3000);
+    // Add cartId and userId to redux store.
+    setTimeout(() => { this.setState({ show: 'after' }); }, 2000);
   }
   componentDidMount() {
     const currentUrl = (window.location.href);
@@ -50,7 +55,7 @@ class ProductContainer extends React.Component {
       fetch(requestUrlbyId + result)
         .then((response) => {
           response.json().then((text) => {
-            if (text.statusCode === '200') {
+            if (text.statusCode === 200) {
               const descArray = text.data.description.split(';');
               for (let i = 0; i < descArray.length; i += 1) {
                 descArray[i] = `${descArray[i]}\n`;
@@ -63,7 +68,7 @@ class ProductContainer extends React.Component {
                 prouctModel: text.data.model,
                 productimage: text.data.image,
                 productUpc: text.data.upc,
-
+                productId: text.data.productID,
               });
             } else {
               this.setState({
@@ -75,6 +80,23 @@ class ProductContainer extends React.Component {
           });
         });
     }
+  }
+
+  addProductToCart = () => {
+    fetch('/api/v1/cart/addToCart/', {
+      method: 'POST',
+      body: JSON.stringify({
+        cartId: this.state.cartId,
+        productId: this.state.productId,
+        userId: this.state.userId,
+      }),
+    })
+      .then((addToCartResult) => {
+        console.log(addToCartResult);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 
   render() {
@@ -107,16 +129,15 @@ class ProductContainer extends React.Component {
                 <center> <h4> DESCRIPTION </h4>        </center>
                 <p> {this.state.productDesc} </p>
               </div>
-
               <div>
-                <center><Button className="btn-product-view">Add to Cart </Button> </center>
+                <center><Button onClick={this.addProductToCart} className="btn-product-view">{this.state.productCartStatus === 0 ? 'Add to cart' : 'In cart'} </Button> </center>
               </div>
               <div>
                 <Table responsive>
                   <thead>
                     <tr>
 
-                      <th>Manufacture</th>
+                      <th>Manufacturer</th>
                       <td>{this.state.productMan}</td>
 
                     </tr>
