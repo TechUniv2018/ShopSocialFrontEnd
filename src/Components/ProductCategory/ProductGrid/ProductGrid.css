@@ -1,0 +1,5 @@
+.ProductGrid {
+  display: flex;
+  padding: 4vh;
+  flex-wrap: wrap;
+}
