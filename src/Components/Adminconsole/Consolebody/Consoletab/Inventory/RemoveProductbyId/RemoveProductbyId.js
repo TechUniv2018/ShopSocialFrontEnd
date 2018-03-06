@@ -13,6 +13,9 @@ function FieldGroup({
   );
 }
 class RemoveProductbyId extends React.Component {
+  constructor(props) {
+    super(props);
+  }
   render() {
     return (
       <div className="RemoveProductbyId-layout">
@@ -24,8 +27,8 @@ class RemoveProductbyId extends React.Component {
             placeholder="Product Id "
           />
         </form>
-        <br />
-        <br />
+
+        <br />    <br />
       </div>
     );
   }
