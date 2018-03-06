@@ -1,8 +1,8 @@
 import React from 'react';
+import './Addproductbydesc.css';
 import PropTypes from 'prop-types';
-import { FormGroup, FormControl } from 'react-bootstrap';
+import { DropdownButton, MenuItem, ButtonToolbar, FormGroup, FormControl } from 'react-bootstrap';
 
-import './AddProductByDesc.css';
 
 function FieldGroup({
   id, ...props
@@ -13,12 +13,16 @@ function FieldGroup({
     </FormGroup>
   );
 }
+class Addproductbydesc extends React.Component {
+  constructor(props) {
+    super(props);
+  }
 
-class AddProductByDesc extends React.Component {
   render() {
     return (
-      <div>
-        <select onChange={this.props.handlecategory} className="add-products-by-desc-dropdown">
+      <div className="addbydesc">
+
+        <select onChange={this.props.handlecategory} className="AddProductsbydescdropdown">
           <option value="" disabled="disabled" selected="selected">Please select a Category</option>
           <option value="TVs">TV's</option>
           <option value="Appliances">Appliances</option>
@@ -43,12 +47,14 @@ class AddProductByDesc extends React.Component {
           <FieldGroup
             id="pricefrom"
             type="number"
+
             placeholder="Price From  "
             onChange={this.props.handlepricefrom}
           />
           <FieldGroup
             id="priceto"
             type="number"
+
             placeholder="Price To  "
             onChange={this.props.handlepriceto}
           />
@@ -57,7 +63,7 @@ class AddProductByDesc extends React.Component {
     );
   }
 }
-AddProductByDesc.propTypes = {
+Addproductbydesc.propTypes = {
   handlebrand: PropTypes.func.isRequired,
   handlecategory: PropTypes.func.isRequired,
   handlepricefrom: PropTypes.func.isRequired,
@@ -66,4 +72,4 @@ AddProductByDesc.propTypes = {
 
 };
 
-export default AddProductByDesc;
+export default Addproductbydesc;
