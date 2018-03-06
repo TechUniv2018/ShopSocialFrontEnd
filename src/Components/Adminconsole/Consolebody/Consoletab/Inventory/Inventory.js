@@ -1,11 +1,11 @@
 import React from 'react';
+import { Alert, Grid, Row, Col } from 'react-bootstrap';
+
 import './Inventory.css';
 import Addproductbydesc from './Addproductbydesc/Addproductbydesc';
 import AddproductbyId from './AddproductbyId/AddproductbyId';
 import RemoveProductbyId from './RemoveProductbyId/RemoveProductbyId';
-import { Navbar, Nav, NavItem, Alert } from 'react-bootstrap';
-import { Grid, Row, Col, Button } from 'react-bootstrap';
-import axios from 'axios';
+
 
 const requestUrladdbyId = '/api/v1/products/add/';
 const requestUrlrembyId = '/api/v1/products/remove/';
@@ -22,7 +22,7 @@ class Inventory extends React.Component {
       quantity: '',
       priceto: '',
       pricefrom: '',
-      proid: '',
+      productId: '',
       remid: '',
 
     };
@@ -31,7 +31,7 @@ class Inventory extends React.Component {
     this.handlequantity = this.handlequantity.bind(this);
     this.handlepriceto = this.handlepriceto.bind(this);
     this.handlepricefrom = this.handlepricefrom.bind(this);
-    this.handleproid = this.handleproid.bind(this);
+    this.handleproductId = this.handleproductId.bind(this);
     this.handleremove = this.handleremove.bind(this);
     this.populate = this.populate.bind(this);
     this.remove = this.remove.bind(this);
@@ -51,23 +51,21 @@ class Inventory extends React.Component {
   handlepriceto(evt) {
     this.setState({ priceto: evt.target.value });
   }
-  handleproid(evt) {
-    this.setState({ proid: evt.target.value });
+  handleproductId(evt) {
+    this.setState({ productId: evt.target.value });
   }
   handleremove(evt) {
     this.setState({ remid: evt.target.value });
   }
-  populate(evt) {
-    if (this.state.proid.length != 0) {
+  populate() {
+    if (this.state.productId.length !== 0) {
       this.setState({ alertmsg: 'Request sent to add the product Waiting for a response', alerttype: 'info' });
-      const urltoreq = requestUrladdbyId + this.state.proid;
-      console.log(urltoreq);
-
+      const urltoreq = requestUrladdbyId + this.state.productId;
 
       fetch(urltoreq)
         .then((response) => {
           response.json().then((text) => {
-            if (text.statusCode != '201') {
+            if (text.statusCode !== '201') {
               this.setState({
                 alertmsg: text.action,
                 alerttype: 'danger',
@@ -78,13 +76,8 @@ class Inventory extends React.Component {
                 alerttype: 'success',
               });
             }
-
-            // console.log(text);
           });
         });
-      // // .then(resp => resp.json())
-      // .then(resp => resp.text().then(tex))
-      // .catch(err => console.log(err));
     } else if (this.state.brand.length === 0 || this.state.quantity.length === 0 || this.state.pricefrom.length === 0 || this.state.priceto.length === 0) {
       this.setState({ alertmsg: 'Please fill in all the fields', alerttype: 'danger' });
     } else {
@@ -95,10 +88,8 @@ class Inventory extends React.Component {
         priceFrom: this.state.pricefrom,
         priceTo: this.state.priceto,
       };
-      alert(this.state.category);
       const data = new FormData();
       data.append('payload', JSON.stringify(payload));
-
       fetch(
         requestUrladdbyId,
         {
@@ -107,7 +98,7 @@ class Inventory extends React.Component {
         },
       ).then((response) => {
         response.json().then((text) => {
-          if (text.statusCode != '201') {
+          if (text.statusCode !== '201') {
             this.setState({
               alertmsg: text.action,
               alerttype: 'danger',
@@ -118,27 +109,22 @@ class Inventory extends React.Component {
               alerttype: 'success',
             });
           }
-
-          // console.log(text);
         });
       });
     }
   }
   remove(evt) {
     // Alert-types: "success", "warning", "danger", "info"
-
-    if (this.state.remid.length != 0) {
+    if (this.state.remid.length !== 0) {
       this.setState({ alertremmsg: 'Request to remove product sent. Waiting for response', alertremtype: 'info' });
       const urltoreq = requestUrlrembyId + this.state.remid;
       console.log(urltoreq);
-
-
       fetch(urltoreq, {
         method: 'delete',
       })
         .then((response) => {
           response.json().then((text) => {
-            if (text.statusCode != '200') {
+            if (text.statusCode !== '200') {
               this.setState({
                 alertremmsg: text.message,
                 alertremtype: 'danger',
@@ -149,8 +135,6 @@ class Inventory extends React.Component {
                 alertremtype: 'success',
               });
             }
-
-            // console.log(text);
           });
         });
     } else {
@@ -161,13 +145,12 @@ class Inventory extends React.Component {
     return (
       <Grid >
         <br />
-        <div className="Inventory-outer">
-          <Row className="Inventory-show-grid">
-
+        <div className="inventory-outer">
+          <Row>
 
             <Col xs={12} md={8} lg={2} />
 
-            <Col xs={12} md={8} lg={8} className="Inventory-border-right">
+            <Col xs={12} md={8} lg={8} className="inventory-border-right">
 
               <div >
                 <center> <h2> Add Products </h2> </center>
@@ -185,10 +168,9 @@ class Inventory extends React.Component {
 
                   <center> <h4> OR </h4></center>
 
-
-                  <AddproductbyId handleproid={this.handleproid} />
+                  <AddproductbyId handleproductId={this.handleproductId} />
                   <br /><br />
-                  <input type="button" value="Populate" className="Inventory-btn-inventory" onClick={this.populate} />
+                  <input type="button" value="Populate" className="inventory-btn-inventory" onClick={this.populate} />
 
                 </fieldset>
 
@@ -197,11 +179,10 @@ class Inventory extends React.Component {
             <Col xs={12} md={12} lg={2} />
           </Row>
           <br />     <br />
-          <Row className="Inventory-show-grid">
-
+          <Row>
 
             <Col xs={12} md={8} lg={2} />
-            <Col xs={12} md={8} lg={8} className="Inventory-border-right">
+            <Col xs={12} md={8} lg={8} className="inventory-border-right">
 
               <div >
                 <center> <h2> Remove Products </h2> </center>
@@ -211,7 +192,7 @@ class Inventory extends React.Component {
                 <fieldset>
 
                   <RemoveProductbyId handleremove={this.handleremove} />
-                  <input type="button" value="Remove" className="Inventory-btn-inventory" onClick={this.remove} />
+                  <input type="button" value="Remove" className="inventory-btn-inventory" onClick={this.remove} />
 
                 </fieldset>
 
@@ -220,7 +201,6 @@ class Inventory extends React.Component {
             <Col xs={12} md={12} lg={2} />
           </Row>
           <br />
-
         </div>
       </Grid >
 

@@ -1,9 +1,8 @@
 import React from 'react';
-import './ProductContainer.css';
+import ContentLoader from 'react-content-loader';
 import { Grid, Row, Col, Image, Button, Table } from 'react-bootstrap';
 
-
-import ContentLoader from 'react-content-loader';
+import './ProductContainer.css';
 
 const requestUrlbyId = '/api/v1/products/';
 
@@ -41,47 +40,73 @@ class ProductContainer extends React.Component {
       prouctModel: '',
       productimage: '',
       productUpc: '',
+      productCartStatus: 0,
+      cartId: -1,
+      productId: -1,
+      userId: -1,
     };
-    setTimeout(() => { this.setState({ show: 'after' }); }, 3000);
+    // Add cartId and userId to redux store.
+    setTimeout(() => { this.setState({ show: 'after' }); }, 2000);
   }
   componentDidMount() {
     const currentUrl = (window.location.href);
     const result = currentUrl.substring(currentUrl.lastIndexOf('/') + 1);
-    if (result != currentUrl) {
+    if (result !== currentUrl) {
       fetch(requestUrlbyId + result)
         .then((response) => {
           response.json().then((text) => {
-            if (text.statusCode == '200') {
-              const desc_array = text.data.description.split(';');
-              for (let i = 0; i < desc_array.length; i++) {
-                desc_array[i] = `${desc_array[i]}\n`;
+            if (text.statusCode === 200) {
+              const descArray = text.data.description.split(';');
+              for (let i = 0; i < descArray.length; i += 1) {
+                descArray[i] = `${descArray[i]}\n`;
               }
               this.setState({
                 productName: text.data.name,
                 productPrice: text.data.price,
-                productDesc: desc_array,
+                productDesc: descArray,
                 productMan: text.data.manufacturer,
                 prouctModel: text.data.model,
                 productimage: text.data.image,
                 productUpc: text.data.upc,
-
+                productId: text.data.productID,
               });
             } else {
               this.setState({
                 productName: 'No product to Show',
               });
             }
-
           // console.log(text);
           });
         });
     }
   }
 
+  addProductToCart = () => {
+    fetch('/api/v1/cart/addToCart/', {
+      method: 'POST',
+      body: JSON.stringify({
+        cartId: this.state.cartId,
+        productId: this.state.productId,
+        userId: this.state.userId,
+      }),
+    })
+      .then((addToCartResult) => {
+        console.log(addToCartResult);
+        if (addToCartResult.statusCode === 201) {
+          this.setState({
+            productCartStatus: 1,
+          });
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
   render() {
     if (this.state.show === 'pre') {
       return (
-        <div className="ProductContainer-loader">
+        <div className="product-container-loader">
           <Grid>
             <MyLoader />
 
@@ -90,10 +115,10 @@ class ProductContainer extends React.Component {
       );
     }
     return (
-      <div className="ProductContainer-flex">
+      <div className="product-container-flex">
         <Grid>
 
-          <Row className="show-grid" className="ProductContainer-displaybody" className="card">
+          <Row className="show-grid product-container-display-body card">
             <Col xs={12} sm={3} md={3} lg={3} >
               <center> <Image src={this.state.productimage} responsive /> </center>
             </Col>
@@ -108,16 +133,15 @@ class ProductContainer extends React.Component {
                 <center> <h4> DESCRIPTION </h4>        </center>
                 <p> {this.state.productDesc} </p>
               </div>
-
               <div>
-                <center><Button className="btn-product-view">Add to Cart </Button> </center>
+                <center><Button onClick={this.addProductToCart} className="btn-product-view">{this.state.productCartStatus === 0 ? 'Add to cart' : 'In cart'} </Button> </center>
               </div>
               <div>
                 <Table responsive>
                   <thead>
                     <tr>
 
-                      <th>Manufacture</th>
+                      <th>Manufacturer</th>
                       <td>{this.state.productMan}</td>
 
                     </tr>
