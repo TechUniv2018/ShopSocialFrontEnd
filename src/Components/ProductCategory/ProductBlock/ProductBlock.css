@@ -87,7 +87,12 @@
   -webkit-transform: translateY(-5px);
   transform: translateY(-5px);
 }
-.snip1423:hover i,
-.snip1423.hover i {
+
+.ProductBox:hover i ion-android-cart,
+.ProductBox.hover i ion-android-cart{
   background-color: #2980b9;
+}
+
+.ProductBox i ion-checkmark-round{
+  background-color: #55AA54;
 }
