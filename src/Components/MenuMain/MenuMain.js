@@ -8,17 +8,17 @@ class MenuMain extends React.Component {
   render() {
     if (this.props.isAuthenticated === 'no') {
       return (
-        <Navbar classname="NavbarMain">
+        <Navbar className="NavbarMain">
           <Navbar.Header>
             <Navbar.Brand>
-              <a href="#brand">ShopSocial</a>
+              <div className="NavbarIcon" />
             </Navbar.Brand>
             <Navbar.Toggle />
           </Navbar.Header>
           <Navbar.Collapse>
             <Nav pullRight classname="NavbarMain">
-              <NavItem eventKey={1} href="#">
-                Login
+              <NavItem eventKey={1} >
+                <div className="NavbarText">Login / Register</div>
               </NavItem>
             </Nav>
           </Navbar.Collapse>
@@ -29,14 +29,14 @@ class MenuMain extends React.Component {
       <Navbar classname="NavbarMain">
         <Navbar.Header>
           <Navbar.Brand>
-            <a href="#brand">ShopSocial</a>
+            <div className="NavbarIcon" />
           </Navbar.Brand>
           <Navbar.Toggle />
         </Navbar.Header>
         <Navbar.Collapse>
           <Nav pullRight classname="NavbarMain">
             <NavItem eventKey={1} href="#">
-                Logout
+              <div className="NavbarText">Logout</div>
             </NavItem>
           </Nav>
         </Navbar.Collapse>

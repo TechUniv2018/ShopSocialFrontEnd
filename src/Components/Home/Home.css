@@ -1,74 +1,95 @@
-.imagecar{
-    background-image: url('./home1.jpg');
-    height: 800px;
-    
+.HomeBodyImage{
+    background-image: url('./images/Home_Page_SS.jpg');
     background-size: cover;
-    background-blend-mode: color;
-    background-position: 100vw;
-    margin-top: -20px;
+    height: 100vh;
 }
 .Home{
-    
     display: flex;
-    height: 100%;
     flex-direction: column;
     align-items: stretch;
-    background-color: gainsboro;
-   
+    width: 100%;
+    overflow-x: hidden;
 }
 .HomeCategories{
-    display: flex;
-    width: 100vw;
-    flex-direction: row;
-    align-items: stretch;
-    justify-content: space-between;
-    background-color: gainsboro;
+    margin-top: 2%;
+    margin-bottom: 2%;
+    width: 80%;
+    align-self: center;
+    margin-left: 2%;
 }
-@media (max-width: 600px) {
-    .HomeCategories {
-      flex-direction: column;
-      align-content: center;
-      justify-content: center;
-      margin-left: 12%;
-      
-    }
+.CategoryTv{
+    background-size: contain;
+    height: 200px;
+    width: 200px;
+    background-repeat: no-repeat;
+    background-image: url('./images/Cat_Tv.jpg');
+    box-shadow: 18px 34px 30px -22px hsla(0,0%,0%,.2);
+    transition:all .5s ease;
+    border-radius: 5px;
 }
-.HomeProduct{
-    background-image: url('./home.jpg');
-    height: 400px;
-    width: 300px;
-    background-size: cover;
-    background-blend-mode: color;
-    background-position: center;
-    border: 1px solid white;
-    
+.CategoryTv:hover{
+    box-shadow:2px 8px 4px -6px hsla(0,0%,0%,.3);
+}
+.CategoryDvd{
+    background-size: contain;
+    height: 200px;
+    width: 200px;
+    background-repeat: no-repeat;
+    background-image: url('./images/Cat_Dvd.jpg');
+    box-shadow: 18px 34px 30px -22px hsla(0,0%,0%,.2);
+    transition:all .5s ease;
+    border-radius: 5px;
+}
+.CategoryDvd:hover{
+    box-shadow:2px 8px 4px -6px hsla(0,0%,0%,.3);
+}
+.CategoryFurn{
+    background-size: contain;
+    height: 200px;
+    width: 200px;
+    background-repeat: no-repeat;
+    background-image: url('./images/Cat_Furn.jpg');
+    box-shadow: 18px 34px 30px -22px hsla(0,0%,0%,.2);
+    transition:all .5s ease;
+    border-radius: 5px;
+}
+.CategoryFurn:hover{
+    box-shadow:2px 8px 4px -6px hsla(0,0%,0%,.3);
+}
+.CategoryAudio{
+    background-size: contain;
+    height: 200px;
+    width: 200px;
+    background-repeat: no-repeat;
+    background-image: url('./images/Cat_Audio.jpg');
+    box-shadow: 18px 34px 30px -22px hsla(0,0%,0%,.2);
+    transition:all .5s ease;
+    border-radius: 5px;
+}
+.CategoryAudio:hover{
+    box-shadow:2px 8px 4px -6px hsla(0,0%,0%,.3);
 }
 .HomeAbout{
      display: flex;
-    width: 100vw;
-     min-height: 300px;
-    
+     width: 100vw;
      flex-direction: column;
-     align-items: stretch;
-     
      background-color:black;
      opacity: 0.8;
 }
 .HomeAboutTitle{
     color:white;
-    font-size: 70px;
+    font-size: 2.7rem;
     justify-content: center;
     text-align: center;
+    margin-top: 1%;
+    margin-bottom: 1%;
 }
 .HomeAboutText {
     color: grey;
-    font-size: 20px;
-    margin-top: 1%;
-     margin-bottom: 1%;
-    justify-content: center;
+    font-size: 2rem;
+    display: flex;
     text-align: center;
-}
-.HomeAboutTextP{
-    margin-left:20%;
-     margin-right:20%;
+    align-self: center;
+    width: 80%;
+    margin-bottom: 2%;
 }
