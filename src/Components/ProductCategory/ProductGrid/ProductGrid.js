@@ -1,36 +1,34 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import ProductBlock from '../ProductBlock/ProductBlock';
+import './ProductGrid.css';
 
-export default class ProductGrid extends React.Component {
+class ProductGrid extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       products: [],
+      cartId: '',
     };
   }
 
-  componentWillMount() {
-    const getProductsByCategoryRoute = `https://shop-social-product-api.herokuapp.com/products?category.name${this.props.cgory}`;
-    const productsArr = [];
-    fetch(getProductsByCategoryRoute)
-      .then(result => result.json())
-      .then((resJSON) => {
-        resJSON.data.forEach((product) => {
-          productsArr.push(<ProductBlock
-            key={product.id}
-            id={product.id}
-            price={product.price}
-            name={product.name}
-            imageUrl={product.image}
-            desc={product.description}
-          />);
-        });
-        this.setState({
-          products: [...productsArr],
-        });
-      });
-  }
   render() {
     return (<div className="ProductGrid">{this.state.products}</div>);
   }
 }
+
+const mapStateToProps = state => ({
+  cartId: state.cartId,
+});
+
+const mapDispatchToProps = dispatch => ({
+  dispatchGetCartId: resultArr => dispatch(getCartIdAction),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProductGrid);
+
+
+ProductGrid.propTypes = {
+  cgory: PropTypes.string.isRequired,
+};
