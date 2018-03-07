@@ -1,0 +1,110 @@
+.imagecar{
+    background-image: url('./home1.jpg');
+    height: 800px;
+    
+    background-size: cover;
+    background-blend-mode: color;
+    background-position: 100vw;
+    margin-top: -20px;
+}
+.Home{
+    
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    align-items: stretch;
+    background-color: gainsboro;
+   
+}
+.HomeCategories{
+    display: flex;
+    width: 100vw;
+    flex-direction: row;
+    align-items: stretch;
+    justify-content: space-between;
+    background-color: gainsboro;
+}
+@media (max-width: 600px) {
+    .HomeCategories {
+      flex-direction: column;
+      align-content: center;
+      justify-content: center;
+      margin-left: 12%;
+      
+    }
+}
+.HomeProduct{
+    background-image: url('./home.jpg');
+    height: 400px;
+    width: 300px;
+    background-size: cover;
+    background-blend-mode: color;
+    background-position: center;
+    border: 1px solid white;
+    
+}
+.HomeAbout{
+     display: flex;
+    width: 100vw;
+     min-height: 300px;
+    
+     flex-direction: column;
+     align-items: stretch;
+     
+     background-color:black;
+     opacity: 0.8;
+}
+.HomeAboutTitle{
+    color:white;
+    font-size: 70px;
+    justify-content: center;
+    text-align: center;
+}
+.HomeAboutText {
+    color: grey;
+    font-size: 20px;
+    margin-top: 1%;
+     margin-bottom: 1%;
+    justify-content: center;
+    text-align: center;
+}
+.HomeAboutTextP{
+    margin-left:20%;
+     margin-right:20%;
+}
+.HomeFooter{
+    display: flex;
+    width: 100vw;
+    min-height: 40vh;
+    flex-direction: row;
+    align-items: stretch;
+    
+    background-color:gray;
+}
+@media (max-width: 500px) {
+    .HomeFooter {
+        flex-direction: column;
+        align-content: center;
+        justify-content: center;
+        
+    }
+}
+.HomeFooterContact{
+    border-right: 0.5px solid rgba(255, 255, 245, .1);
+    text-align: center;
+    color: white;
+    flex:1;
+  
+}
+@media (max-width: 500px) {
+    .HomeFooterContact {
+        border-right: none;
+         
+    }
+}
+.HomeFooterInfo {
+    text-align: center;
+    color: white;
+    flex:1;
+    
+}
