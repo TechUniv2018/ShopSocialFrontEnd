@@ -1,0 +1,35 @@
+.HomeFooter {
+    display: flex;
+    width: 100vw;
+    min-height: 40vh;
+    flex-direction: row;
+    align-items: stretch;
+    background-color: gray;
+}
+
+@media (max-width: 500px) {
+    .HomeFooter {
+        flex-direction: column;
+        align-content: center;
+        justify-content: center;
+    }
+}
+
+.HomeFooterContact {
+    border-right: 0.5px solid rgba(255, 255, 245, .1);
+    text-align: center;
+    color: white;
+    flex: 1;
+}
+
+@media (max-width: 500px) {
+    .HomeFooterContact {
+        border-right: none;
+    }
+}
+
+.HomeFooterInfo {
+    text-align: center;
+    color: white;
+    flex: 1;
+}
