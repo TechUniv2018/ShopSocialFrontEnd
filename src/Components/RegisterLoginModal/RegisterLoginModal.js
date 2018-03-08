@@ -53,9 +53,24 @@ class RegisterLoginModal extends React.Component {
     setTimeout(() => {
       // Completed of async action, set loading state back
       this.setState({
-        isLoading: false, isLoggedIn: 'success', signInText: 'Signed in successfully!', show: false,
+        isLoading: false, isLoggedIn: 'success', signInText: 'Signed in successfully!',
       });
+      setTimeout(() => this.setState({
+        show: false,
+      }), 300);
     }, 2000);
+  }
+
+  checkForValidEmail =(emailValue) => {
+    if (/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(emailValue) === false) {
+      this.setState({
+        errOrSuccessStyle: 'danger',
+        showAlertClass: '',
+        alertText: 'Please enter a valid email address',
+      });
+      return false;
+    }
+    return true;
   }
 
   handleRegister = () => {
@@ -67,12 +82,6 @@ class RegisterLoginModal extends React.Component {
         errOrSuccessStyle: 'danger',
         showAlertClass: '',
         alertText: 'Please fill the required fields',
-      });
-    } else if (this.state.pwd !== this.state.rpwd) {
-      this.setState({
-        errOrSuccessStyle: 'danger',
-        showAlertClass: '',
-        alertText: 'Oh snap! Your passwords don\'t match.',
       });
     } else {
       this.setState({
@@ -143,6 +152,11 @@ showForm = () => {
                   type="email"
                   placeholder="Email"
                   bsSize="large"
+                  onBlur={(event) => {
+                    if (this.checkForValidEmail(event.target.value)) {
+                      this.setState({ email: event.target.value });
+                    }
+                  }}
                 />
               </Col>
             </FormGroup>
@@ -202,7 +216,11 @@ showForm = () => {
                 type="email"
                 placeholder="Enter your email"
                 bsSize="large"
-                onBlur={event => this.setState({ email: event.target.value })}
+                onBlur={(event) => {
+                  if (this.checkForValidEmail(event.target.value)) {
+                    this.setState({ email: event.target.value });
+                  }
+                }}
               />
             </Col>
           </FormGroup>
@@ -215,7 +233,6 @@ showForm = () => {
                 bsSize="large"
                 onBlur={(event) => {
                   if (/^(?=.*[0-9])(?=.*[!@#$%^&*])(?=.*[A-Z])(?=.*[a-z])[a-zA-Z0-9!@#$%^&*]{6,16}$/.test(event.target.value)) {
-                    console.log('Pass');
                     this.setState({
                       pwd: event.target.value,
                       errOrSuccessStyle: '',
