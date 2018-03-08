@@ -7,7 +7,7 @@ import './ProductDisplay.css';
 class ProductDisplay extends React.Component {
   render() {
     return (
-      <div className="abc">
+      <div className="product-display">
         <Menu />
         <ProductContainer />
       </div>
