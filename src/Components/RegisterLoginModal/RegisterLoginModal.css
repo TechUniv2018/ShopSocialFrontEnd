@@ -17,3 +17,7 @@
 .RegisterLoginButtons {
   padding: 2vh 0;
 }
+
+.ResponseNotif {
+  display: none;
+}
