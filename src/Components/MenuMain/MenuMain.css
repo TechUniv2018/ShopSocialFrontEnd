@@ -1,0 +1,19 @@
+.NavbarMain{
+    background-color: rgba(0, 0, 0, 0.6);
+    position: fixed;
+    width: 100%;
+    border: 0px;
+}
+.NavbarIcon{
+    background-image: url('./images/Icon_SS.png');
+    width: 40px;
+    height: 40px;
+    background-repeat: no-repeat;
+    background-size: contain;
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+.NavbarText{
+    color: white;
+    font-size: 1.7rem;
+}

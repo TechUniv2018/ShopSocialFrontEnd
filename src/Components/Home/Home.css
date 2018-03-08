@@ -1,0 +1,95 @@
+.HomeBodyImage{
+    background-image: url('./images/Home_Page_SS_HQ.jpg');
+    background-size: cover;
+    height: 100vh;
+}
+.Home{
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+    overflow-x: hidden;
+}
+.HomeCategories{
+    margin-top: 2%;
+    margin-bottom: 2%;
+    width: 80%;
+    align-self: center;
+    margin-left: 2%;
+}
+.CategoryTv{
+    background-size: contain;
+    height: 200px;
+    width: 200px;
+    background-repeat: no-repeat;
+    background-image: url('./images/Cat_Tv.jpg');
+    box-shadow: 18px 34px 30px -22px hsla(0,0%,0%,.2);
+    transition:all .5s ease;
+    border-radius: 5px;
+}
+.CategoryTv:hover{
+    box-shadow:2px 8px 4px -6px hsla(0,0%,0%,.3);
+}
+.CategoryDvd{
+    background-size: contain;
+    height: 200px;
+    width: 200px;
+    background-repeat: no-repeat;
+    background-image: url('./images/Cat_Dvd.jpg');
+    box-shadow: 18px 34px 30px -22px hsla(0,0%,0%,.2);
+    transition:all .5s ease;
+    border-radius: 5px;
+}
+.CategoryDvd:hover{
+    box-shadow:2px 8px 4px -6px hsla(0,0%,0%,.3);
+}
+.CategoryFurn{
+    background-size: contain;
+    height: 200px;
+    width: 200px;
+    background-repeat: no-repeat;
+    background-image: url('./images/Cat_Furn.jpg');
+    box-shadow: 18px 34px 30px -22px hsla(0,0%,0%,.2);
+    transition:all .5s ease;
+    border-radius: 5px;
+}
+.CategoryFurn:hover{
+    box-shadow:2px 8px 4px -6px hsla(0,0%,0%,.3);
+}
+.CategoryAudio{
+    background-size: contain;
+    height: 200px;
+    width: 200px;
+    background-repeat: no-repeat;
+    background-image: url('./images/Cat_Audio.jpg');
+    box-shadow: 18px 34px 30px -22px hsla(0,0%,0%,.2);
+    transition:all .5s ease;
+    border-radius: 5px;
+}
+.CategoryAudio:hover{
+    box-shadow:2px 8px 4px -6px hsla(0,0%,0%,.3);
+}
+.HomeAbout{
+     display: flex;
+     width: 100vw;
+     flex-direction: column;
+     background-color:black;
+     opacity: 0.8;
+}
+.HomeAboutTitle{
+    color:white;
+    font-size: 2.7rem;
+    justify-content: center;
+    text-align: center;
+    margin-top: 1%;
+    margin-bottom: 1%;
+}
+.HomeAboutText {
+    color: grey;
+    font-size: 2rem;
+    display: flex;
+    text-align: center;
+    align-self: center;
+    width: 80%;
+    margin-bottom: 2%;
+}
