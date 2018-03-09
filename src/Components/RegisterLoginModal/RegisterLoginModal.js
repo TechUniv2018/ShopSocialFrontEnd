@@ -47,18 +47,60 @@ class RegisterLoginModal extends React.Component {
   }
 
   handleLogin = () => {
-    this.setState({ isLoading: true });
-
-    // This probably where you would have an `ajax` call
-    setTimeout(() => {
-      // Completed of async action, set loading state back
+    if (this.state.pwd.length === 0 ||
+      this.state.email.length === 0) {
       this.setState({
-        isLoading: false, isLoggedIn: 'success', signInText: 'Signed in successfully!',
+        errOrSuccessStyle: 'danger',
+        showAlertClass: '',
+        alertText: 'Please fill the required fields',
       });
-      setTimeout(() => this.setState({
-        show: false,
-      }), 300);
-    }, 2000);
+    } else {
+      this.setState({
+        errOrSuccessStyle: '',
+        showAlertClass: 'ResponseNotif',
+        alertText: '',
+      });
+      axios.post('/user/login', {
+        password: this.state.pwd,
+        email: this.state.email,
+      }).then((resJSON) => {
+        if (resJSON.data.statusCode === 200) {
+          setTimeout(() => {
+            this.setState({
+              isLoading: true,
+              errOrSuccessStyle: '',
+              showAlertClass: 'ResponseNotif',
+              alertText: '',
+            });
+            setTimeout(() => {
+              this.setState({
+                showAlertClass: 'ResponseNotif',
+                isRegistered: 'success',
+                registerText: 'You are logged in!',
+              });
+              setTimeout(() =>
+                this.setState({
+                  show: false,
+                }), 500);
+            }, 1000);
+          }, 0);
+        } else if (resJSON.data.statusCode === 401) {
+          this.setState({
+            errOrSuccessStyle: 'danger',
+            showAlertClass: '',
+            alertText: 'Invalid credentials!',
+            isLoading: false,
+          });
+        } else if (resJSON.data.statusCode === 503) {
+          this.setState({
+            errOrSuccessStyle: 'danger',
+            showAlertClass: '',
+            alertText: 'Server error',
+            isLoading: false,
+          });
+        }
+      }).catch(err => console.log(err));
+    }
   }
 
   checkForValidEmail =(emailValue) => {
