@@ -177,11 +177,13 @@ class RegisterLoginModal extends React.Component {
               setTimeout(() => {
                 this.setState({
                   loginOrRegister: 'login',
+                  email: '',
+                  pwd: '',
                   activeLogin: 'activeTab',
                   activeRegister: '',
                   isLoading: false,
                 });
-              }, 500);
+              }, 1000);
             }, 1000);
           }, 0);
         } else if (resJSON.data.statusCode === 409) {
