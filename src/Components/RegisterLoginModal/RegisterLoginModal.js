@@ -31,6 +31,7 @@ class RegisterLoginModal extends React.Component {
       registerText: 'Sign up with a new email!',
       errOrSuccessStyle: '',
       showAlertClass: 'ResponseNotif',
+      name: '',
       alertText: '',
       pwd: '',
       email: '',
@@ -87,7 +88,7 @@ class RegisterLoginModal extends React.Component {
               setTimeout(() =>
                 this.setState({
                   show: false,
-                }), 500);
+                }), 1000);
             }, 1000);
           }, 0);
         } else if (resJSON.data.statusCode === 401) {
@@ -234,6 +235,8 @@ showForm = () => {
                   placeholder="Email"
                   bsSize="large"
                   onBlur={event => this.checkForValidEmail(event.target.value)}
+                  value={this.state.email}
+                  onChange={event => this.setState({ email: event.target.value })}
                 />
               </Col>
             </FormGroup>
@@ -245,6 +248,8 @@ showForm = () => {
                   placeholder="Password"
                   bsSize="large"
                   onBlur={event => this.checkForValidPwd(event.target.value)}
+                  value={this.state.pwd}
+                  onChange={event => this.setState({ pwd: event.target.value })}
                 />
               </Col>
             </FormGroup>
@@ -285,6 +290,8 @@ showForm = () => {
                 placeholder="Enter your name"
                 bsSize="large"
                 onBlur={event => this.setState({ name: event.target.value })}
+                value={this.state.name}
+                onChange={event => this.setState({ name: event.target.value })}
               />
             </Col>
           </FormGroup>
@@ -295,6 +302,8 @@ showForm = () => {
                 placeholder="Enter your email"
                 bsSize="large"
                 onBlur={event => this.checkForValidEmail(event.target.value)}
+                value={this.state.email}
+                onChange={event => this.setState({ email: event.target.value })}
               />
             </Col>
           </FormGroup>
@@ -306,6 +315,8 @@ showForm = () => {
                 placeholder="Enter a new password"
                 bsSize="large"
                 onBlur={event => this.checkForValidPwd(event.target.value)}
+                value={this.state.pwd}
+                onChange={event => this.setState({ pwd: event.target.value })}
               />
             </Col>
           </FormGroup>
@@ -316,6 +327,8 @@ showForm = () => {
                 placeholder="Re-enter your new password"
                 bsSize="large"
                 onBlur={event => this.setState({ rpwd: event.target.value })}
+                value={this.state.rpwd}
+                onChange={event => this.setState({ rpwd: event.target.value })}
               />
             </Col>
           </FormGroup>
@@ -357,14 +370,46 @@ render() {
             <Button
               bsStyle="info"
               className={this.state.activeLogin}
-              onClick={() => this.setState({ loginOrRegister: 'login', activeLogin: 'activeTab', activeRegister: '' })}
+              onClick={() => this.setState({
+                loginOrRegister: 'login',
+                activeLogin: 'activeTab',
+                activeRegister: '',
+                name: '',
+                pwd: '',
+                rpwd: '',
+                email: '',
+                isLoading: false,
+                isLoggedIn: 'warning',
+                signInText: 'Sign in to your account',
+                isRegistered: 'warning',
+                registerText: 'Sign up with a new email!',
+                errOrSuccessStyle: '',
+                showAlertClass: 'ResponseNotif',
+              })
+            }
             >
               Login
             </Button>
             <Button
               bsStyle="info"
               className={this.state.activeRegister}
-              onClick={() => this.setState({ loginOrRegister: 'register', activeRegister: 'activeTab', activeLogin: '' })}
+              onClick={() => this.setState({
+                loginOrRegister: 'register',
+                activeRegister: 'activeTab',
+                activeLogin: '',
+                name: '',
+                pwd: '',
+                rpwd: '',
+                email: '',
+                isLoading: false,
+                isLoggedIn: 'warning',
+                signInText: 'Sign in to your account',
+                isRegistered: 'warning',
+                registerText: 'Sign up with a new email!',
+                errOrSuccessStyle: '',
+                showAlertClass: 'ResponseNotif',
+              })
+          }
             >
               Register
             </Button>
