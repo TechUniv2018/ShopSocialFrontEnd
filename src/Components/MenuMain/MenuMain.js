@@ -26,7 +26,7 @@ class MenuMain extends React.Component {
       );
     }
     return (
-      <Navbar classname="NavbarMain">
+      <Navbar className="NavbarMain">
         <Navbar.Header>
           <Navbar.Brand>
             <div className="NavbarIcon" />

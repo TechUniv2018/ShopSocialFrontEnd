@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, Row, Col } from 'react-bootstrap';
+import { Grid, Row, Col, Well } from 'react-bootstrap';
 import MenuMain from '../MenuMain/MenuMain';
 import FooterMain from './FooterMain/FooterMain';
 import './Home.css';
@@ -18,22 +18,24 @@ class Home extends React.Component {
         <MenuMain isAuthenticated={this.state.isAuthenticated} />
         <div className="HomeBodyImage" />
         <div className="HomeCategories">
-          <Grid>
-            <Row className="show-grid">
-              <Col sm={6} md={3}>
-                <div className="CategoryTv">A</div>
-              </Col>
-              <Col sm={6} md={3}>
-                <div className="CategoryDvd">A</div>
-              </Col>
-              <Col sm={6} md={3}>
-                <div className="CategoryFurn">A</div>
-              </Col>
-              <Col sm={6} md={3}>
-                <div className="CategoryAudio">A</div>
-              </Col>
-            </Row>
-          </Grid>
+          <Well>
+            <Grid>
+              <Row className="show-grid">
+                <Col sm={6} md={3}>
+                  <div className="CategoryTv">A</div>
+                </Col>
+                <Col sm={6} md={3}>
+                  <div className="CategoryDvd">A</div>
+                </Col>
+                <Col sm={6} md={3}>
+                  <div className="CategoryFurn">A</div>
+                </Col>
+                <Col sm={6} md={3}>
+                  <div className="CategoryAudio">A</div>
+                </Col>
+              </Row>
+            </Grid>
+          </Well>
         </div>
         <div className="HomeAbout">
           <div className="HomeAboutTitle"> ShopSocial </div>

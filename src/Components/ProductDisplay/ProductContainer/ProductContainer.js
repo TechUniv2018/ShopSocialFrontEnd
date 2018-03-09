@@ -6,7 +6,6 @@ import './ProductContainer.css';
 
 const requestUrlbyId = '/api/v1/products/';
 
-// const MyFacebookLoader = () => <Facebook />;
 const MyLoader = () => (
   <ContentLoader
     height={200}
@@ -33,11 +32,11 @@ class ProductContainer extends React.Component {
     super(props);
 
     this.state = {
-      show: 'pre',
+      show: 'after',
       productName: 'No product to Show',
       productPrice: '',
       productDesc: '',
-      prouctModel: '',
+      productModel: '',
       productimage: '',
       productUpc: '',
       productCartStatus: 0,
@@ -45,8 +44,7 @@ class ProductContainer extends React.Component {
       productId: -1,
       userId: -1,
     };
-    // Add cartId and userId to redux store.
-    setTimeout(() => { this.setState({ show: 'after' }); }, 2000);
+    // setTimeout(() => { this.setState({ show: 'after' }); }, 2000);
   }
   componentDidMount() {
     const currentUrl = (window.location.href);
@@ -65,7 +63,7 @@ class ProductContainer extends React.Component {
                 productPrice: text.data.price,
                 productDesc: descArray,
                 productMan: text.data.manufacturer,
-                prouctModel: text.data.model,
+                productModel: text.data.model,
                 productimage: text.data.image,
                 productUpc: text.data.upc,
                 productId: text.data.productID,
@@ -75,7 +73,6 @@ class ProductContainer extends React.Component {
                 productName: 'No product to Show',
               });
             }
-          // console.log(text);
           });
         });
     }
@@ -109,61 +106,55 @@ class ProductContainer extends React.Component {
         <div className="product-container-loader">
           <Grid>
             <MyLoader />
-
           </Grid>
         </div>
       );
     }
     return (
       <div className="product-container-flex">
-        <Grid>
-
+        <Grid className="product-view-card">
           <Row className="show-grid product-container-display-body card">
-            <Col xs={12} sm={3} md={3} lg={3} >
-              <center> <Image src={this.state.productimage} responsive /> </center>
-            </Col>
-
-            <Col xs={12} sm={9} md={9} lg={9}>
-              <div>
-                <center> <h3> {this.state.productName} </h3>        </center>
-                <center><strong> <h1><p> &#8377; {this.state.productPrice} </p> </h1> </strong> </center>
-              </div>
-
-              <div>
-                <center> <h4> DESCRIPTION </h4>        </center>
-                <p> {this.state.productDesc} </p>
-              </div>
-              <div>
-                <center><Button onClick={this.addProductToCart} className="btn-product-view">{this.state.productCartStatus === 0 ? 'Add to cart' : 'In cart'} </Button> </center>
-              </div>
-              <div>
-                <Table responsive>
-                  <thead>
-                    <tr>
-
-                      <th>Manufacturer</th>
-                      <td>{this.state.productMan}</td>
-
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <th>Model</th>
-
-                      <td>{this.state.prouctModel}</td>
-
-                    </tr>
-
-                    <tr>
-                      <th>UPC</th>
-                      <td>{this.state.productUpc} </td>
-
-                    </tr>
-                  </tbody>
-                </Table>
-              </div>
-
-            </Col>
+            <div className="product-display-card-contents">
+              <Row>
+                <Col xs={12} sm={12} md={7} lg={7} >
+                  <center> <Image src={this.state.productimage} responsive /> </center>
+                </Col>
+                <Col xs={12} sm={12} md={5} lg={5}>
+                  <h2> {this.state.productName} </h2>
+                  <strong className="product-price"> <h3><p> Best buy @ &#8377; {this.state.productPrice} </p> </h3> </strong>
+                  <div>
+                    <center><Button onClick={this.addProductToCart} className="btn-product-view">{this.state.productCartStatus === 0 ? 'Add to cart' : 'In cart'} </Button> </center>
+                  </div>
+                </Col>
+              </Row>
+              <Row>
+                <br />
+                <Col >
+                  <div>
+                    <h1> Description </h1>
+                    <p className="product-desc-text"> {this.state.productDesc} </p>
+                  </div>
+                  <div />
+                </Col>
+              </Row>
+              <Row>
+                <Col xs={12} sm={12} md={4} lg={4}>
+                  <div className="product-manufacturer" >
+                    <h3>Manufacturer: <h5>{this.state.productMan}</h5></h3>
+                  </div>
+                </Col>
+                <Col xs={12} sm={12} md={4} lg={4}>
+                  <div className="product-model" >
+                    <h3>Model: <h5>{this.state.productModel}</h5></h3>
+                  </div>
+                </Col>
+                <Col xs={12} sm={12} md={4} lg={4}>
+                  <div className="product-upc" >
+                    <h3>UPC: <h5>{this.state.productUpc}</h5></h3>
+                  </div>
+                </Col>
+              </Row>
+            </div>
           </Row>
         </Grid>
       </div>
