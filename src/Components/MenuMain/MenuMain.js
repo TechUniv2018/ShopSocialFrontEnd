@@ -1,7 +1,9 @@
 import React from 'react';
 import axios from 'axios';
 import { Navbar, Nav, NavItem } from 'react-bootstrap';
+import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import RegisterLoginModal from '../RegisterLoginModal/RegisterLoginModal';
+import CartModal from '../CartModal/CartModal';
 import './MenuMain.css';
 
 class MenuMain extends React.Component {
@@ -9,9 +11,12 @@ class MenuMain extends React.Component {
     isAuthenticated: false,
     userId: '',
     cartId: '',
+    cartContents: [],
     userName: '',
     userEmail: '',
     showLogin: false,
+    showCart: false,
+    isSocial: false,
   }
   componentDidMount() {
     if (window.localStorage.getItem('email') !== null) {
@@ -62,6 +67,19 @@ class MenuMain extends React.Component {
       showLogin: true,
     });
   }
+  handleCartModalClose = () => {
+    this.setState({
+      showCart: false,
+    });
+  }
+  handleCartModalOpen = () => {
+    this.setState({
+      showCart: true,
+    });
+  }
+  deleteCartContents = (productId) => {
+    console.log(productId);
+  }
   render() {
     if (!this.state.isAuthenticated) {
       return (
@@ -98,19 +116,26 @@ class MenuMain extends React.Component {
         <Navbar.Collapse>
           <Nav pullRight classname="NavbarMain">
             <NavItem eventKey={1} href="#">
-              <div className="NavbarText">Together</div>
-            </NavItem>
-            <NavItem eventKey={1} href="#">
-              <div className="NavbarText">Cart</div>
-            </NavItem>
-            <NavItem eventKey={1} href="#">
               <div className="NavbarText">Hi {this.state.userName}</div>
             </NavItem>
             <NavItem eventKey={1} href="#">
-              <div className="NavbarText" onClick={() => { this.onLogout(); }}>Logout</div>
+              <div className="NavbarText"><FontAwesomeIcon icon="handshake" /> {this.state.isSocial ? 'Shop Personal' : 'Shop Together'} </div>
+            </NavItem>
+            <NavItem eventKey={1} href="#">
+              <div className="NavbarText" onClick={() => { this.handleCartModalOpen(); }}><FontAwesomeIcon icon="shopping-cart" /> {this.state.isSocial ? 'Our' : 'My'} Cart</div>
+            </NavItem>
+            <NavItem eventKey={1} href="#">
+              <div className="NavbarText" onClick={() => { this.onLogout(); }}><FontAwesomeIcon icon="sign-out-alt" /> Logout</div>
             </NavItem>
           </Nav>
         </Navbar.Collapse>
+        <CartModal
+          cartContents={this.state.cartContents}
+          handleCartModalClose={this.handleCartModalClose}
+          deleteCartContents={this.handleCartContents}
+          cartId={this.state.cartId}
+          showCart={this.state.showCart}
+        />
       </Navbar>
     );
   }

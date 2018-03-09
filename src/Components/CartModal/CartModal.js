@@ -11,25 +11,26 @@ class CartModal extends React.Component {
     const cartItems = [];
     Object.entries(this.props.cartContents)
       .forEach(([productId, { productName, price, imageUrl }]) => {
-        console.log(productId, productName, price, imageUrl);
         cartItems.push((<CartProductContainer
+          key={productId}
           imageUrl={imageUrl}
           productName={productName}
           productPrice={price}
+          productId={productId}
         />));
       });
     return (
       <div >
-        <Modal show={this.props.cartState} onHide={this.props.hideCart}>
+        <Modal show={this.props.showCart} onHide={() => { this.props.handleCartModalClose(); }}>
           <Modal.Header>
             <Modal.Title>Cart</Modal.Title>
           </Modal.Header>
           <Modal.Body >
-            {cartItems}
+            {cartItems.length === 0 ? <h3>Oops! Please add some products</h3> : cartItems}
           </Modal.Body>
           <Modal.Footer>
-            <Button onClick={this.props.hideCart}>Close</Button>
-            <Button onClick={() => { console.log('Performing checkout'); }}>Checkout</Button>
+            <Button className="ModalCartCloseButton" onClick={() => { this.props.handleCartModalClose(); }}> Close</Button>
+            <Button className="ModalCartCheckoutButton" onClick={() => { console.log('Performing checkout'); }}> Checkout</Button>
           </Modal.Footer>
         </Modal>
       </div>
@@ -38,9 +39,16 @@ class CartModal extends React.Component {
 }
 
 CartModal.propTypes = {
-  cartState: PropTypes.bool.isRequired,
-  hideCart: PropTypes.func.isRequired,
-  cartContents: PropTypes.object.isRequired,
+  cartContents: PropTypes.array,
+  handleCartModalClose: PropTypes.func.isRequired,
+  deleteCartContents: PropTypes.func.isRequired,
+  showCart: PropTypes.bool.isRequired,
+  cartId: PropTypes.number,
+};
+
+CartModal.defaultProps = {
+  cartContents: [],
+  cartId: 0,
 };
 
 export default CartModal;
