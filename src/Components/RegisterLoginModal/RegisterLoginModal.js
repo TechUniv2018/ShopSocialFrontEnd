@@ -80,15 +80,18 @@ class RegisterLoginModal extends React.Component {
               alertText: '',
             });
             setTimeout(() => {
+              console.log('yahan');
               this.setState({
                 showAlertClass: 'ResponseNotif',
-                isRegistered: 'success',
-                registerText: 'You are logged in!',
+                isLoggedIn: 'success',
+                signInText: 'You are logged in!',
               });
-              setTimeout(() =>
+              setTimeout(() => {
+                console.log('yahan bhi');
                 this.setState({
                   show: false,
-                }), 1000);
+                });
+              }, 1000);
             }, 1000);
           }, 0);
         } else if (resJSON.data.statusCode === 401) {
