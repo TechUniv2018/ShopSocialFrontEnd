@@ -54,6 +54,12 @@ class RegisterLoginModal extends React.Component {
         showAlertClass: '',
         alertText: 'Please fill the required fields',
       });
+    } else if (this.state.pwd === '+++') {
+      this.setState({
+        errOrSuccessStyle: 'danger',
+        showAlertClass: '',
+        alertText: 'Please ensure your password is of 6 - 16 characters in length and contains a digit, a special character, an uppercase and a lowercase character',
+      });
     } else {
       this.setState({
         errOrSuccessStyle: '',
@@ -124,7 +130,7 @@ class RegisterLoginModal extends React.Component {
   checkForValidPwd =(pwdValue) => {
     if (pwdValue.length !== 0 && /^(?=.*[0-9])(?=.*[!@#$%^&*])(?=.*[A-Z])(?=.*[a-z])[a-zA-Z0-9!@#$%^&*]{6,16}$/.test(pwdValue) === false) {
       this.setState({
-        pwd: '',
+        pwd: '+++',
         errOrSuccessStyle: 'danger',
         showAlertClass: '',
         alertText: 'Please ensure your password is of 6 - 16 characters in length and contains a digit, a special character, an uppercase and a lowercase character',
@@ -179,6 +185,7 @@ class RegisterLoginModal extends React.Component {
                   loginOrRegister: 'login',
                   email: '',
                   pwd: '',
+                  name: '',
                   activeLogin: 'activeTab',
                   activeRegister: '',
                   isLoading: false,
@@ -237,6 +244,7 @@ showForm = () => {
                   type="password"
                   placeholder="Password"
                   bsSize="large"
+                  onBlur={event => this.checkForValidPwd(event.target.value)}
                 />
               </Col>
             </FormGroup>
