@@ -78,7 +78,22 @@ class MenuMain extends React.Component {
     });
   }
   deleteCartContents = (productId) => {
-    console.log(productId);
+    const currentCartContents = this.state.cartContents;
+    currentCartContents.splice(productId, 1);
+    this.setState({
+      cartContents: currentCartContents,
+    });
+  }
+  addProductToCart = (productObject) => {
+    const currentCartContents = this.state.cartContents;
+    currentCartContents[productObject.productId] = {
+      imageUrl: productObject.imageUrl,
+      price: productObject.price,
+      name: productObject.name,
+    };
+    this.setState({
+      cartContents: currentCartContents,
+    });
   }
   render() {
     if (!this.state.isAuthenticated) {
