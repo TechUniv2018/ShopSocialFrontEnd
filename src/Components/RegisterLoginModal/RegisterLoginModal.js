@@ -72,6 +72,10 @@ class RegisterLoginModal extends React.Component {
         email: this.state.email,
       }).then((resJSON) => {
         if (resJSON.data.statusCode === 200) {
+          window.localStorage.setItem('email', resJSON.data.email);
+          window.localStorage.setItem('cartID', resJSON.data.cartID);
+          window.localStorage.setItem('name', resJSON.data.name);
+          window.localStorage.setItem('userID', resJSON.data.userID);
           setTimeout(() => {
             this.setState({
               isLoading: true,
