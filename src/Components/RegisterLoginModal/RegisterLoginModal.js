@@ -62,15 +62,39 @@ class RegisterLoginModal extends React.Component {
   }
 
   checkForValidEmail =(emailValue) => {
-    if (/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(emailValue) === false) {
+    if (emailValue.length !== 0 && /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(emailValue) === false) {
       this.setState({
+        email: '',
         errOrSuccessStyle: 'danger',
         showAlertClass: '',
         alertText: 'Please enter a valid email address',
       });
-      return false;
+    } else {
+      this.setState({
+        email: emailValue,
+        errOrSuccessStyle: '',
+        showAlertClass: 'ResponseNotif',
+        alertText: '',
+      });
     }
-    return true;
+  }
+
+  checkForValidPwd =(pwdValue) => {
+    if (pwdValue.length !== 0 && /^(?=.*[0-9])(?=.*[!@#$%^&*])(?=.*[A-Z])(?=.*[a-z])[a-zA-Z0-9!@#$%^&*]{6,16}$/.test(pwdValue) === false) {
+      this.setState({
+        pwd: '',
+        errOrSuccessStyle: 'danger',
+        showAlertClass: '',
+        alertText: 'Please ensure your password is of 6 - 16 characters in length and contains a digit, a special character, an uppercase and a lowercase character',
+      });
+    } else {
+      this.setState({
+        pwd: pwdValue,
+        errOrSuccessStyle: '',
+        showAlertClass: 'ResponseNotif',
+        alertText: '',
+      });
+    }
   }
 
   handleRegister = () => {
@@ -145,23 +169,25 @@ showForm = () => {
           <Panel.Title componentClass="h3">{this.state.signInText}</Panel.Title>
         </Panel.Heading>
         <Panel.Body>
+          <Alert
+            bsStyle={this.state.errOrSuccessStyle}
+            className={this.state.showAlertClass}
+          >
+            {this.state.alertText}
+          </Alert>
           <Form horizontal>
-            <FormGroup controlId="formHorizontalEmail">
+            <FormGroup controlId="formHorizontalLoginEmail">
               <Col sm={12}>
                 <FormControl
                   type="email"
                   placeholder="Email"
                   bsSize="large"
-                  onBlur={(event) => {
-                    if (this.checkForValidEmail(event.target.value)) {
-                      this.setState({ email: event.target.value });
-                    }
-                  }}
+                  onBlur={event => this.checkForValidEmail(event.target.value)}
                 />
               </Col>
             </FormGroup>
 
-            <FormGroup controlId="formHorizontalPassword">
+            <FormGroup controlId="formHorizontalLoginPassword">
               <Col sm={12}>
                 <FormControl
                   type="password"
@@ -216,11 +242,7 @@ showForm = () => {
                 type="email"
                 placeholder="Enter your email"
                 bsSize="large"
-                onBlur={(event) => {
-                  if (this.checkForValidEmail(event.target.value)) {
-                    this.setState({ email: event.target.value });
-                  }
-                }}
+                onBlur={event => this.checkForValidEmail(event.target.value)}
               />
             </Col>
           </FormGroup>
@@ -231,23 +253,7 @@ showForm = () => {
                 type="password"
                 placeholder="Enter a new password"
                 bsSize="large"
-                onBlur={(event) => {
-                  if (/^(?=.*[0-9])(?=.*[!@#$%^&*])(?=.*[A-Z])(?=.*[a-z])[a-zA-Z0-9!@#$%^&*]{6,16}$/.test(event.target.value)) {
-                    this.setState({
-                      pwd: event.target.value,
-                      errOrSuccessStyle: '',
-                      showAlertClass: 'ResponseNotif',
-                      alertText: '',
-                     });
-                  } else {
-                    this.setState({
-                      pwd: '',
-                      errOrSuccessStyle: 'danger',
-                      showAlertClass: '',
-                      alertText: 'Please ensure your password is of 6 - 16 characters in length and contains a digit, a special character, an uppercase and a lowercase character',
-                    });
-                  }
-                }}
+                onBlur={event => this.checkForValidPwd(event.target.value)}
               />
             </Col>
           </FormGroup>
