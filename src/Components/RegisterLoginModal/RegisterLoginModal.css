@@ -5,13 +5,13 @@
 
 .RegisterLoginButtons Button {
   flex-grow: 1;
-  border-radius: 0px;
+  border-radius: 10px;
   padding: 10px 0;
   margin: 0 3px;
 }
 
 .activeTab, .activeTab:focus {
-  background-color: #164fcc;
+  background-color: #2980B9 !important;
 }
 
 .RegisterLoginButtons {
@@ -20,4 +20,38 @@
 
 .ResponseNotif {
   display: none;
+}
+.btn-info{
+  background-color: grey;
+  border-color: rgba(0, 0, 0, 0);
+}
+.ModalLoginButton{
+  background-color: #666666; 
+  border: none;
+  color: white;
+  text-align: center;
+  font-size: 1.7rem;
+  border-radius: 10px;
+  box-shadow: 18px 34px 30px -22px hsla(0,0%,0%,.2);
+  transition:all .3s ease;
+}
+.ModalLoginButton:hover{
+  background-color: #2980B9;
+  color: white;
+  box-shadow:2px 8px 4px -6px hsla(0,0%,0%,.3);
+}
+.ModalRegisterButton{
+  background-color: #666666; 
+  border: none;
+  color: white;
+  text-align: center;
+  font-size: 1.7rem;
+  border-radius: 10px;
+  box-shadow: 18px 34px 30px -22px hsla(0,0%,0%,.2);
+  transition:all .3s ease;
+}
+.ModalRegisterButton:hover{
+  background-color: #2980B9;
+  color: white;
+  box-shadow:2px 8px 4px -6px hsla(0,0%,0%,.3);
 }
