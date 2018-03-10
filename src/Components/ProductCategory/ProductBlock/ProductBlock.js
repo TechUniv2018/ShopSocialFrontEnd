@@ -31,8 +31,9 @@ export default class ProductBlock extends React.Component {
             this.setState({
               addToCartIcon: 'ion-checkmark-round',
             });
+            window.localStorage.setItem('products', [...window.localStorage.getItem('products'), productToBeAdded]);
           }
-        });
+        }).catch(console.log);
     } else if (this.state.addToCartIcon === 'ion-checkmark-round') {
       const productToBeRemoved = {
         productId: this.props.id,
@@ -52,8 +53,16 @@ export default class ProductBlock extends React.Component {
             this.setState({
               addToCartIcon: 'ion-android-cart',
             });
+            const products = window.localStorage.getItem('products');
+            const tempArr = [];
+            products.forEach((product) => {
+              if (product.productId !== productToBeRemoved.productId) {
+                tempArr.push(product);
+              }
+            });
+            window.localStorage.setItem('products', tempArr);
           }
-        });
+        }).catch(console.log);
     }
   }
 
