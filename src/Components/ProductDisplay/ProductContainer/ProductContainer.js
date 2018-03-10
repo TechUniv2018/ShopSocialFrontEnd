@@ -1,6 +1,6 @@
 import React from 'react';
 import ContentLoader from 'react-content-loader';
-import { Grid, Row, Col, Image, Button, Table } from 'react-bootstrap';
+import { Grid, Row, Col, Image, Button } from 'react-bootstrap';
 
 import './ProductContainer.css';
 

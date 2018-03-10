@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Form, FormGroup, FormControl, ControlLabel, Button } from 'react-bootstrap';
 import './FilterBar.css';
 
@@ -12,12 +13,14 @@ export default class FilterBar extends React.Component {
   }
   sendRange = () => {
     window.localStorage.setItem('fromRange', this.state.fromRange);
-    window.localStorage.setItem('fromRange', this.state.fromRange);
+    window.localStorage.setItem('toRange', this.state.toRange);
+    this.props.triggerFilter();
   }
+
   render() {
     return (
       <div className="FilterBar">
-        <Form inline>
+        <Form className="FilterForm" vertical="true">
           <FormGroup controlId="fromRange">
             <ControlLabel>From</ControlLabel>{' '}
             <FormControl
@@ -44,9 +47,17 @@ export default class FilterBar extends React.Component {
               }}
             />
           </FormGroup>{' '}
-          <Button bsStyle="info" onClick={this.sendRange}>Info</Button>
-        </Form>;
+          <Button bsStyle="info" onClick={this.sendRange}>Filter</Button>
+        </Form>
       </div>
     );
   }
 }
+
+FilterBar.propTypes = {
+  triggerFilter: PropTypes.func,
+};
+
+FilterBar.defaultProps = {
+  triggerFilter: () => {},
+};

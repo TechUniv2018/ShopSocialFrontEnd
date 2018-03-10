@@ -2,4 +2,5 @@
   display: flex;
   padding: 4vh;
   flex-wrap: wrap;
+  border-left: 4px solid #757575;
 }
