@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import './ProductBlock.css';
 
 export default class ProductBlock extends React.Component {
@@ -19,6 +20,10 @@ export default class ProductBlock extends React.Component {
       };
       fetch('/api/v1/cart/addToCart', {
         method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
         body: JSON.stringify(productToBeAdded),
       }).then(response => response.json())
         .then((responseJSON) => {
@@ -36,6 +41,10 @@ export default class ProductBlock extends React.Component {
       };
       fetch('/api/v1/cart/removeFromCart', {
         method: 'DELETE',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
         body: JSON.stringify(productToBeRemoved),
       }).then(response => response.json())
         .then((responseJSON) => {
@@ -58,8 +67,12 @@ export default class ProductBlock extends React.Component {
           <div className="ItemPrice">
             <s>{`$${Number(this.props.price) - 5}`}</s>{`$${this.props.price}`}
           </div>
-        </figcaption><i className={this.state.addToCartIcon} />
-        <button onClick={this.addToCart} activeClassName="AddToCart" />
+        </figcaption><button
+          className={this.state.addToCartIcon}
+          onClick={this.addToCart}
+          onKeyPress={() => {}}
+        />
+        <Link to={`/product/${this.props.id}`} className="AddToCart" />
       </figure>
     );
   }
