@@ -55,7 +55,7 @@ export default class ProductBlock extends React.Component {
         <img src={this.props.imageUrl} alt={this.props.name} />
         <figcaption>
           <div className="ItemName">{this.props.name}</div>
-          <div className="ItemDesc">{this.props.desc}</div>
+          <div className="ItemDesc">{this.props.desc.substr(0, this.props.desc.lastIndexOf(' ', 100))}</div>
           <div className="ItemPrice">
             <s>{`$${Number(this.props.price) - 5}`}</s>{`$${this.props.price}`}
           </div>

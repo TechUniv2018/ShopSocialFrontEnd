@@ -1,8 +1,7 @@
 .FilterBar {
   position: fixed;
-  color: #FFFAFA;
   font-family: 'HelveticaNeue';
-  background-color: #1A1A1A;
+  background-color: #FFFAFA;
   width: inherit;
   height: inherit;
   padding: 22% 2%;
