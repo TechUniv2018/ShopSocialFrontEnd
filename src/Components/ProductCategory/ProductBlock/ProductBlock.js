@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 import './ProductBlock.css';
 
 export default class ProductBlock extends React.Component {
@@ -60,7 +59,7 @@ export default class ProductBlock extends React.Component {
             <s>{`$${Number(this.props.price) - 5}`}</s>{`$${this.props.price}`}
           </div>
         </figcaption><i className={this.state.addToCartIcon} />
-        <Link to={this.addToCart} activeClassName="AddToCart" />
+        <button onClick={this.addToCart} activeClassName="AddToCart" />
       </figure>
     );
   }

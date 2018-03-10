@@ -9,14 +9,18 @@ export default class ProductCategory extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      fromPrice: 0,
-      toPrice: 10000,
+      products: [],
     };
   }
 
-  getProducts = () => {
+  componentWillMount() {
+    this.getProducts(0, 10000);
+  }
+
+
+  getProducts = (fromPrice, toPrice) => {
     const tempProductsArr = [];
-    fetch(`/api/v1/products/category/${this.props.match.params.cgory}?fromPrice=${this.state.fromPrice}&toPrice=${this.state.toPrice}`)
+    fetch(`/api/v1/products/category/${this.props.match.params.cgory}?fromPrice=${fromPrice}&toPrice=${toPrice}`)
       .then(res => res.json())
       .then((resJSON) => {
         resJSON.data.forEach(product =>
@@ -40,14 +44,10 @@ export default class ProductCategory extends React.Component {
 triggerFilter = () => {
   const fromPrice = window.localStorage.getItem('fromRange') === null ? 0 : window.localStorage.getItem('fromRange');
   const toPrice = window.localStorage.getItem('toRange') === null ? 10000 : window.localStorage.getItem('toRange');
-  this.setState({
-    fromPrice,
-    toPrice,
-  });
+  this.getProducts(fromPrice, toPrice);
 }
 
 render() {
-  this.getProducts();
   return (
     <div className="ProductCategory">
       <div className="col-15">
