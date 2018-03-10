@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import { Navbar, Nav, NavItem } from 'react-bootstrap';
+import { Navbar, Nav, NavItem, Modal, Button } from 'react-bootstrap';
 import RegisterLoginModal from '../RegisterLoginModal/RegisterLoginModal';
 import './MenuMain.css';
 
@@ -12,6 +12,9 @@ class MenuMain extends React.Component {
     userName: '',
     userEmail: '',
     showLogin: false,
+    togetherMenuText: 'Together',
+    togetherStatus: 0,
+    showTogetherModal: false,
   }
   componentDidMount() {
     if (window.localStorage.getItem('email') !== null) {
@@ -34,6 +37,7 @@ class MenuMain extends React.Component {
       showLogin: false,
     });
   }
+
   onLogout = () => {
     axios.get('/user/logout').then((logoutResponse) => {
       if (logoutResponse.data.statusCode === 200) {
@@ -48,9 +52,49 @@ class MenuMain extends React.Component {
           userName: '',
           userEmail: '',
           showLogin: false,
+
+
         });
       }
     });
+  }
+  toggleTogether = () => {
+    // window.TogetherJSConfig_getUserName = function () {
+    //   // alert(this.state.userName);
+    //   return this.state.userName;
+    // };
+    const uName = this.state.userName;
+    // alert(uName);
+    window.TogetherJS();
+    if (this.state.togetherStatus === 0) {
+      const getturl = setInterval(() => {
+        const turl = window.TogetherJS.shareUrl();
+        if (turl !== null) {
+          this.setState({
+            togetherStatus: 1,
+            togetherMenuText: 'End Together',
+            showTogetherModal: true,
+          });
+          window.TogetherJSConfig_getUserName = function () {
+            // alert(this.state.userName);
+            return uName;
+          };
+          window.TogetherJS.refreshUserData();
+          alert(window.TogetherJS.shareUrl());
+          clearInterval(getturl);
+        }
+      }, 1000);
+      // window.TogetherJSConfig_getUserName = function () {
+      //   alert(this.state.userName);
+      //   return this.state.userName;
+      // };
+      window.TogetherJS.refreshUserData();
+    } else {
+      this.setState({
+        togetherStatus: 0,
+        togetherMenuText: 'Together',
+      });
+    }
   }
   handleLoginModalClose = () => {
     this.setState({
@@ -62,7 +106,25 @@ class MenuMain extends React.Component {
       showLogin: true,
     });
   }
+
+
+  handleTogetherModalClose = () => {
+    this.setState({ showTogetherModal: false });
+  }
+
+  handlTogetherModaleShow = () => {
+    this.setState({ showTogetherModal: true });
+  }
   render() {
+    // if (this.state.togetherStatus === 1) {
+    //   window.TogetherJSConfig_getUserName = function () {
+    //     return this.state.userName;
+    //   };
+    //   window.TogetherJS.refreshUserData();
+    //   alert(window.TogetherJS.shareUrl());
+    // }
+
+
     if (!this.state.isAuthenticated) {
       return (
         <Navbar className="NavbarMain">
@@ -98,7 +160,7 @@ class MenuMain extends React.Component {
         <Navbar.Collapse>
           <Nav pullRight classname="NavbarMain">
             <NavItem eventKey={1} href="#">
-              <div className="NavbarText">Together</div>
+              <div className="NavbarText" onClick={() => { this.toggleTogether(); }}>{this.state.togetherMenuText}</div>
             </NavItem>
             <NavItem eventKey={1} href="#">
               <div className="NavbarText">Cart</div>
@@ -111,6 +173,18 @@ class MenuMain extends React.Component {
             </NavItem>
           </Nav>
         </Navbar.Collapse>
+        <Modal show={this.state.showTogetherModal} onHide={this.handleTogetherModalClose}>
+          <Modal.Header closeButton>
+            <Modal.Title>Lets Shop Together</Modal.Title>
+          </Modal.Header>
+          <Modal.Body >
+            <input type ="text" placeholder="Enter email of friend to shop with" />
+            <button onClick={this.handleForwardTogetherRequest}>Send request </button>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button onClick={this.handleTogetherModalClose}>Close</Button>
+          </Modal.Footer>
+        </Modal>
       </Navbar>
     );
   }
