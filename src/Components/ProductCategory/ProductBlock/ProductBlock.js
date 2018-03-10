@@ -16,6 +16,7 @@ export default class ProductBlock extends React.Component {
       const productToBeAdded = {
         productId: this.props.id,
         cartId: this.props.cartId,
+        userId: this.props.userId,
       };
       fetch('/api/v1/cart/addToCart', {
         method: 'POST',
@@ -32,6 +33,7 @@ export default class ProductBlock extends React.Component {
       const productToBeRemoved = {
         productId: this.props.id,
         cartId: this.props.cartId,
+        userId: this.props.userId,
       };
       fetch('/api/v1/cart/removeFromCart', {
         method: 'DELETE',
@@ -71,4 +73,5 @@ ProductBlock.propTypes = {
   price: PropTypes.number.isRequired,
   id: PropTypes.number.isRequired,
   cartId: PropTypes.string.isRequired,
+  userId: PropTypes.string.isRequired,
 };
