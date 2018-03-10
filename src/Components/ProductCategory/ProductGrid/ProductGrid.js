@@ -23,7 +23,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  dispatchGetCartId: resultArr => dispatch(getCartIdAction),
+  // dispatchGetCartId: resultArr => dispatch(getCartIdAction),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProductGrid);

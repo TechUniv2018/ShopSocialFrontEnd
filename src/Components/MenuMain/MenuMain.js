@@ -2,23 +2,23 @@ import React from 'react';
 import { Navbar, Nav, NavItem } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 
-import './Menu.css';
+import './MenuMain.css';
 
-class Menu extends React.Component {
+class MenuMain extends React.Component {
   render() {
     if (this.props.isAuthenticated === 'no') {
       return (
-        <Navbar inverse collapseOnSelect>
+        <Navbar className="NavbarMain">
           <Navbar.Header>
             <Navbar.Brand>
-              <a href="#brand">ShopSocial</a>
+              <div className="NavbarIcon" />
             </Navbar.Brand>
             <Navbar.Toggle />
           </Navbar.Header>
           <Navbar.Collapse>
-            <Nav pullRight>
-              <NavItem eventKey={1} href="#">
-                Login
+            <Nav pullRight classname="NavbarMain">
+              <NavItem eventKey={1} >
+                <div className="NavbarText">Login / Register</div>
               </NavItem>
             </Nav>
           </Navbar.Collapse>
@@ -26,17 +26,17 @@ class Menu extends React.Component {
       );
     }
     return (
-      <Navbar inverse collapseOnSelect>
+      <Navbar className="NavbarMain">
         <Navbar.Header>
           <Navbar.Brand>
-            <a href="#brand">ShopSocial</a>
+            <div className="NavbarIcon" />
           </Navbar.Brand>
           <Navbar.Toggle />
         </Navbar.Header>
         <Navbar.Collapse>
-          <Nav pullRight>
+          <Nav pullRight classname="NavbarMain">
             <NavItem eventKey={1} href="#">
-                Logout
+              <div className="NavbarText">Logout</div>
             </NavItem>
           </Nav>
         </Navbar.Collapse>
@@ -45,8 +45,8 @@ class Menu extends React.Component {
   }
 }
 
-Menu.propTypes = {
+MenuMain.propTypes = {
   isAuthenticated: PropTypes.string.isRequired,
 };
 
-export default Menu;
+export default MenuMain;

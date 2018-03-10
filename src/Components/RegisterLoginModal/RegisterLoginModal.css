@@ -1,0 +1,23 @@
+.RegisterLoginButtons {
+  display: flex;
+  flex-direction: row;
+}
+
+.RegisterLoginButtons Button {
+  flex-grow: 1;
+  border-radius: 0px;
+  padding: 10px 0;
+  margin: 0 3px;
+}
+
+.activeTab, .activeTab:focus {
+  background-color: #164fcc;
+}
+
+.RegisterLoginButtons {
+  padding: 2vh 0;
+}
+
+.ResponseNotif {
+  display: none;
+}

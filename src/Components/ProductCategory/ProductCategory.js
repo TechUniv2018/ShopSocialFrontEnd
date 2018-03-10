@@ -9,10 +9,10 @@ export default class ProductCategory extends React.Component {
   render() {
     return (
       <div className="ProductCategory">
-        <div className="col-25">
+        <div className="col-15">
           <FilterBar />
         </div>
-        <div className="col-75">
+        <div className="col-85">
           <ProductGrid cgory={this.props.match.params.cgory} />
         </div>
       </div>
