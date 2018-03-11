@@ -25,6 +25,8 @@ class MenuMain extends React.Component {
       togetherlink: '',
       showTogetherReqModal: false,
       togetherReqfrom: '',
+      togetherReqfromEmail: '',
+      togethersessionid: '',
     };
   }
 
@@ -38,6 +40,66 @@ class MenuMain extends React.Component {
         isAuthenticated: true,
       });
     }
+    if (window.localStorage.getItem('togetherMenuText') !== null) {
+      this.setState({
+        togetherMenuText: window.localStorage.getItem('togetherMenuText'),
+        togetherStatus: window.localStorage.getItem('togetherStatus'),
+      });
+    }
+  }
+  componentDidUpdate() {
+    socket.on('relayConnectTogether', (connectReq) => {
+      const gettstatus = window.localStorage.getItem('togetherStatus');
+      alert('heuuuu');
+      if (connectReq.requestEmail === this.state.userEmail && (this.state.togetherStatus === 0 || gettstatus === 1)) {
+        this.setState({
+          showTogetherReqModal: true,
+          togetherReqfrom: connectReq.senderName,
+          togetherReqfromEmail: connectReq.senderEmail,
+          togetherlink: connectReq.togetherlink,
+        });
+      } else if (connectReq.requestEmail === this.state.userEmail && (this.state.togetherStatus === 1 || gettstatus === 1)) {
+        const obj = {
+          togetherresponse: 'rejected',
+          rejectmessage: 'User is busy in another session',
+          respondto: connectReq.senderEmail,
+        };
+        socket.emit('connectTogetherResponse', obj);
+      }
+    });
+    socket.on('relayConnectTogetherResponse', (connectRes) => {
+      // alert('heuuuu');
+      if (connectRes.respondto === this.state.userEmail && connectRes.togetherresponse === 'rejected') {
+        alert(connectRes.rejectmessage);
+        window.localStorage.removeItem('togetherMenuText');
+        window.localStorage.setItem('togetherMenuText', 'Together');
+        window.localStorage.removeItem('togetherStatus');
+        window.localStorage.setItem('togetherStatus', 0);
+        setTimeout(() => {
+          window.TogetherJS();
+        }, 1000);
+        this.setState({
+
+          togetherReqfrom: '',
+          togetherReqfromEmail: '',
+          togetherMenuText: 'Together',
+          togetherStatus: 0,
+          togetherlink: '',
+        });
+      } else if (connectRes.respondto === this.state.userEmail && connectRes.togetherresponse === 'accepted') {
+        window.localStorage.removeItem('cartID');
+        window.localStorage.setItem('cartID', connectRes.togethercartid);
+        window.localStorage.removeItem('togethersessionid');
+        window.localStorage.setItem('togethersessionid', connectRes.togethersessionid);
+
+        this.setState({
+          cartId: connectRes.togethercartid,
+          togethersessionid: connectRes.togethersessionid,
+
+
+        });
+      }
+    });
   }
   onLogin = (userObject) => {
     this.setState({
@@ -70,45 +132,7 @@ class MenuMain extends React.Component {
       }
     });
   }
-  toggleTogether = () => {
-    // window.TogetherJSConfig_getUserName = function () {
-    //   // alert(this.state.userName);
-    //   return this.state.userName;
-    // };
-    const uName = this.state.userName;
-    // alert(uName);
-    window.TogetherJS();
-    if (this.state.togetherStatus === 0) {
-      const getturl = setInterval(() => {
-        const turl = window.TogetherJS.shareUrl();
-        if (turl !== null) {
-          this.setState({
-            togetherStatus: 1,
-            togetherMenuText: 'End Together',
-            showTogetherModal: true,
-            togetherlink: window.TogetherJS.shareUrl(),
-          });
-          window.TogetherJSConfig_getUserName = function () {
-            // alert(this.state.userName);
-            return uName;
-          };
-          window.TogetherJS.refreshUserData();
-          alert(window.TogetherJS.shareUrl());
-          clearInterval(getturl);
-        }
-      }, 1000);
-      // window.TogetherJSConfig_getUserName = function () {
-      //   alert(this.state.userName);
-      //   return this.state.userName;
-      // };
-      window.TogetherJS.refreshUserData();
-    } else {
-      this.setState({
-        togetherStatus: 0,
-        togetherMenuText: 'Together',
-      });
-    }
-  }
+
   handleLoginModalClose = () => {
     this.setState({
       showLogin: false,
@@ -119,12 +143,15 @@ class MenuMain extends React.Component {
       showLogin: true,
     });
   }
-
-
   handleTogetherModalClose = () => {
     this.setState({ showTogetherModal: false });
   }
-
+  handleTogetherReqModalClose = () => {
+    this.setState({ showTogetherReqModal: false });
+  }
+  handlTogetherReqModaleShow = () => {
+    this.setState({ showTogetherReqModal: true });
+  }
   handlTogetherModaleShow = () => {
     this.setState({ showTogetherModal: true });
   }
@@ -136,10 +163,11 @@ class MenuMain extends React.Component {
 
     // this emits an event to the socket (your server) with an argument of 'red'
     // you can make the argument any color you would like, or any kind of data you want to send.
-    alert(this.state.requestemail);
+    // alert(this.state.requestemail);
     // const socket = socketIOClient('http://127.0.0.1:8080');
     // const socket = socketIOClient('http://127.0.0.1:8080');
     const obj = {
+      senderEmail: this.state.userEmail,
       senderName: this.state.userName,
       requestEmail: this.state.requestemail,
       togetherlink: this.state.togetherlink,
@@ -153,29 +181,133 @@ class MenuMain extends React.Component {
 
     // socket.emit('change color', 'red', 'yellow') | you can have multiple arguments
   }
+  handleAcceptTogetherRequest = () => {
+    const uName = this.state.userName;
+    const sessionstr = this.state.togetherReqfromEmail + this.state.userEmail;
+    const url = `/api/v1/cart/initTogetherCart/${sessionstr}`;
+    axios.get(url).then((togetherCart) => {
+      // console.log(togetherCart.data);
+      const newcartid = togetherCart.data.message;
+      if (togetherCart.data.statusCode === 201) {
+        const obj = {
+          togetherresponse: 'accepted',
+          togethercartid: newcartid,
+          togethersessionid: sessionstr,
+
+          respondto: this.state.togetherReqfromEmail,
+        };
+        window.TogetherJSConfig_getUserName = function () {
+          // alert(this.state.userName);
+          return uName;
+        };
+        window.TogetherJS.refreshUserData();
+        setTimeout(() => {
+          window.TogetherJSConfig_getUserName = function () {
+            // alert(this.state.userName);
+            return uName;
+          };
+          window.TogetherJS.refreshUserData();
+        }, 1000);
+
+        socket.emit('connectTogetherResponse', obj);
+        window.localStorage.removeItem('cartID');
+        window.localStorage.setItem('cartID', newcartid);
+        window.localStorage.removeItem('togetherMenuText');
+        window.localStorage.setItem('togetherMenuText', 'End Together');
+        window.localStorage.removeItem('togetherStatus');
+        window.localStorage.setItem('togetherStatus', 1);
+        window.localStorage.removeItem(' togethersessionid');
+        window.localStorage.setItem(' togethersessionid', sessionstr);
+        this.setState({
+          cartId: newcartid,
+          togetherMenuText: 'End Together',
+          togetherStatus: 1,
+          togethersessionid: sessionstr,
+
+
+        });
+
+        window.location.href = this.state.togetherlink;
+        window.location.reload();
+      }
+    });
+  }
+  handleRejectTogetherRequest = () => {
+    const obj = {
+      togetherresponse: 'rejected',
+      rejectmessage: 'User did not approve request',
+      respondto: this.state.togetherReqfromEmail,
+    };
+    socket.emit('connectTogetherResponse', obj);
+    this.setState({
+      showTogetherReqModal: false,
+
+    });
+  }
   onMessage = (message) => {
     console.log(message);
   }
+  toggleTogether = () => {
+    const uName = this.state.userName;
+    // alert(uName);
+
+    window.TogetherJS();
+
+    // alert(this.state.togetherStatus);
+    if (this.state.togetherStatus != 1) {
+      alert('fgfg');
+
+      const getturl = setInterval(() => {
+        const turl = window.TogetherJS.shareUrl();
+        if (turl !== null) {
+          window.localStorage.setItem('togetherStatus', 1);
+          window.localStorage.setItem('togetherMenuText', 'End Together');
+          this.setState({
+            togetherStatus: 1,
+            togetherMenuText: 'End Together',
+            showTogetherModal: true,
+            togetherlink: window.TogetherJS.shareUrl(),
+          });
+          window.TogetherJSConfig_getUserName = function () {
+            // alert(this.state.userName);
+            return uName;
+          };
+          window.TogetherJS.refreshUserData();
+          // alert(window.TogetherJS.shareUrl());
+          window.TogetherJS.refreshUserData();
+          clearInterval(getturl);
+        }
+      }, 1000);
+    } else {
+      const url = `/api/v1/cart/initCart/${this.state.userId}`;
+      axios.get(url).then((origCart) => {
+        if (origCart.data.statusCode === 200) {
+          // alert(origCart.data.message);
+          console.log(origCart.data.message);
+          window.localStorage.removeItem(' cartID');
+          window.localStorage.removeItem(' togetherMenuText');
+          window.localStorage.removeItem(' togetherStatus');
+          window.localStorage.removeItem(' togethersessionid');
+          window.localStorage.setItem('cartID', origCart.data.message.cartID);
+
+          window.localStorage.setItem(' togethersessionid', '');
+          window.localStorage.setItem('togetherStatus', 0);
+          window.localStorage.setItem('togetherMenuText', 'Together');
+
+          this.setState({
+            togetherStatus: 0,
+            togetherMenuText: 'Together',
+            togetherlink: '',
+            togetherReqfrom: '',
+            togetherReqfromEmail: '',
+            togethersessionid: '',
+          });
+        }
+      });
+    }
+  }
 
   render() {
-    // if (this.state.togetherStatus === 1) {
-    //   window.TogetherJSConfig_getUserName = function () {
-    //     return this.state.userName;
-    //   };
-    //   window.TogetherJS.refreshUserData();
-    //   alert(window.TogetherJS.shareUrl());
-    // }const socket = socketIOClient(this.state.endpoint);
-    socket.on('relayConnectTogether', (connectReq) => {
-      if (connectReq.requestEmail === this.state.userEmail) {
-        this.setState({
-          showTogetherReqModal: true,
-          togetherReqfrom: connectReq.senderName,
-          togetherlink: connectReq.togetherlink,
-        });
-      }
-    });
-
-
     if (!this.state.isAuthenticated) {
       return (
         <Navbar className="NavbarMain">
@@ -237,16 +369,16 @@ class MenuMain extends React.Component {
             <Button onClick={this.handleTogetherModalClose}>Close</Button>
           </Modal.Footer>
         </Modal>
-        <Modal show={this.state.showTogetherReqModal} onHide={this.handleTogetherModalClose}>
+        <Modal show={this.state.showTogetherReqModal} onHide={this.handleTogetherReqModalClose}>
           <Modal.Header closeButton>
-            <Modal.Title>Lets Shop Together</Modal.Title>
+            <Modal.Title>Your Friend {this.state.togetherReqfrom}  Sent a Request to Shop Together</Modal.Title>
           </Modal.Header>
           <Modal.Body >
-            <input type="text" placeholder="Enter email of friend to shop with" onChange={this.handleTogetherInputEmail} />
-            <button onClick={this.handleForwardTogetherRequest}>Send request </button>
+            <button onClick={this.handleAcceptTogetherRequest}>Accept Request </button>
+            <button onClick={this.handleRejectTogetherRequest}>Reject Request </button>
           </Modal.Body>
           <Modal.Footer>
-            <Button onClick={this.handleTogetherModalClose}>Close</Button>
+            <Button onClick={this.handleTogetherReqModalClose}>Close</Button>
           </Modal.Footer>
         </Modal>
       </Navbar>
