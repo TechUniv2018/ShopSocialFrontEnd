@@ -88,7 +88,28 @@ class MenuMain extends React.Component {
     });
   }
   deleteCartContents = (productId, cartId) => {
-
+    const currentCartContents = this.state.cartContents;
+    for (let i = 0; i < currentCartContents.length; i++) {
+      if (currentCartContents[i].productID === productId) {
+        console.log(cartId);
+        axios({
+          method: 'delete',
+          url: '/api/v1/cart/removeFromCart',
+          data: {
+            cartId,
+            productId,
+          },
+        }).then((removeFromCartResponse) => {
+          if (removeFromCartResponse.data.statusCode === 200) {
+            currentCartContents.splice(i, 1);
+            window.localStorage.setItem('cartContents', JSON.stringify(currentCartContents));
+            this.setState({
+              cartContents: currentCartContents,
+            });
+          }
+        });
+      }
+    }
   }
   render() {
     if (!this.state.isAuthenticated) {
