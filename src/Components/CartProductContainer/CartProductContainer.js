@@ -18,7 +18,7 @@ class CartProductContainer extends React.Component {
           <p>{this.props.productPrice}</p>
         </div>
         <div className="cart-product-remove-btn">
-          <button><FontAwesomeIcon icon="trash-alt" /></button>
+          <button onClick={() => { this.props.deleteCartContents(this.props.productId, this.props.cartId); }}><FontAwesomeIcon icon="trash-alt" /></button>
         </div>
       </div>
     );
@@ -26,12 +26,16 @@ class CartProductContainer extends React.Component {
 }
 
 CartProductContainer.propTypes = {
+  productId: PropTypes.number,
+  cartId: PropTypes.string,
   imageUrl: PropTypes.string,
   productName: PropTypes.string,
   productPrice: PropTypes.number,
+  deleteCartContents: PropTypes.func.isRequired,
 };
 
 CartProductContainer.defaultProps = {
+  productId: 0,
   imageUrl: '',
   productName: '',
   productPrice: '',
