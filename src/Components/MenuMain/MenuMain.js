@@ -49,7 +49,22 @@ class MenuMain extends React.Component {
     });
   }
   onLogout = () => {
-
+    axios.get('/user/logout').then((logoutResponse) => {
+      if (logoutResponse.data.statusCode === 200) {
+        window.localStorage.removeItem('email');
+        window.localStorage.removeItem('userID');
+        window.localStorage.removeItem('cartID');
+        window.localStorage.removeItem('name');
+        window.localStorage.removeItem('cartContents');
+        this.setState({
+          isAuthenticated: false,
+          cartContents: [],
+          showLogin: false,
+          showCart: false,
+          isSocial: false,
+        });
+      }
+    });
   }
   handleLoginModalClose = () => {
     this.setState({
