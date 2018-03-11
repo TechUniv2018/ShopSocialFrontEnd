@@ -9,7 +9,7 @@ class TestPage extends React.Component {
       showCart: false,
       cartContents: {},
     }
-    componentDidMount() {
+    componentWillMount() {
       this.setState({
         cartContents: {
           123: {
@@ -53,7 +53,12 @@ class TestPage extends React.Component {
                 </Nav>
               </Navbar.Collapse>
             </Navbar>
-            <CartModal showCart={this.showCart} hideCart={this.hideCart} cartState={this.state.showCart} cartContents={this.state.cartContents} />
+            <CartModal
+              showCart={this.showCart}
+              hideCart={this.hideCart}
+              cartState={this.state.showCart}
+              cartContents={this.state.cartContents}
+            />
           </div>
         );
       }

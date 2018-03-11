@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Grid, Row, Col, Well } from 'react-bootstrap';
 import MenuMain from '../MenuMain/MenuMain';
 import FooterMain from './FooterMain/FooterMain';
@@ -23,15 +24,19 @@ class Home extends React.Component {
               <Row className="show-grid">
                 <Col sm={6} md={3}>
                   <div className="CategoryTv">A</div>
+                  <Link to="/category/TVs" className="AddToCart" />
                 </Col>
                 <Col sm={6} md={3}>
                   <div className="CategoryDvd">A</div>
+                  <Link to="/category/DVD Players" className="AddToCart" />
                 </Col>
                 <Col sm={6} md={3}>
                   <div className="CategoryFurn">A</div>
+                  <Link to="/category/TV & Home Theater" className="AddToCart" />
                 </Col>
                 <Col sm={6} md={3}>
                   <div className="CategoryAudio">A</div>
+                  <Link to="/category/Audio" className="AddToCart" />
                 </Col>
               </Row>
             </Grid>
