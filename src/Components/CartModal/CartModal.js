@@ -9,16 +9,22 @@ import './CartModal.css';
 class CartModal extends React.Component {
   render() {
     const cartItems = [];
-    Object.entries(this.props.cartContents)
-      .forEach(([productId, { productName, price, imageUrl }]) => {
-        cartItems.push((<CartProductContainer
-          key={productId}
-          imageUrl={imageUrl}
-          productName={productName}
-          productPrice={price}
-          productId={productId}
-        />));
-      });
+    if ((this.props.cartContents !== null) && (this.props.cartContents !== undefined)) {
+      Object.entries(this.props.cartContents)
+        .forEach(([index, {
+          name, price, image, productID,
+        }]) => {
+          cartItems.push((<CartProductContainer
+            key={index}
+            imageUrl={image}
+            productName={name}
+            productPrice={price}
+            productId={productID}
+            cartId={this.props.cartId}
+            deleteCartContents={(productId, cartId) => { this.props.deleteCartContents(productId, cartId); }}
+          />));
+        });
+    }
     return (
       <div >
         <Modal show={this.props.showCart} onHide={() => { this.props.handleCartModalClose(); }}>
@@ -43,7 +49,7 @@ CartModal.propTypes = {
   handleCartModalClose: PropTypes.func.isRequired,
   deleteCartContents: PropTypes.func.isRequired,
   showCart: PropTypes.bool.isRequired,
-  cartId: PropTypes.number,
+  cartId: PropTypes.string,
 };
 
 CartModal.defaultProps = {
