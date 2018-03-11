@@ -10,6 +10,7 @@ export default class ProductCategory extends React.Component {
     super(props);
     this.state = {
       products: [],
+      productsForSearch: [],
     };
   }
 
@@ -41,6 +42,7 @@ export default class ProductCategory extends React.Component {
       })
       .then(() => this.setState({
         products: [...tempProductsArr],
+        productsForSearch: [...tempProductsArr],
       }))
       .catch(console.log);
   }
@@ -51,14 +53,26 @@ triggerFilter = () => {
   this.getProducts(fromPrice, toPrice);
 }
 
+handleSearch = (searchWord) => {
+  const tempProductsArr = [];
+  this.state.products.forEach((product) => {
+    if (product.props.name.toUpperCase().includes(searchWord.toUpperCase())) {
+      tempProductsArr.push(product);
+    }
+  });
+  this.setState({
+    productsForSearch: [...tempProductsArr],
+  });
+}
+
 render() {
   return (
     <div className="ProductCategory">
       <div className="col-15">
-        <FilterBar triggerFilter={this.triggerFilter} />
+        <FilterBar triggerFilter={this.triggerFilter} handleSearch={this.handleSearch} />
       </div>
       <div className="col-85">
-        <ProductGrid products={this.state.products} />
+        <ProductGrid products={this.state.productsForSearch} />
       </div>
     </div>
   );

@@ -12,6 +12,11 @@
   justify-content: space-around;
 }
 
+#instantSearch {
+  font-family: 'HelveticaNeue-Light', sans-serif;
+  font-size: 16px;
+}
+
 .FilterForm {
   padding: 0% 10%;
 }

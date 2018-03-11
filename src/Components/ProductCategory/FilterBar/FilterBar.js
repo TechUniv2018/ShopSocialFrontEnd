@@ -9,8 +9,10 @@ export default class FilterBar extends React.Component {
     this.state = {
       fromRange: 0,
       toRange: 10000,
+      instantSearch: '',
     };
   }
+
   sendRange = () => {
     window.localStorage.setItem('fromRange', this.state.fromRange);
     window.localStorage.setItem('toRange', this.state.toRange);
@@ -20,6 +22,20 @@ export default class FilterBar extends React.Component {
   render() {
     return (
       <div className="FilterBar">
+        <Form className="FilterForm" vertical="true">
+          <FormGroup controlId="instantSearch">
+            <ControlLabel>Search</ControlLabel>{' '}
+            <FormControl
+              type="text"
+              value={this.state.instantSearch}
+              onChange={(event) => {
+                this.setState({ instantSearch: event.target.value });
+              }
+            }
+              onKeyUp={() => this.props.handleSearch(this.state.instantSearch)}
+            />
+          </FormGroup>
+        </Form>
         <Form className="FilterForm" vertical="true">
           <FormGroup controlId="fromRange">
             <ControlLabel>From</ControlLabel>{' '}
@@ -56,8 +72,10 @@ export default class FilterBar extends React.Component {
 
 FilterBar.propTypes = {
   triggerFilter: PropTypes.func,
+  handleSearch: PropTypes.func,
 };
 
 FilterBar.defaultProps = {
   triggerFilter: () => {},
+  handleSearch: () => {},
 };
