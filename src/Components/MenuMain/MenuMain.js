@@ -32,7 +32,6 @@ class MenuMain extends React.Component {
           axios.get(`/api/v1/products/${product.productID}`).then((productDetailsResponse) => {
             const productDetails = productDetailsResponse.data.data;
             cartContents.push(productDetails);
-            console.log(`product details${productDetails}`);
             window.localStorage.setItem('cartContents', JSON.stringify(cartContents));
             this.setState({
               cartContents,
@@ -94,7 +93,6 @@ class MenuMain extends React.Component {
     const currentCartContents = this.state.cartContents;
     for (let i = 0; i < currentCartContents.length; i++) {
       if (currentCartContents[i].productID === productId) {
-        console.log(cartId);
         axios({
           method: 'delete',
           url: '/api/v1/cart/removeFromCart',
