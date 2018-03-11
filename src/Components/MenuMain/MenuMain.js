@@ -9,53 +9,44 @@ import './MenuMain.css';
 class MenuMain extends React.Component {
   state={
     isAuthenticated: false,
-    userId: '',
-    cartId: '',
     cartContents: [],
-    userName: '',
-    userEmail: '',
     showLogin: false,
     showCart: false,
     isSocial: false,
   }
   componentDidMount() {
     if (window.localStorage.getItem('email') !== null) {
-      this.setState({
-        userEmail: window.localStorage.getItem('email'),
-        cartId: window.localStorage.getItem('cartID'),
-        userName: window.localStorage.getItem('name'),
-        userId: window.localStorage.getItem('userID'),
-        isAuthenticated: true,
+      const cartId = window.localStorage.getItem('cartID');
+      const cartContents = [];
+      axios.get(`/api/v1/cart/fetchCart/${cartId}`).then((cartContentsResponse) => {
+        if (!(cartContentsResponse.data.message.length === 0)) {
+          cartContentsResponse.data.message.forEach((product) => {
+            axios.get(`/api/v1/products/${product.productID}`).then((productDetailsResponse) => {
+              const productDetails = productDetailsResponse.data.data;
+              cartContents.push(productDetails);
+              console.log(`product details${productDetails}`);
+              window.localStorage.setItem('cartContents', JSON.stringify(cartContents));
+              this.setState({
+                cartContents,
+                isAuthenticated: true,
+              });
+            });
+          });
+        } else {
+          window.localStorage.setItem('cartContents', JSON.stringify(cartContents));
+          this.setState({
+            cartContents,
+            isAuthenticated: true,
+          });
+        }
       });
     }
   }
   onLogin = (userObject) => {
-    this.setState({
-      userId: userObject.userID,
-      cartId: userObject.cartID,
-      userEmail: userObject.email,
-      userName: userObject.name,
-      isAuthenticated: true,
-      showLogin: false,
-    });
+
   }
   onLogout = () => {
-    axios.get('/user/logout').then((logoutResponse) => {
-      if (logoutResponse.data.statusCode === 200) {
-        window.localStorage.removeItem('email');
-        window.localStorage.removeItem('cartID');
-        window.localStorage.removeItem('name');
-        window.localStorage.removeItem('userID');
-        this.setState({
-          isAuthenticated: false,
-          userId: '',
-          cartId: '',
-          userName: '',
-          userEmail: '',
-          showLogin: false,
-        });
-      }
-    });
+
   }
   handleLoginModalClose = () => {
     this.setState({
@@ -75,25 +66,11 @@ class MenuMain extends React.Component {
   handleCartModalOpen = () => {
     this.setState({
       showCart: true,
+      cartContents: JSON.parse(window.localStorage.getItem('cartContents')),
     });
   }
-  deleteCartContents = (productId) => {
-    const currentCartContents = this.state.cartContents;
-    currentCartContents.splice(productId, 1);
-    this.setState({
-      cartContents: currentCartContents,
-    });
-  }
-  addProductToCart = (productObject) => {
-    const currentCartContents = this.state.cartContents;
-    currentCartContents[productObject.productId] = {
-      imageUrl: productObject.imageUrl,
-      price: productObject.price,
-      name: productObject.name,
-    };
-    this.setState({
-      cartContents: currentCartContents,
-    });
+  deleteCartContents = (productId, cartId) => {
+
   }
   render() {
     if (!this.state.isAuthenticated) {
@@ -131,7 +108,7 @@ class MenuMain extends React.Component {
         <Navbar.Collapse>
           <Nav pullRight classname="NavbarMain">
             <NavItem eventKey={1} href="#">
-              <div className="NavbarText">Hi {this.state.userName}</div>
+              <div className="NavbarText">Hi {window.localStorage.getItem('name')}</div>
             </NavItem>
             <NavItem eventKey={1} href="#">
               <div className="NavbarText"><FontAwesomeIcon icon="handshake" /> {this.state.isSocial ? 'Shop Personal' : 'Shop Together'} </div>
@@ -147,8 +124,8 @@ class MenuMain extends React.Component {
         <CartModal
           cartContents={this.state.cartContents}
           handleCartModalClose={this.handleCartModalClose}
-          deleteCartContents={this.handleCartContents}
-          cartId={this.state.cartId}
+          deleteCartContents={(productId, cartId) => { this.deleteCartContents(productId, cartId); }}
+          cartId={window.localStorage.getItem('cartID')}
           showCart={this.state.showCart}
         />
       </Navbar>
