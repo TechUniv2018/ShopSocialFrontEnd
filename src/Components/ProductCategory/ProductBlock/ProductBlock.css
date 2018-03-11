@@ -91,10 +91,10 @@
 }
 
 .ion-android-cart:hover,
-.ion-android-cart.hover{
+.ion-android-cart.hover {
   background-color: #2980b9;
 }
 
-.ion-checkmark-round{
-  background-color: #55AA54;
+.ion-checkmark-round {
+  background-color: #55AA54 !important;
 }
