@@ -114,11 +114,55 @@ class ProductContainer extends React.Component {
   }
 
   render() {
-    if (this.state.show === 'pre') {
+    if (window.localStorage.getItem('userID') === null) {
       return (
-        <div className="product-container-loader">
-          <Grid>
-            <MyLoader />
+        <div className="product-container-flex">
+          <Grid className="product-view-card">
+            <Row className="show-grid product-container-display-body card">
+              <div className="product-display-card-contents">
+                <Row>
+                  <Col xs={12} sm={12} md={7} lg={7} >
+                    <center> <Image src={this.state.productImage} responsive /> </center>
+                  </Col>
+                  <Col xs={12} sm={12} md={5} lg={5}>
+                    <h2> {this.state.productName} </h2>
+                    <strong className="product-price"> <h3><p> Best buy @ &#8377; {this.state.productPrice} </p> </h3> </strong>
+                    <div>
+                      <center>
+                        <Button onClick={() => { }} className="btn-product-view">Login to shop!</Button>
+                      </center>
+                    </div>
+                  </Col>
+                </Row>
+                <Row>
+                  <br />
+                  <Col >
+                    <div>
+                      <h1> Description </h1>
+                      <p className="product-desc-text"> {this.state.productDesc} </p>
+                    </div>
+                    <div />
+                  </Col>
+                </Row>
+                <Row>
+                  <Col xs={12} sm={12} md={4} lg={4}>
+                    <div className="product-manufacturer" >
+                      <h3>Manufacturer: <h5>{this.state.productMan}</h5></h3>
+                    </div>
+                  </Col>
+                  <Col xs={12} sm={12} md={4} lg={4}>
+                    <div className="product-model" >
+                      <h3>Model: <h5>{this.state.productModel}</h5></h3>
+                    </div>
+                  </Col>
+                  <Col xs={12} sm={12} md={4} lg={4}>
+                    <div className="product-upc" >
+                      <h3>UPC: <h5>{this.state.productUpc}</h5></h3>
+                    </div>
+                  </Col>
+                </Row>
+              </div>
+            </Row>
           </Grid>
         </div>
       );
@@ -136,7 +180,9 @@ class ProductContainer extends React.Component {
                   <h2> {this.state.productName} </h2>
                   <strong className="product-price"> <h3><p> Best buy @ &#8377; {this.state.productPrice} </p> </h3> </strong>
                   <div>
-                    <center><Button onClick={() => { this.addProductToCart(); }} className="btn-product-view">{this.state.productCartStatus === 0 ? 'Add to cart' : 'In cart'} </Button> </center>
+                    <center>
+                      <Button onClick={() => { this.addProductToCart(); }} className="btn-product-view">{ this.state.productCartStatus === 0 ? 'Add to cart' : 'In cart'}</Button>
+                    </center>
                   </div>
                 </Col>
               </Row>

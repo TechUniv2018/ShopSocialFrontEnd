@@ -126,7 +126,11 @@ class MenuMain extends React.Component {
           <Navbar.Collapse>
             <Nav pullRight classname="NavbarMain">
               <NavItem eventKey={1} >
-                <div className="NavbarText" onClick={() => { this.handleLoginModalOpen(); }}>Login / Register</div>
+                <div
+                  className="NavbarText"
+                  onClick={() => { this.handleLoginModalOpen(); }}
+                >Login / Register
+                </div>
               </NavItem>
             </Nav>
           </Navbar.Collapse>

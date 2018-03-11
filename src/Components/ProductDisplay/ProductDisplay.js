@@ -5,13 +5,10 @@ import './ProductDisplay.css';
 
 
 class ProductDisplay extends React.Component {
-  state = {
-    isAuthenticated: 'no',
-  }
   render() {
     return (
       <div className="product-display">
-        <Menu isAuthenticated={this.state.isAuthenticated} />
+        <Menu />
         <ProductContainer />
       </div>
     );
