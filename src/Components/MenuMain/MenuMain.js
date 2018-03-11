@@ -14,35 +14,42 @@ class MenuMain extends React.Component {
     showCart: false,
     isSocial: false,
   }
-  onLogin = (userObject) => {
+  componentDidMount() {
     if (window.localStorage.getItem('email') !== null) {
-      const cartId = window.localStorage.getItem('cartID');
-      const cartContents = [];
-      axios.get(`/api/v1/cart/fetchCart/${cartId}`).then((cartContentsResponse) => {
-        if (!(cartContentsResponse.data.message.length === 0)) {
-          cartContentsResponse.data.message.forEach((product) => {
-            axios.get(`/api/v1/products/${product.productID}`).then((productDetailsResponse) => {
-              const productDetails = productDetailsResponse.data.data;
-              cartContents.push(productDetails);
-              console.log(`product details${productDetails}`);
-              window.localStorage.setItem('cartContents', JSON.stringify(cartContents));
-              this.setState({
-                cartContents,
-                isAuthenticated: true,
-                showLogin: false,
-              });
-            });
-          });
-        } else {
-          window.localStorage.setItem('cartContents', JSON.stringify(cartContents));
-          this.setState({
-            cartContents,
-            isAuthenticated: true,
-            showLogin: false,
-          });
-        }
+      this.setState({
+        cartContents: JSON.parse(window.localStorage.getItem('cartContents')),
+        isAuthenticated: true,
+        showLogin: false,
       });
     }
+  }
+  onLogin = (userObject) => {
+    const cartId = window.localStorage.getItem('cartID');
+    const cartContents = [];
+    axios.get(`/api/v1/cart/fetchCart/${cartId}`).then((cartContentsResponse) => {
+      if (!(cartContentsResponse.data.message.length === 0)) {
+        cartContentsResponse.data.message.forEach((product) => {
+          axios.get(`/api/v1/products/${product.productID}`).then((productDetailsResponse) => {
+            const productDetails = productDetailsResponse.data.data;
+            cartContents.push(productDetails);
+            console.log(`product details${productDetails}`);
+            window.localStorage.setItem('cartContents', JSON.stringify(cartContents));
+            this.setState({
+              cartContents,
+              isAuthenticated: true,
+              showLogin: false,
+            });
+          });
+        });
+      } else {
+        window.localStorage.setItem('cartContents', JSON.stringify(cartContents));
+        this.setState({
+          cartContents,
+          isAuthenticated: true,
+          showLogin: false,
+        });
+      }
+    });
   }
   onLogout = () => {
     axios.get('/user/logout').then((logoutResponse) => {
