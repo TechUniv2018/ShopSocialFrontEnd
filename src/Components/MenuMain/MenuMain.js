@@ -43,7 +43,10 @@ class MenuMain extends React.Component {
     }
   }
   onLogin = (userObject) => {
-
+    this.setState({
+      isAuthenticated: true,
+      showLogin: false,
+    });
   }
   onLogout = () => {
 
