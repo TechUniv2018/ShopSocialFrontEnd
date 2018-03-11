@@ -46,11 +46,9 @@ class MenuMain extends React.Component {
         togetherStatus: window.localStorage.getItem('togetherStatus'),
       });
     }
-  }
-  componentDidUpdate() {
     socket.on('relayConnectTogether', (connectReq) => {
       const gettstatus = window.localStorage.getItem('togetherStatus');
-      alert('heuuuu');
+      // alert('heuuuu');
       if (connectReq.requestEmail === this.state.userEmail && (this.state.togetherStatus === 0 || gettstatus === 1)) {
         this.setState({
           showTogetherReqModal: true,
@@ -101,6 +99,7 @@ class MenuMain extends React.Component {
       }
     });
   }
+
   onLogin = (userObject) => {
     this.setState({
       userId: userObject.userID,
