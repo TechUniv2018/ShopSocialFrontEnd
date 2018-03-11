@@ -31,14 +31,14 @@ export default class ProductBlock extends React.Component {
             this.setState({
               addToCartIcon: 'ion-checkmark-round',
             });
-            window.localStorage.setItem('cartContents', [...window.localStorage.getItem('cartContents'),
+            window.localStorage.setItem('cartContents', JSON.stringify([...JSON.parse(window.localStorage.getItem('cartContents')),
               {
                 productID: this.props.id,
                 name: this.props.name,
                 image: this.props.imageUrl,
                 price: this.props.price,
               },
-            ]);
+            ]));
           }
         }).catch(console.log);
     } else if (this.state.addToCartIcon === 'ion-checkmark-round') {
@@ -60,14 +60,14 @@ export default class ProductBlock extends React.Component {
             this.setState({
               addToCartIcon: 'ion-android-cart',
             });
-            const products = window.localStorage.getItem('cartContents');
+            const products = JSON.parse(window.localStorage.getItem('cartContents'));
             const tempArr = [];
             products.forEach((product) => {
               if (product.productID !== productToBeRemoved.productId) {
                 tempArr.push(product);
               }
             });
-            window.localStorage.setItem('cartContents', tempArr);
+            window.localStorage.setItem('cartContents', JSON.stringify(tempArr));
           }
         }).catch(console.log);
     }
@@ -79,7 +79,7 @@ export default class ProductBlock extends React.Component {
         <img src={this.props.imageUrl} alt={this.props.name} />
         <figcaption>
           <div className="ItemName">{this.props.name}</div>
-          <div className="ItemDesc">{this.props.desc.substr(0, this.props.desc.lastIndexOf(' ', 100))}</div>
+          <div className="ItemDesc">{this.props.desc.substr(0, this.props.desc.lastIndexOf(' ', 80))}</div>
           <div className="ItemPrice">
             <s>{`$${Number(this.props.price) - 5}`}</s>{`$${this.props.price}`}
           </div>

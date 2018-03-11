@@ -2,7 +2,7 @@
 .FilterBar {
   position: fixed;
   font-family: 'Oswald', Arial, sans-serif;
-  background-color: orange;
+  background-color: #FFA726;
   width: inherit;
   height: inherit;
   font-size: 20px;
@@ -69,7 +69,7 @@
 .FilterButton:hover,
 .FilterButton:focus,
 .FilterButton:active {
-	color: orange;
+	color: #FFA726;
 	background: #fff;
   border: 3px solid #fff;
 }
