@@ -1,5 +1,6 @@
 .product-container-display-body{
     border-radius: 10px;
+    background-color: white;
 }
 .product-display-card-contents{
     padding: 4%;
@@ -18,7 +19,7 @@
     margin-top: 15%;
     font-size: 2.7rem;
     border-radius: 10px;
-    width: 80%;
+    width: 85%;
     box-shadow: 18px 34px 30px -22px hsla(0,0%,0%,.2);
     transition:all .3s ease;
 }
@@ -30,7 +31,7 @@
 .do-flex{
     display: flex;
     flex-direction: row;
-    width: 85vw;
+    width: 95vw;
     justify-content: space-between;
     align-items: stretch;
 }

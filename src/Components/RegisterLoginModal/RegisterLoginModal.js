@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {
   Modal,
   Button,
@@ -20,7 +21,6 @@ class RegisterLoginModal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      show: false,
       loginOrRegister: 'login',
       isLoading: false,
       isLoggedIn: 'warning',
@@ -37,14 +37,6 @@ class RegisterLoginModal extends React.Component {
       email: '',
       rpwd: '',
     };
-  }
-
-  handleClose = () => {
-    this.setState({ show: false });
-  }
-
-  handleShow = () => {
-    this.setState({ show: true });
   }
 
   handleLogin = () => {
@@ -84,17 +76,13 @@ class RegisterLoginModal extends React.Component {
               alertText: '',
             });
             setTimeout(() => {
-              console.log('yahan');
               this.setState({
                 showAlertClass: 'ResponseNotif',
                 isLoggedIn: 'success',
                 signInText: 'You are logged in!',
               });
               setTimeout(() => {
-                console.log('yahan bhi');
-                this.setState({
-                  show: false,
-                });
+                this.props.onLogin(resJSON.data);
               }, 1000);
             }, 1000);
           }, 0);
@@ -267,6 +255,7 @@ showForm = () => {
                   bsStyle="primary"
                   disabled={this.state.isLoading}
                   bsSize="large"
+                  className="ModalLoginButton"
                   onClick={!this.state.isLoading ? this.handleLogin : null}
                 >
                   {this.state.isLoading ? 'Signing in...' : 'Sign In'}
@@ -343,6 +332,7 @@ showForm = () => {
           <FormGroup>
             <Col smOffset={5} >
               <Button
+                className="ModalRegisterButton"
                 bsStyle="warning"
                 disabled={this.state.isLoading}
                 bsSize="large"
@@ -360,17 +350,10 @@ showForm = () => {
 render() {
   return (
     <div className="RegisterLoginModal">
-      <Button
-        bsStyle="primary"
-        bsSize="large"
-        onClick={this.handleShow}
-      >
-          Launch demo modal
-      </Button>
 
       <Modal
-        show={this.state.show}
-        onHide={this.handleClose}
+        show={this.props.showLogin}
+        onHide={this.props.handleClose}
       >
         <Modal.Body>
           <ButtonGroup className="RegisterLoginButtons">
@@ -428,5 +411,11 @@ render() {
   );
 }
 }
+
+RegisterLoginModal.propTypes = {
+  onLogin: PropTypes.func.isRequired,
+  showLogin: PropTypes.bool.isRequired,
+  handleClose: PropTypes.func.isRequired,
+};
 
 export default RegisterLoginModal;
