@@ -21,7 +21,9 @@ class CartModal extends React.Component {
             productPrice={price}
             productId={productID}
             cartId={this.props.cartId}
-            deleteCartContents={(productId, cartId) => { this.props.deleteCartContents(productId, cartId); }}
+            deleteCartContents={(productId, cartId) => {
+              this.props.deleteCartContents(productId, cartId);
+            }}
           />));
         });
     }

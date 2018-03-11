@@ -27,7 +27,7 @@ class CartProductContainer extends React.Component {
 
 CartProductContainer.propTypes = {
   productId: PropTypes.number,
-  cartId: PropTypes.string,
+  cartId: PropTypes.string.isRequired,
   imageUrl: PropTypes.string,
   productName: PropTypes.string,
   productPrice: PropTypes.number,
