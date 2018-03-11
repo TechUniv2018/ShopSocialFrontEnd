@@ -14,7 +14,7 @@ class MenuMain extends React.Component {
     showCart: false,
     isSocial: false,
   }
-  componentDidMount() {
+  onLogin = (userObject) => {
     if (window.localStorage.getItem('email') !== null) {
       const cartId = window.localStorage.getItem('cartID');
       const cartContents = [];
@@ -29,6 +29,7 @@ class MenuMain extends React.Component {
               this.setState({
                 cartContents,
                 isAuthenticated: true,
+                showLogin: false,
               });
             });
           });
@@ -37,16 +38,11 @@ class MenuMain extends React.Component {
           this.setState({
             cartContents,
             isAuthenticated: true,
+            showLogin: false,
           });
         }
       });
     }
-  }
-  onLogin = (userObject) => {
-    this.setState({
-      isAuthenticated: true,
-      showLogin: false,
-    });
   }
   onLogout = () => {
     axios.get('/user/logout').then((logoutResponse) => {
