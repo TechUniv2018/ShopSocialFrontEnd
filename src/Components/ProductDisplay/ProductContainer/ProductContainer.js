@@ -37,14 +37,13 @@ class ProductContainer extends React.Component {
       productPrice: '',
       productDesc: '',
       productModel: '',
-      productimage: '',
+      productImage: '',
       productUpc: '',
       productCartStatus: 0,
       cartId: -1,
       productId: -1,
       userId: -1,
     };
-    // setTimeout(() => { this.setState({ show: 'after' }); }, 2000);
   }
   componentDidMount() {
     const currentUrl = (window.location.href);
@@ -64,9 +63,11 @@ class ProductContainer extends React.Component {
                 productDesc: descArray,
                 productMan: text.data.manufacturer,
                 productModel: text.data.model,
-                productimage: text.data.image,
+                productImage: text.data.image,
                 productUpc: text.data.upc,
                 productId: text.data.productID,
+                cartId: window.localStorage.getItem('cartID'),
+                userId: window.localStorage.getItem('userID'),
               });
             } else {
               this.setState({
@@ -79,20 +80,32 @@ class ProductContainer extends React.Component {
   }
 
   addProductToCart = () => {
-    fetch('/api/v1/cart/addToCart/', {
+    fetch('/api/v1/cart/addToCart', {
       method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
       body: JSON.stringify({
         cartId: this.state.cartId,
         productId: this.state.productId,
         userId: this.state.userId,
       }),
     })
-      .then((addToCartResult) => {
-        console.log(addToCartResult);
-        if (addToCartResult.statusCode === 201) {
+      .then(response => response.json())
+      .then((responseJSON) => {
+        if (responseJSON.statusCode === 201) {
           this.setState({
             productCartStatus: 1,
           });
+          window.localStorage.setItem('cartContents', JSON.stringify([...JSON.parse(window.localStorage.getItem('cartContents')),
+            {
+              productID: this.state.productId,
+              name: this.state.productName,
+              image: this.state.productImage,
+              price: this.state.productPrice,
+            },
+          ]));
         }
       })
       .catch((error) => {
@@ -117,13 +130,13 @@ class ProductContainer extends React.Component {
             <div className="product-display-card-contents">
               <Row>
                 <Col xs={12} sm={12} md={7} lg={7} >
-                  <center> <Image src={this.state.productimage} responsive /> </center>
+                  <center> <Image src={this.state.productImage} responsive /> </center>
                 </Col>
                 <Col xs={12} sm={12} md={5} lg={5}>
                   <h2> {this.state.productName} </h2>
                   <strong className="product-price"> <h3><p> Best buy @ &#8377; {this.state.productPrice} </p> </h3> </strong>
                   <div>
-                    <center><Button onClick={this.addProductToCart} className="btn-product-view">{this.state.productCartStatus === 0 ? 'Add to cart' : 'In cart'} </Button> </center>
+                    <center><Button onClick={() => { this.addProductToCart(); }} className="btn-product-view">{this.state.productCartStatus === 0 ? 'Add to cart' : 'In cart'} </Button> </center>
                   </div>
                 </Col>
               </Row>

@@ -1,46 +1,32 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Grid, Row, Col, Well } from 'react-bootstrap';
-import MenuMain from '../MenuMain/MenuMain';
+import { Grid, Row, Col } from 'react-bootstrap';
 import FooterMain from './FooterMain/FooterMain';
 import './Home.css';
 
 
 class Home extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isAuthenticated: 'no',
-    };
-  }
   render() {
     return (
       <div className="Home">
-        <MenuMain isAuthenticated={this.state.isAuthenticated} />
         <div className="HomeBodyImage" />
         <div className="HomeCategories">
-          <Well>
-            <Grid>
-              <Row className="show-grid">
-                <Col sm={6} md={3}>
-                  <div className="CategoryTv">A</div>
-                  <Link to="/category/TVs" className="AddToCart" />
-                </Col>
-                <Col sm={6} md={3}>
-                  <div className="CategoryDvd">A</div>
-                  <Link to="/category/DVD Players" className="AddToCart" />
-                </Col>
-                <Col sm={6} md={3}>
-                  <div className="CategoryFurn">A</div>
-                  <Link to="/category/TV & Home Theater" className="AddToCart" />
-                </Col>
-                <Col sm={6} md={3}>
-                  <div className="CategoryAudio">A</div>
-                  <Link to="/category/Audio" className="AddToCart" />
-                </Col>
-              </Row>
-            </Grid>
-          </Well>
+          <Grid>
+            <Row className="show-grid">
+              <Col sm={6} md={3}>
+                <div className="CategoryTv"><Link to="/category/TVs" className="AddToCart" /></div>
+              </Col>
+              <Col sm={6} md={3}>
+                <div className="CategoryDvd"><Link to="/category/DVD Players" className="AddToCart" /></div>
+              </Col>
+              <Col sm={6} md={3}>
+                <div className="CategoryFurn"><Link to="/category/TV & Home Theater" className="AddToCart" /></div>
+              </Col>
+              <Col sm={6} md={3}>
+                <div className="CategoryAudio"><Link to="/category/Audio" className="AddToCart" /></div>
+              </Col>
+            </Row>
+          </Grid>
         </div>
         <div className="HomeAbout">
           <div className="HomeAboutTitle"> ShopSocial </div>

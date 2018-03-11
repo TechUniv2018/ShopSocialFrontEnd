@@ -19,6 +19,7 @@
   box-sizing: border-box;
   -webkit-transition: all 0.2s ease-out;
   transition: all 0.2s ease-out;
+  border-radius: 7px;
 }
 .ProductBox * {
   -webkit-box-sizing: padding-box;

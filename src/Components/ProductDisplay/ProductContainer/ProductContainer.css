@@ -24,7 +24,7 @@
     transition:all .3s ease;
 }
 .btn-product-view:hover{
-    background-color: #2980B9;
+    background-color: #FFA726;
     color: white;
     box-shadow:2px 8px 4px -6px hsla(0,0%,0%,.3);
 }
@@ -44,7 +44,7 @@
 }
 .product-price{
     margin-top: 15%;
-    color: #2980B9;
+    color: #FFA726;
 }
 .product-desc-text{
     padding-top: 2%;

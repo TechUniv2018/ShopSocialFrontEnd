@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import { Navbar, Nav, NavItem } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import RegisterLoginModal from '../RegisterLoginModal/RegisterLoginModal';
 import CartModal from '../CartModal/CartModal';
@@ -91,7 +92,7 @@ class MenuMain extends React.Component {
   }
   deleteCartContents = (productId, cartId) => {
     const currentCartContents = this.state.cartContents;
-    for (let i = 0; i < currentCartContents.length; i++) {
+    for (let i = 0; i < currentCartContents.length; i += 1) {
       if (currentCartContents[i].productID === productId) {
         axios({
           method: 'delete',
@@ -118,7 +119,7 @@ class MenuMain extends React.Component {
         <Navbar className="NavbarMain">
           <Navbar.Header>
             <Navbar.Brand>
-              <div className="NavbarIcon" />
+              <Link to="/" ><div className="NavbarIcon" /></Link>
             </Navbar.Brand>
             <Navbar.Toggle />
           </Navbar.Header>
@@ -141,7 +142,7 @@ class MenuMain extends React.Component {
       <Navbar className="NavbarMain">
         <Navbar.Header>
           <Navbar.Brand>
-            <div className="NavbarIcon" />
+            <Link to="/" ><div className="NavbarIcon" /></Link>
           </Navbar.Brand>
           <Navbar.Toggle />
         </Navbar.Header>
