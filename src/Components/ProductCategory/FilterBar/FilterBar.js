@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Form, FormGroup, FormControl, ControlLabel, Button } from 'react-bootstrap';
+import { Form, FormGroup, FormControl, ControlLabel } from 'react-bootstrap';
 import './FilterBar.css';
 
 export default class FilterBar extends React.Component {
@@ -47,7 +47,7 @@ export default class FilterBar extends React.Component {
               }}
             />
           </FormGroup>{' '}
-          <Button bsStyle="info" onClick={this.sendRange}>Filter</Button>
+          <div bsStyle="info" onClick={this.sendRange} className="FilterButton" role="button" onKeyPress={() => {}}>Filter</div>
         </Form>
       </div>
     );

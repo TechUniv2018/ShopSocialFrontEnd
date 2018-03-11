@@ -1,8 +1,7 @@
 .ProductGrid {
   display: flex;
-  padding: 2%;
   justify-content: space-between;
   flex-wrap: wrap;
-  border-left: 4px solid #757575;
+  //border-left: 4px solid #757575;
   background-color: #1A1A1A;
 }

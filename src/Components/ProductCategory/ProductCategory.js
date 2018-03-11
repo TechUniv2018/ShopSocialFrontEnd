@@ -23,17 +23,21 @@ export default class ProductCategory extends React.Component {
     fetch(`/api/v1/products/category/${this.props.match.params.cgory}?fromPrice=${fromPrice}&toPrice=${toPrice}`)
       .then(res => res.json())
       .then((resJSON) => {
-        resJSON.data.forEach(product =>
-          tempProductsArr.push(<ProductBlock
-            imageUrl={product.image}
-            name={product.name}
-            desc={product.description}
-            price={product.price}
-            id={product.productID}
-            cartId={window.localStorage.getItem('cartID')}
-            userId={window.localStorage.getItem('userID')}
-            key={product.productID}
-          />));
+        if (resJSON.statusCode === 200) {
+          resJSON.data.forEach(product =>
+            tempProductsArr.push(<ProductBlock
+              imageUrl={product.image}
+              name={product.name}
+              desc={product.description}
+              price={product.price}
+              id={product.productID}
+              cartId={window.localStorage.getItem('cartID')}
+              userId={window.localStorage.getItem('userID')}
+              key={product.productID}
+            />));
+        } else if (resJSON.statusCode === 404) {
+          tempProductsArr.push(<div className="NothingFound"><div className="NothingFoundText">Oops! Nothing was found</div></div>);
+        }
       })
       .then(() => this.setState({
         products: [...tempProductsArr],

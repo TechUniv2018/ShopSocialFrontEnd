@@ -1,8 +1,70 @@
+@import url(https://fonts.googleapis.com/css?family=Oswald:500);
 .FilterBar {
   position: fixed;
-  font-family: 'HelveticaNeue';
-  background-color: #FFFAFA;
+  font-family: 'Oswald', Arial, sans-serif;
+  background-color: orange;
   width: inherit;
   height: inherit;
-  padding: 22% 2%;
+  font-size: 20px;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.FilterForm {
+  padding: 0% 10%;
+}
+
+.FilterButton {
+  width: 100%;
+  font-size: 18px;
+  font-family: 'Oswald', Arial, sans-serif;
+  border: 3px solid #fff;
+  color: #fff;
+	background: none;
+	cursor: pointer;
+	display: inline-block;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+	font-weight: 700;
+	outline: none;
+	position: relative;
+	-webkit-transition: all 0.3s;
+	-moz-transition: all 0.3s;
+	transition: all 0.3s;
+  border-radius: 4px;
+  padding: 3% 2%;
+  text-align: center;
+}
+
+.FilterButton:after {
+	content: '';
+	position: absolute;
+	z-index: -1;
+	-webkit-transition: all 0.3s;
+	-moz-transition: all 0.3s;
+	transition: all 0.3s;
+}
+
+/* Pseudo elements for icons */
+.FilterButton:before{
+	font-family: 'icomoon';
+	speak: none;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	line-height: 1;
+	position: relative;
+	-webkit-font-smoothing: antialiased;
+}
+
+/* Button 1a */
+.FilterButton:hover,
+.FilterButton:focus,
+.FilterButton:active {
+	color: orange;
+	background: #fff;
+  border: 3px solid #fff;
 }
