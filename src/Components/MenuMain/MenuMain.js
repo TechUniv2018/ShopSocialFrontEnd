@@ -32,6 +32,7 @@ class MenuMain extends React.Component {
         cartContentsResponse.data.message.forEach((product) => {
           axios.get(`/api/v1/products/${product.productID}`).then((productDetailsResponse) => {
             const productDetails = productDetailsResponse.data.data;
+            window.localStorage.setItem(productDetails.productID.toString(), 'ion-checkmark-round');
             cartContents.push(productDetails);
             window.localStorage.setItem('cartContents', JSON.stringify(cartContents));
             this.setState({
@@ -54,11 +55,7 @@ class MenuMain extends React.Component {
   onLogout = () => {
     axios.get('/user/logout').then((logoutResponse) => {
       if (logoutResponse.data.statusCode === 200) {
-        window.localStorage.removeItem('email');
-        window.localStorage.removeItem('userID');
-        window.localStorage.removeItem('cartID');
-        window.localStorage.removeItem('name');
-        window.localStorage.removeItem('cartContents');
+        window.localStorage.clear();
         this.setState({
           isAuthenticated: false,
           cartContents: [],
