@@ -190,6 +190,11 @@ class MenuMain extends React.Component {
   handleAcceptTogetherRequest = () => {
     const uName = this.state.userName;
     const sessionstr = this.state.togetherReqfromEmail + this.state.userEmail;
+    window.TogetherJSConfig_getUserName = function () {
+      // alert(this.state.userName);
+      return uName;
+    };
+    window.TogetherJS.refreshUserData();
     const url = `/api/v1/cart/initTogetherCart/${sessionstr}`;
     axios.get(url).then((togetherCart) => {
       // console.log(togetherCart.data);
@@ -256,7 +261,11 @@ class MenuMain extends React.Component {
   toggleTogether = () => {
     const uName = this.state.userName;
     // alert(uName);
-
+    window.TogetherJSConfig_getUserName = function () {
+      // alert(this.state.userName);
+      return uName;
+    };
+    window.TogetherJS.refreshUserData();
     window.TogetherJS();
 
     // alert(this.state.togetherStatus);
@@ -268,19 +277,16 @@ class MenuMain extends React.Component {
         if (turl !== null) {
           window.localStorage.setItem('togetherStatus', 1);
           window.localStorage.setItem('togetherMenuText', 'End Together');
+
           this.setState({
             togetherStatus: 1,
             togetherMenuText: 'End Together',
             showTogetherModal: true,
             togetherlink: window.TogetherJS.shareUrl(),
           });
-          window.TogetherJSConfig_getUserName = function () {
-            // alert(this.state.userName);
-            return uName;
-          };
-          window.TogetherJS.refreshUserData();
+
           // alert(window.TogetherJS.shareUrl());
-          window.TogetherJS.refreshUserData();
+          // window.TogetherJS.refreshUserData();
           clearInterval(getturl);
         }
       }, 1000);
