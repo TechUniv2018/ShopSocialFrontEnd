@@ -47,16 +47,23 @@ class MenuMain extends React.Component {
       });
     }
     socket.on('relayConnectTogether', (connectReq) => {
+      // if (this.state.userEmail === 'ananddeb232@gmail.com') {
+      //   const value = `email:${this.state.userEmail}togstatus${this.state.togetherStatus}requestEmail:${connectReq.requestEmail}`;
+      //   alert(value);
+      // }
       const gettstatus = window.localStorage.getItem('togetherStatus');
       // alert('heuuuu');
-      if (connectReq.requestEmail === this.state.userEmail && (this.state.togetherStatus === 0)) {
+      if (connectReq.requestEmail === this.state.userEmail && this.state.togetherStatus == 0) {
         this.setState({
           showTogetherReqModal: true,
           togetherReqfrom: connectReq.senderName,
           togetherReqfromEmail: connectReq.senderEmail,
           togetherlink: connectReq.togetherlink,
         });
-      } else if (connectReq.requestEmail === this.state.userEmail && (this.state.togetherStatus === 1)) {
+      } else if (connectReq.requestEmail === this.state.userEmail && this.state.togetherStatus == 1) {
+        setTimeout(() => {
+          // /
+        }, 1000);
         const obj = {
           togetherresponse: 'rejected',
           rejectmessage: 'User is busy in another session',
