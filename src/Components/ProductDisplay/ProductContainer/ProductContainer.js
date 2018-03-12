@@ -47,13 +47,16 @@ class ProductContainer extends React.Component {
                 cartId: window.localStorage.getItem('cartID'),
                 userId: window.localStorage.getItem('userID'),
               });
-              JSON.parse(window.localStorage.getItem('cartContents')).forEach((product) => {
-                if (product.productID === this.state.productId) {
-                  this.setState({
-                    productCartStatus: 1,
-                  });
-                }
-              });
+              const cartContents = JSON.parse(window.localStorage.getItem('cartContents'));
+              if (cartContents !== null) {
+                cartContents.forEach((product) => {
+                  if (product.productID === this.state.productId) {
+                    this.setState({
+                      productCartStatus: 1,
+                    });
+                  }
+                });
+              }
             } else {
               this.setState({
                 productName: 'No product to Show',
@@ -65,6 +68,7 @@ class ProductContainer extends React.Component {
   }
 
   addProductToCart = () => {
+    console.log(this.state);
     if (this.state.productCartStatus === 0) {
       fetch('/api/v1/cart/addToCart', {
         method: 'POST',
@@ -103,6 +107,20 @@ class ProductContainer extends React.Component {
       cartContents.forEach((product) => {
         if (product.productID !== this.state.productId) {
           tempProdArr.push(product);
+        } else {
+          fetch('/api/v1/cart/removeFromCart', {
+            method: 'DELETE',
+            headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              cartId: this.state.cartId,
+              productId: this.state.productId,
+            }),
+          })
+            .then(response => response.json())
+            .catch(console.log);
         }
       });
       window.localStorage.setItem('cartContents', JSON.stringify(tempProdArr));
