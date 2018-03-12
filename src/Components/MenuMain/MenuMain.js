@@ -24,7 +24,7 @@ class MenuMain extends React.Component {
       });
     }
   }
-  onLogin = (userObject) => {
+  onLogin = () => {
     const cartId = window.localStorage.getItem('cartID');
     const cartContents = [];
     axios.get(`/api/v1/cart/fetchCart/${cartId}`).then((cartContentsResponse) => {
@@ -101,6 +101,7 @@ class MenuMain extends React.Component {
         }).then((removeFromCartResponse) => {
           if (removeFromCartResponse.data.statusCode === 200) {
             currentCartContents.splice(i, 1);
+            window.localStorage.removeItem(productId);
             window.localStorage.setItem('cartContents', JSON.stringify(currentCartContents));
             this.setState({
               cartContents: currentCartContents,
