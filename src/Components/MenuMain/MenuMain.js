@@ -49,14 +49,14 @@ class MenuMain extends React.Component {
     socket.on('relayConnectTogether', (connectReq) => {
       const gettstatus = window.localStorage.getItem('togetherStatus');
       // alert('heuuuu');
-      if (connectReq.requestEmail === this.state.userEmail && (this.state.togetherStatus === 0 || gettstatus === 1)) {
+      if (connectReq.requestEmail === this.state.userEmail && (this.state.togetherStatus === 0)) {
         this.setState({
           showTogetherReqModal: true,
           togetherReqfrom: connectReq.senderName,
           togetherReqfromEmail: connectReq.senderEmail,
           togetherlink: connectReq.togetherlink,
         });
-      } else if (connectReq.requestEmail === this.state.userEmail && (this.state.togetherStatus === 1 || gettstatus === 1)) {
+      } else if (connectReq.requestEmail === this.state.userEmail && (this.state.togetherStatus === 1)) {
         const obj = {
           togetherresponse: 'rejected',
           rejectmessage: 'User is busy in another session',
@@ -254,7 +254,7 @@ class MenuMain extends React.Component {
 
     // alert(this.state.togetherStatus);
     if (this.state.togetherStatus != 1) {
-      alert('fgfg');
+      // alert('fgfg');
 
       const getturl = setInterval(() => {
         const turl = window.TogetherJS.shareUrl();
