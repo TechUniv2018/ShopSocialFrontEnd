@@ -88,6 +88,7 @@ class ProductContainer extends React.Component {
             this.setState({
               productCartStatus: 1,
             });
+            window.localStorage.setItem(this.state.productId, 'ion-checkmark-round');
             window.localStorage.setItem('cartContents', JSON.stringify([...JSON.parse(window.localStorage.getItem('cartContents')),
               {
                 productID: this.state.productId,
@@ -124,6 +125,7 @@ class ProductContainer extends React.Component {
         }
       });
       window.localStorage.setItem('cartContents', JSON.stringify(tempProdArr));
+      window.localStorage.removeItem(this.state.productId);
       this.setState({
         productCartStatus: 0,
       });
