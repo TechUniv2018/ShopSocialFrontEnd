@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import { Navbar, Nav, NavItem } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import RegisterLoginModal from '../RegisterLoginModal/RegisterLoginModal';
 import CartModal from '../CartModal/CartModal';
@@ -23,7 +24,7 @@ class MenuMain extends React.Component {
       });
     }
   }
-  onLogin = (userObject) => {
+  onLogin = () => {
     const cartId = window.localStorage.getItem('cartID');
     const cartContents = [];
     axios.get(`/api/v1/cart/fetchCart/${cartId}`).then((cartContentsResponse) => {
@@ -31,6 +32,7 @@ class MenuMain extends React.Component {
         cartContentsResponse.data.message.forEach((product) => {
           axios.get(`/api/v1/products/${product.productID}`).then((productDetailsResponse) => {
             const productDetails = productDetailsResponse.data.data;
+            window.localStorage.setItem(productDetails.productID.toString(), 'ion-checkmark-round');
             cartContents.push(productDetails);
             window.localStorage.setItem('cartContents', JSON.stringify(cartContents));
             this.setState({
@@ -53,11 +55,7 @@ class MenuMain extends React.Component {
   onLogout = () => {
     axios.get('/user/logout').then((logoutResponse) => {
       if (logoutResponse.data.statusCode === 200) {
-        window.localStorage.removeItem('email');
-        window.localStorage.removeItem('userID');
-        window.localStorage.removeItem('cartID');
-        window.localStorage.removeItem('name');
-        window.localStorage.removeItem('cartContents');
+        window.localStorage.clear();
         this.setState({
           isAuthenticated: false,
           cartContents: [],
@@ -91,7 +89,7 @@ class MenuMain extends React.Component {
   }
   deleteCartContents = (productId, cartId) => {
     const currentCartContents = this.state.cartContents;
-    for (let i = 0; i < currentCartContents.length; i++) {
+    for (let i = 0; i < currentCartContents.length; i += 1) {
       if (currentCartContents[i].productID === productId) {
         axios({
           method: 'delete',
@@ -103,6 +101,7 @@ class MenuMain extends React.Component {
         }).then((removeFromCartResponse) => {
           if (removeFromCartResponse.data.statusCode === 200) {
             currentCartContents.splice(i, 1);
+            window.localStorage.removeItem(productId);
             window.localStorage.setItem('cartContents', JSON.stringify(currentCartContents));
             this.setState({
               cartContents: currentCartContents,
@@ -118,14 +117,18 @@ class MenuMain extends React.Component {
         <Navbar className="NavbarMain">
           <Navbar.Header>
             <Navbar.Brand>
-              <div className="NavbarIcon" />
+              <Link to="/" ><div className="NavbarIcon" /></Link>
             </Navbar.Brand>
             <Navbar.Toggle />
           </Navbar.Header>
           <Navbar.Collapse>
             <Nav pullRight classname="NavbarMain">
               <NavItem eventKey={1} >
-                <div className="NavbarText" onClick={() => { this.handleLoginModalOpen(); }}>Login / Register</div>
+                <div
+                  className="NavbarText"
+                  onClick={() => { this.handleLoginModalOpen(); }}
+                >Login / Register
+                </div>
               </NavItem>
             </Nav>
           </Navbar.Collapse>
@@ -141,7 +144,7 @@ class MenuMain extends React.Component {
       <Navbar className="NavbarMain">
         <Navbar.Header>
           <Navbar.Brand>
-            <div className="NavbarIcon" />
+            <Link to="/" ><div className="NavbarIcon" /></Link>
           </Navbar.Brand>
           <Navbar.Toggle />
         </Navbar.Header>

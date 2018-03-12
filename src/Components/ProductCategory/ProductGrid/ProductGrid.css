@@ -2,6 +2,5 @@
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
-  //border-left: 4px solid #757575;
-  background-color: #1A1A1A;
+  background-color: #272626;
 }

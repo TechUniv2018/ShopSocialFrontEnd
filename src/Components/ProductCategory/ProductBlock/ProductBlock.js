@@ -11,6 +11,18 @@ export default class ProductBlock extends React.Component {
     };
   }
 
+  componentWillMount() {
+    if (window.localStorage.getItem(this.props.id.toString()) === 'ion-checkmark-round') {
+      this.setState({
+        addToCartIcon: 'ion-checkmark-round',
+      });
+    } else {
+      this.setState({
+        addToCartIcon: 'ion-android-cart',
+      });
+    }
+  }
+
   addToCart = () => {
     if (this.state.addToCartIcon === 'ion-android-cart') {
       const productToBeAdded = {
@@ -39,6 +51,7 @@ export default class ProductBlock extends React.Component {
                 price: this.props.price,
               },
             ]));
+            window.localStorage.setItem(this.props.id.toString(), 'ion-checkmark-round');
           }
         }).catch(console.log);
     } else if (this.state.addToCartIcon === 'ion-checkmark-round') {
@@ -68,6 +81,7 @@ export default class ProductBlock extends React.Component {
               }
             });
             window.localStorage.setItem('cartContents', JSON.stringify(tempArr));
+            window.localStorage.removeItem(this.props.id.toString());
           }
         }).catch(console.log);
     }

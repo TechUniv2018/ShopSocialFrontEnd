@@ -1,8 +1,13 @@
 .ProductCategory {
   display: flex;
   flex-direction: row;
+  z-index: 996;
+  padding-top: 70px;
 }
-
+.NavbarMain{
+  z-index: 997;
+  background-color: black;
+}
 .col-15 {
     float: left;
     width: 15%;
