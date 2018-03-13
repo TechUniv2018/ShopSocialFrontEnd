@@ -286,7 +286,7 @@ class MenuMain extends React.Component {
             // window.location.assign(newtlink);
             // window.location.reload();
             window.self.location = newtlink;
-            alert(newtlink);
+            // alert(newtlink);
             setTimeout(() => {
               window.location.reload(false);
             }, 1000);
@@ -294,19 +294,19 @@ class MenuMain extends React.Component {
             // window.location.assign(tlink);
             // window.location.reload();
             window.self.location = tlink;
-            alert(tlink);
+            // alert(tlink);
             setTimeout(() => {
               window.location.reload(false);
             }, 1000);
           }
         } else if (subcurr != subtog) {
-          alert('differnt url');
+          // alert('differnt url');
           if (valbeforehash !== '/') {
             const newtlink = `${tlink.substring(0, hashindex)}/${tlink.substring(hashindex)}`;
             // window.location.assign(newtlink);
             // window.location.reload();
             window.self.location = newtlink;
-            alert(newtlink);
+            // alert(newtlink);
             setTimeout(() => {
               window.location.reload(false);
             }, 1000);
@@ -314,7 +314,7 @@ class MenuMain extends React.Component {
             // window.location.assign(tlink);
           // window.location.reload();
             window.self.location = tlink;
-            alert(tlink);
+            // alert(tlink);
             setTimeout(() => {
               window.location.reload(false);
             }, 1000);
@@ -387,8 +387,8 @@ class MenuMain extends React.Component {
 
       axios.get(url).then((origCart) => {
         if (origCart.data.statusCode === 200) {
-          alert(window.localStorage.getItem('cartID'));
-          alert(origCart.data.message.cartID);
+          // alert(window.localStorage.getItem('cartID'));
+          // alert(origCart.data.message.cartID);
           // alert(origCart.data.message);
           console.log(origCart.data.message);
           window.localStorage.removeItem(' cartID');
