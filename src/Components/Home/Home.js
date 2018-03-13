@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Grid, Row, Col } from 'react-bootstrap';
-import FooterMain from './FooterMain/FooterMain';
+import FooterMain from '../FooterMain/FooterMain';
 import './Home.css';
 
 
