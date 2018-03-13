@@ -3,7 +3,10 @@ import axios from 'axios';
 import socketIOClient from 'socket.io-client';
 import { socketConnect } from 'socket.io-react';
 import { Navbar, Nav, NavItem, Modal, Button } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
+import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import RegisterLoginModal from '../RegisterLoginModal/RegisterLoginModal';
+import CartModal from '../CartModal/CartModal';
 import './MenuMain.css';
 
 const socket = socketIOClient('http://localhost:8080');
@@ -16,9 +19,11 @@ class MenuMain extends React.Component {
       isAuthenticated: false,
       userId: '',
       cartId: '',
+      cartContents: [],
       userName: '',
       userEmail: '',
       showLogin: false,
+      showCart: false,
       togetherMenuText: 'Together',
       togetherStatus: 0,
       showTogetherModal: false,
@@ -33,11 +38,10 @@ class MenuMain extends React.Component {
   componentDidMount() {
     if (window.localStorage.getItem('email') !== null) {
       this.setState({
-        userEmail: window.localStorage.getItem('email'),
-        cartId: window.localStorage.getItem('cartID'),
-        userName: window.localStorage.getItem('name'),
-        userId: window.localStorage.getItem('userID'),
+        cartContents: JSON.parse(window.localStorage.getItem('cartContents')),
         isAuthenticated: true,
+        showLogin: false,
+
       });
     }
     if (window.localStorage.getItem('togetherMenuText') !== null) {
@@ -51,16 +55,22 @@ class MenuMain extends React.Component {
       //   const value = `email:${this.state.userEmail}togstatus${this.state.togetherStatus}requestEmail:${connectReq.requestEmail}`;
       //   alert(value);
       // }
+      // alert('hello');
       const gettstatus = window.localStorage.getItem('togetherStatus');
       // alert('heuuuu');
-      if (connectReq.requestEmail === this.state.userEmail && this.state.togetherStatus == 0) {
+      const userEmail = window.localStorage.getItem('email');
+      const togetherStatus = window.localStorage.getItem('togetherStatus');
+      // alert(userEmail);
+      // alert(togetherStatus);
+      if (connectReq.requestEmail === userEmail && this.state.togetherStatus == 0) {
+        window.localStorage.setItem('togetherlink', connectReq.togetherlink);
         this.setState({
           showTogetherReqModal: true,
           togetherReqfrom: connectReq.senderName,
           togetherReqfromEmail: connectReq.senderEmail,
           togetherlink: connectReq.togetherlink,
         });
-      } else if (connectReq.requestEmail === this.state.userEmail && this.state.togetherStatus == 1) {
+      } else if (connectReq.requestEmail === userEmail && this.state.togetherStatus == 1) {
         setTimeout(() => {
           // /
         }, 1000);
@@ -74,7 +84,9 @@ class MenuMain extends React.Component {
     });
     socket.on('relayConnectTogetherResponse', (connectRes) => {
       // alert('heuuuu');
-      if (connectRes.respondto === this.state.userEmail && connectRes.togetherresponse === 'rejected') {
+      const userEmail = window.localStorage.getItem('email');
+      const togetherStatus = window.localStorage.getItem('togetherStatus');
+      if (connectRes.respondto === userEmail && connectRes.togetherresponse === 'rejected') {
         alert(connectRes.rejectmessage);
         window.localStorage.removeItem('togetherMenuText');
         window.localStorage.setItem('togetherMenuText', 'Together');
@@ -91,7 +103,7 @@ class MenuMain extends React.Component {
           togetherStatus: 0,
           togetherlink: '',
         });
-      } else if (connectRes.respondto === this.state.userEmail && connectRes.togetherresponse === 'accepted') {
+      } else if (connectRes.respondto === userEmail && connectRes.togetherresponse === 'accepted') {
         window.localStorage.removeItem('cartID');
         window.localStorage.setItem('cartID', connectRes.togethercartid);
         window.localStorage.removeItem('togethersessionid');
@@ -107,32 +119,60 @@ class MenuMain extends React.Component {
     });
   }
 
+
   onLogin = (userObject) => {
-    this.setState({
-      userId: userObject.userID,
-      cartId: userObject.cartID,
-      userEmail: userObject.email,
-      userName: userObject.name,
-      isAuthenticated: true,
-      showLogin: false,
+    const cartId = window.localStorage.getItem('cartID');
+    const cartContents = [];
+    axios.get(`/api/v1/cart/fetchCart/${cartId}`).then((cartContentsResponse) => {
+      if (!(cartContentsResponse.data.message.length === 0)) {
+        cartContentsResponse.data.message.forEach((product) => {
+          axios.get(`/api/v1/products/${product.productID}`).then((productDetailsResponse) => {
+            const productDetails = productDetailsResponse.data.data;
+            window.localStorage.setItem(productDetails.productID.toString(), 'ion-checkmark-round');
+            cartContents.push(productDetails);
+            window.localStorage.setItem('cartContents', JSON.stringify(cartContents));
+            this.setState({
+              cartContents,
+              isAuthenticated: true,
+              showLogin: false,
+              userId: userObject.userID,
+              cartId: userObject.cartID,
+              userEmail: userObject.email,
+              userName: userObject.name,
+
+            });
+          });
+        });
+      } else {
+        window.localStorage.setItem('cartContents', JSON.stringify(cartContents));
+        this.setState({
+          cartContents,
+          isAuthenticated: true,
+          showLogin: false,
+          userId: userObject.userID,
+          cartId: userObject.cartID,
+          userEmail: userObject.email,
+          userName: userObject.name,
+        });
+      }
     });
   }
 
   onLogout = () => {
+    const togethermyStatus = window.localStorage.getItem('togetherStatus');
+    if (this.state.togetherStatus === 1 || togethermyStatus == 1) {
+      this.toggleTogether();
+    }
     axios.get('/user/logout').then((logoutResponse) => {
       if (logoutResponse.data.statusCode === 200) {
-        window.localStorage.removeItem('email');
-        window.localStorage.removeItem('cartID');
-        window.localStorage.removeItem('name');
-        window.localStorage.removeItem('userID');
+        window.localStorage.clear();
         this.setState({
           isAuthenticated: false,
-          userId: '',
-          cartId: '',
-          userName: '',
-          userEmail: '',
+          cartContents: [],
           showLogin: false,
 
+
+          showCart: false,
 
         });
       }
@@ -172,9 +212,11 @@ class MenuMain extends React.Component {
     // alert(this.state.requestemail);
     // const socket = socketIOClient('http://127.0.0.1:8080');
     // const socket = socketIOClient('http://127.0.0.1:8080');
+    const userEmail = window.localStorage.getItem('email');
+    const userName = window.localStorage.getItem('name');
     const obj = {
-      senderEmail: this.state.userEmail,
-      senderName: this.state.userName,
+      senderEmail: userEmail,
+      senderName: userName,
       requestEmail: this.state.requestemail,
       togetherlink: this.state.togetherlink,
     };
@@ -188,8 +230,9 @@ class MenuMain extends React.Component {
     // socket.emit('change color', 'red', 'yellow') | you can have multiple arguments
   }
   handleAcceptTogetherRequest = () => {
-    const uName = this.state.userName;
-    const sessionstr = this.state.togetherReqfromEmail + this.state.userEmail;
+    const uName = window.localStorage.getItem('name');
+    const email = window.localStorage.getItem('email');
+    const sessionstr = this.state.togetherReqfromEmail + email;
     window.TogetherJSConfig_getUserName = function () {
       // alert(this.state.userName);
       return uName;
@@ -237,9 +280,15 @@ class MenuMain extends React.Component {
 
 
         });
-
-        window.location.href = this.state.togetherlink;
-        window.location.reload();
+        alert(window.localStorage.getItem('togetherlink'));
+        // window.location.href = window.localStorage.getItem('togetherlink');
+        // window.TogetherJSConfig_getUserName = function () {
+        //   // alert(this.state.userName);
+        //   return uName;
+        // };
+        // window.TogetherJS.refreshUserData();
+        // window.TogetherJS();
+        window.location.assign(window.localStorage.getItem('togetherlink'));
       }
     });
   }
@@ -266,7 +315,7 @@ class MenuMain extends React.Component {
       return uName;
     };
     window.TogetherJS.refreshUserData();
-    window.TogetherJS();
+
 
     // alert(this.state.togetherStatus);
     if (this.state.togetherStatus != 1) {
@@ -291,9 +340,30 @@ class MenuMain extends React.Component {
         }
       }, 1000);
     } else {
-      const url = `/api/v1/cart/initCart/${this.state.userId}`;
+      // window.localStorage.removeItem(' cartID');
+      // window.localStorage.removeItem(' togetherMenuText');
+      // window.localStorage.removeItem(' togetherStatus');
+      // window.localStorage.removeItem(' togethersessionid');
+      // // window.localStorage.setItem('cartID', origCart.data.message.cartID);
+
+      // window.localStorage.setItem(' togethersessionid', '');
+      // window.localStorage.setItem('togetherStatus', 0);
+      // window.localStorage.setItem('togetherMenuText', 'Together');
+      // this.setState({
+      //   togetherStatus: 0,
+      //   togetherMenuText: 'Together',
+      //   togetherlink: '',
+      //   togetherReqfrom: '',
+      //   togetherReqfromEmail: '',
+      //   togethersessionid: '',
+      // });
+      const userId = window.localStorage.getItem('userID');
+      const url = `/api/v1/cart/initCart/${userId}`;
+
       axios.get(url).then((origCart) => {
         if (origCart.data.statusCode === 200) {
+          alert(window.localStorage.getItem('cartID'));
+          alert(origCart.data.message.cartID);
           // alert(origCart.data.message);
           console.log(origCart.data.message);
           window.localStorage.removeItem(' cartID');
@@ -317,8 +387,44 @@ class MenuMain extends React.Component {
         }
       });
     }
+    window.TogetherJS();
   }
 
+  handleCartModalClose = () => {
+    this.setState({
+      showCart: false,
+    });
+  }
+  handleCartModalOpen = () => {
+    this.setState({
+      showCart: true,
+      cartContents: JSON.parse(window.localStorage.getItem('cartContents')),
+    });
+  }
+  deleteCartContents = (productId, cartId) => {
+    const currentCartContents = this.state.cartContents;
+    for (let i = 0; i < currentCartContents.length; i += 1) {
+      if (currentCartContents[i].productID === productId) {
+        axios({
+          method: 'delete',
+          url: '/api/v1/cart/removeFromCart',
+          data: {
+            cartId,
+            productId,
+          },
+        }).then((removeFromCartResponse) => {
+          if (removeFromCartResponse.data.statusCode === 200) {
+            currentCartContents.splice(i, 1);
+            window.localStorage.removeItem(productId);
+            window.localStorage.setItem('cartContents', JSON.stringify(currentCartContents));
+            this.setState({
+              cartContents: currentCartContents,
+            });
+          }
+        });
+      }
+    }
+  }
   render() {
     if (!this.state.isAuthenticated) {
       return (
@@ -326,14 +432,18 @@ class MenuMain extends React.Component {
 
           <Navbar.Header>
             <Navbar.Brand>
-              <div className="NavbarIcon" />
+              <Link to="/" ><div className="NavbarIcon" /></Link>
             </Navbar.Brand>
             <Navbar.Toggle />
           </Navbar.Header>
           <Navbar.Collapse>
             <Nav pullRight classname="NavbarMain">
               <NavItem eventKey={1} >
-                <div className="NavbarText" onClick={() => { this.handleLoginModalOpen(); }}>Login / Register</div>
+                <div
+                  className="NavbarText"
+                  onClick={() => { this.handleLoginModalOpen(); }}
+                >Login / Register
+                </div>
               </NavItem>
             </Nav>
           </Navbar.Collapse>
@@ -349,23 +459,24 @@ class MenuMain extends React.Component {
       <Navbar className="NavbarMain">
         <Navbar.Header>
           <Navbar.Brand>
-            <div className="NavbarIcon" />
+            <Link to="/" ><div className="NavbarIcon" /></Link>
           </Navbar.Brand>
           <Navbar.Toggle />
         </Navbar.Header>
         <Navbar.Collapse>
           <Nav pullRight classname="NavbarMain">
             <NavItem eventKey={1} href="#">
+              <div className="NavbarText">Hi {window.localStorage.getItem('name')}</div>
+            </NavItem>
+            <NavItem eventKey={1} href="#">
               <div className="NavbarText" onClick={() => { this.toggleTogether(); }}>{this.state.togetherMenuText}</div>
             </NavItem>
+
             <NavItem eventKey={1} href="#">
-              <div className="NavbarText">Cart</div>
+              <div className="NavbarText" onClick={() => { this.handleCartModalOpen(); }}><FontAwesomeIcon icon="shopping-cart" /> {this.state.togetherStatus === 1 ? 'Our' : 'My'} Cart</div>
             </NavItem>
             <NavItem eventKey={1} href="#">
-              <div className="NavbarText">Hi {this.state.userName}</div>
-            </NavItem>
-            <NavItem eventKey={1} href="#">
-              <div className="NavbarText" onClick={() => { this.onLogout(); }}>Logout</div>
+              <div className="NavbarText" onClick={() => { this.onLogout(); }}><FontAwesomeIcon icon="sign-out-alt" /> Logout</div>
             </NavItem>
           </Nav>
         </Navbar.Collapse>
@@ -393,9 +504,18 @@ class MenuMain extends React.Component {
             <Button onClick={this.handleTogetherReqModalClose}>Close</Button>
           </Modal.Footer>
         </Modal>
+        <CartModal
+          cartContents={this.state.cartContents}
+          handleCartModalClose={this.handleCartModalClose}
+          deleteCartContents={(productId, cartId) => { this.deleteCartContents(productId, cartId); }}
+          cartId={window.localStorage.getItem('cartID')}
+          showCart={this.state.showCart}
+        />
       </Navbar>
     );
   }
 }
+
+
 export default socketConnect(MenuMain);
 
