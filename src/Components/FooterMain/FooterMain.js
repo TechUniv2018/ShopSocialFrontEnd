@@ -8,8 +8,8 @@ import './FooterMain.css';
 class FooterMain extends React.Component {
   render() {
     return (
-      <div>
-        <Grid >
+      <div className="Footer">
+        <Grid className="FooterContent">
           <Row className="show-grid">
             <Col xs={12} md={4}>
               <div>
