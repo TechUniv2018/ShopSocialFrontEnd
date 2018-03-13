@@ -1,17 +1,5 @@
-export const addToCartAction = productObject => ({
-  type: 'ADDTOCART',
-  payload: { productObject },
-});
-export const removeFromCartAction = productId => ({
-  type: 'REMOVEFROMCART',
-  payload: { productId },
-});
-export const checkOutAction = () => ({
-  type: 'CHECKOUT',
-});
-export const getCartContentsAction = () => ({
-  type: 'GETCARTCONTENTS',
-});
-export const clearCartAction = () => ({
-  type: 'CLEARCART',
+export const GET_CART_ID = 'GET_CART_ID';
+
+export const getCartIdAction = () => ({
+  type: GET_CART_ID,
 });

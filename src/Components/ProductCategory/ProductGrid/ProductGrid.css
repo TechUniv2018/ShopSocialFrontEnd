@@ -1,0 +1,6 @@
+.ProductGrid {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  background-color: #272626;
+}

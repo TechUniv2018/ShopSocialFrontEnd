@@ -26,7 +26,7 @@
   border-color: rgba(0, 0, 0, 0);
 }
 .ModalLoginButton{
-  background-color: #666666; 
+  background-color: #666666;
   border: none;
   color: white;
   text-align: center;
@@ -41,7 +41,7 @@
   box-shadow:2px 8px 4px -6px hsla(0,0%,0%,.3);
 }
 .ModalRegisterButton{
-  background-color: #666666; 
+  background-color: #666666;
   border: none;
   color: white;
   text-align: center;

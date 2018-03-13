@@ -9,27 +9,36 @@ import './CartModal.css';
 class CartModal extends React.Component {
   render() {
     const cartItems = [];
-    Object.entries(this.props.cartContents)
-      .forEach(([productId, { productName, price, imageUrl }]) => {
-        console.log(productId, productName, price, imageUrl);
-        cartItems.push((<CartProductContainer
-          imageUrl={imageUrl}
-          productName={productName}
-          productPrice={price}
-        />));
-      });
+    if ((this.props.cartContents !== null) && (this.props.cartContents !== undefined)) {
+      Object.entries(this.props.cartContents)
+        .forEach(([index, {
+          name, price, image, productID,
+        }]) => {
+          cartItems.push((<CartProductContainer
+            key={index}
+            imageUrl={image}
+            productName={name}
+            productPrice={price}
+            productId={productID}
+            cartId={this.props.cartId}
+            deleteCartContents={(productId, cartId) => {
+              this.props.deleteCartContents(productId, cartId);
+            }}
+          />));
+        });
+    }
     return (
       <div >
-        <Modal show={this.props.cartState} onHide={this.props.hideCart}>
+        <Modal show={this.props.showCart} onHide={() => { this.props.handleCartModalClose(); }}>
           <Modal.Header>
             <Modal.Title>Cart</Modal.Title>
           </Modal.Header>
           <Modal.Body >
-            {cartItems}
+            {cartItems.length === 0 ? <h3>Oops! Please add some products</h3> : cartItems}
           </Modal.Body>
           <Modal.Footer>
-            <Button onClick={this.props.hideCart}>Close</Button>
-            <Button onClick={() => { console.log('Performing checkout'); }}>Checkout</Button>
+            <Button className="ModalCartCloseButton" onClick={() => { this.props.handleCartModalClose(); }}> Close</Button>
+            <Button className="ModalCartCheckoutButton" onClick={() => { console.log('Performing checkout'); }}> Checkout</Button>
           </Modal.Footer>
         </Modal>
       </div>
@@ -38,9 +47,16 @@ class CartModal extends React.Component {
 }
 
 CartModal.propTypes = {
-  cartState: PropTypes.bool.isRequired,
-  hideCart: PropTypes.func.isRequired,
-  cartContents: PropTypes.object.isRequired,
+  cartContents: PropTypes.array,
+  handleCartModalClose: PropTypes.func.isRequired,
+  deleteCartContents: PropTypes.func.isRequired,
+  showCart: PropTypes.bool.isRequired,
+  cartId: PropTypes.string,
+};
+
+CartModal.defaultProps = {
+  cartContents: [],
+  cartId: 0,
 };
 
 export default CartModal;
