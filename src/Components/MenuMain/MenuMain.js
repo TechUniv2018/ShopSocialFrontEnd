@@ -1,7 +1,6 @@
 import React from 'react';
 import axios from 'axios';
 import socketIOClient from 'socket.io-client';
-import { socketConnect } from 'socket.io-react';
 import { Navbar, Nav, NavItem, Modal, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
@@ -51,17 +50,11 @@ class MenuMain extends React.Component {
       });
     }
     socket.on('relayConnectTogether', (connectReq) => {
-      // if (this.state.userEmail === 'ananddeb232@gmail.com') {
-      //   const value = `email:${this.state.userEmail}togstatus${this.state.togetherStatus}requestEmail:${connectReq.requestEmail}`;
-      //   alert(value);
-      // }
-      // alert('hello');
       const gettstatus = window.localStorage.getItem('togetherStatus');
-      // alert('heuuuu');
+
       const userEmail = window.localStorage.getItem('email');
       const togetherStatus = window.localStorage.getItem('togetherStatus');
-      // alert(userEmail);
-      // alert(togetherStatus);
+
       if (connectReq.requestEmail === userEmail && this.state.togetherStatus == 0) {
         window.localStorage.setItem('togetherlink', connectReq.togetherlink);
         this.setState({
@@ -83,7 +76,6 @@ class MenuMain extends React.Component {
       }
     });
     socket.on('relayConnectTogetherResponse', (connectRes) => {
-      // alert('heuuuu');
       const userEmail = window.localStorage.getItem('email');
       const togetherStatus = window.localStorage.getItem('togetherStatus');
       if (connectRes.respondto === userEmail && connectRes.togetherresponse === 'rejected') {
@@ -135,10 +127,6 @@ class MenuMain extends React.Component {
               cartContents,
               isAuthenticated: true,
               showLogin: false,
-              userId: userObject.userID,
-              cartId: userObject.cartID,
-              userEmail: userObject.email,
-              userName: userObject.name,
 
             });
           });
@@ -149,10 +137,6 @@ class MenuMain extends React.Component {
           cartContents,
           isAuthenticated: true,
           showLogin: false,
-          userId: userObject.userID,
-          cartId: userObject.cartID,
-          userEmail: userObject.email,
-          userName: userObject.name,
         });
       }
     });
@@ -219,6 +203,7 @@ class MenuMain extends React.Component {
       senderName: userName,
       requestEmail: this.state.requestemail,
       togetherlink: this.state.togetherlink,
+
     };
 
     socket.emit('connectTogether', obj);
@@ -226,6 +211,9 @@ class MenuMain extends React.Component {
 
 
     alert('Request sent');
+    this.setState({
+      showTogetherModal: false,
+    });
 
     // socket.emit('change color', 'red', 'yellow') | you can have multiple arguments
   }
@@ -277,10 +265,64 @@ class MenuMain extends React.Component {
           togetherMenuText: 'End Together',
           togetherStatus: 1,
           togethersessionid: sessionstr,
+          showTogetherReqModal: false,
 
 
         });
-        alert(window.localStorage.getItem('togetherlink'));
+        // alert(window.localStorage.getItem('togetherlink'));
+        const tlink = window.localStorage.getItem('togetherlink');
+        const nowurl = window.location.href;
+        const indexcurr = nowurl.lastIndexOf(':');
+        const indextog = tlink.lastIndexOf(':');
+        const subcurr = nowurl.substring(indexcurr, indexcurr + 18);
+        const subtog = nowurl.substring(indextog, indextog + 18);
+
+        const hashindex = tlink.lastIndexOf('#');
+        const valbeforehash = tlink.charAt(hashindex - 1);
+
+        if (subcurr === subtog) {
+          if (valbeforehash !== '/') {
+            const newtlink = `${tlink.substring(0, hashindex)}/${tlink.substring(hashindex)}`;
+            // window.location.assign(newtlink);
+            // window.location.reload();
+            window.self.location = newtlink;
+            alert(newtlink);
+            setTimeout(() => {
+              window.location.reload(false);
+            }, 1000);
+          } else {
+            // window.location.assign(tlink);
+            // window.location.reload();
+            window.self.location = tlink;
+            alert(tlink);
+            setTimeout(() => {
+              window.location.reload(false);
+            }, 1000);
+          }
+        } else if (subcurr != subtog) {
+          alert('differnt url');
+          if (valbeforehash !== '/') {
+            const newtlink = `${tlink.substring(0, hashindex)}/${tlink.substring(hashindex)}`;
+            // window.location.assign(newtlink);
+            // window.location.reload();
+            window.self.location = newtlink;
+            alert(newtlink);
+            setTimeout(() => {
+              window.location.reload(false);
+            }, 1000);
+          } else {
+            // window.location.assign(tlink);
+          // window.location.reload();
+            window.self.location = tlink;
+            alert(tlink);
+            setTimeout(() => {
+              window.location.reload(false);
+            }, 1000);
+          }
+        }
+
+
+        // window.location.reload(true);
         // window.location.href = window.localStorage.getItem('togetherlink');
         // window.TogetherJSConfig_getUserName = function () {
         //   // alert(this.state.userName);
@@ -288,7 +330,7 @@ class MenuMain extends React.Component {
         // };
         // window.TogetherJS.refreshUserData();
         // window.TogetherJS();
-        window.location.assign(window.localStorage.getItem('togetherlink'));
+        // window.location.assign(window.localStorage.getItem('togetherlink'));
       }
     });
   }
@@ -340,23 +382,6 @@ class MenuMain extends React.Component {
         }
       }, 1000);
     } else {
-      // window.localStorage.removeItem(' cartID');
-      // window.localStorage.removeItem(' togetherMenuText');
-      // window.localStorage.removeItem(' togetherStatus');
-      // window.localStorage.removeItem(' togethersessionid');
-      // // window.localStorage.setItem('cartID', origCart.data.message.cartID);
-
-      // window.localStorage.setItem(' togethersessionid', '');
-      // window.localStorage.setItem('togetherStatus', 0);
-      // window.localStorage.setItem('togetherMenuText', 'Together');
-      // this.setState({
-      //   togetherStatus: 0,
-      //   togetherMenuText: 'Together',
-      //   togetherlink: '',
-      //   togetherReqfrom: '',
-      //   togetherReqfromEmail: '',
-      //   togethersessionid: '',
-      // });
       const userId = window.localStorage.getItem('userID');
       const url = `/api/v1/cart/initCart/${userId}`;
 
@@ -469,11 +494,11 @@ class MenuMain extends React.Component {
               <div className="NavbarText">Hi {window.localStorage.getItem('name')}</div>
             </NavItem>
             <NavItem eventKey={1} href="#">
-              <div className="NavbarText" onClick={() => { this.toggleTogether(); }}>{this.state.togetherMenuText}</div>
+              <div className="NavbarText" onClick={() => { this.toggleTogether(); }}> <FontAwesomeIcon icon="handshake" /> {this.state.togetherMenuText}</div>
             </NavItem>
 
             <NavItem eventKey={1} href="#">
-              <div className="NavbarText" onClick={() => { this.handleCartModalOpen(); }}><FontAwesomeIcon icon="shopping-cart" /> {this.state.togetherStatus === 1 ? 'Our' : 'My'} Cart</div>
+              <div className="NavbarText" onClick={() => { this.handleCartModalOpen(); }}><FontAwesomeIcon icon="shopping-cart" /> {window.localStorage.getItem('togetherStatus') == 1 ? 'Our' : 'My'} Cart</div>
             </NavItem>
             <NavItem eventKey={1} href="#">
               <div className="NavbarText" onClick={() => { this.onLogout(); }}><FontAwesomeIcon icon="sign-out-alt" /> Logout</div>
@@ -517,5 +542,5 @@ class MenuMain extends React.Component {
 }
 
 
-export default socketConnect(MenuMain);
+export default MenuMain;
 
