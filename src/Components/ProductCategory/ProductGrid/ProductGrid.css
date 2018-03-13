@@ -2,5 +2,5 @@
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
-  background-color: #272626;
+  background-color: rgba(65,139,142, 0.4);
 }

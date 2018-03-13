@@ -22,8 +22,9 @@ export default class FilterBar extends React.Component {
   render() {
     return (
       <div className="FilterBar">
-        <Form className="FilterForm" vertical="true">
+        <Form className="FilterForm FilterSearch" vertical="true">
           <FormGroup controlId="instantSearch">
+            <h3>Filter by name</h3>
             <ControlLabel>Search</ControlLabel>{' '}
             <FormControl
               type="text"
@@ -36,8 +37,9 @@ export default class FilterBar extends React.Component {
             />
           </FormGroup>
         </Form>
-        <Form className="FilterForm" vertical="true">
+        <Form className="FilterForm FilterPrice" vertical="true">
           <FormGroup controlId="fromRange">
+            <h3>Filter by price</h3>
             <ControlLabel>From</ControlLabel>{' '}
             <FormControl
               type="number"
