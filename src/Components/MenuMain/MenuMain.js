@@ -55,7 +55,7 @@ class MenuMain extends React.Component {
       const userEmail = window.localStorage.getItem('email');
       const togetherStatus = window.localStorage.getItem('togetherStatus');
 
-      if (connectReq.requestEmail === userEmail && this.state.togetherStatus == 0) {
+      if (connectReq.requestEmail === userEmail && this.state.togetherStatus === 0) {
         window.localStorage.setItem('togetherlink', connectReq.togetherlink);
         this.setState({
           showTogetherReqModal: true,
@@ -63,10 +63,8 @@ class MenuMain extends React.Component {
           togetherReqfromEmail: connectReq.senderEmail,
           togetherlink: connectReq.togetherlink,
         });
-      } else if (connectReq.requestEmail === userEmail && this.state.togetherStatus == 1) {
-        setTimeout(() => {
-          // /
-        }, 1000);
+      } else if (connectReq.requestEmail === userEmail && this.state.togetherStatus === 1) {
+        setTimeout(() => {}, 1000);
         const obj = {
           togetherresponse: 'rejected',
           rejectmessage: 'User is busy in another session',
@@ -88,29 +86,24 @@ class MenuMain extends React.Component {
           window.TogetherJS();
         }, 1000);
         this.setState({
-
           togetherReqfrom: '',
           togetherReqfromEmail: '',
           togetherMenuText: 'Together',
           togetherStatus: 0,
           togetherlink: '',
         });
+        this.segregateCartOfSession();
       } else if (connectRes.respondto === userEmail && connectRes.togetherresponse === 'accepted') {
-        window.localStorage.removeItem('cartID');
         window.localStorage.setItem('cartID', connectRes.togethercartid);
-        window.localStorage.removeItem('togethersessionid');
         window.localStorage.setItem('togethersessionid', connectRes.togethersessionid);
 
         this.setState({
           cartId: connectRes.togethercartid,
           togethersessionid: connectRes.togethersessionid,
-
-
         });
       }
     });
   }
-
 
   onLogin = (userObject) => {
     const cartId = window.localStorage.getItem('cartID');
@@ -154,13 +147,14 @@ class MenuMain extends React.Component {
           isAuthenticated: false,
           cartContents: [],
           showLogin: false,
-
-
           showCart: false,
-
         });
       }
     });
+  }
+
+  onMessage = (message) => {
+    console.log(message);
   }
 
   handleLoginModalClose = () => {
@@ -168,6 +162,7 @@ class MenuMain extends React.Component {
       showLogin: false,
     });
   }
+
   handleLoginModalOpen = () => {
     this.setState({
       showLogin: true,
@@ -188,6 +183,7 @@ class MenuMain extends React.Component {
   handleTogetherInputEmail = (evt) => {
     this.setState({ requestemail: evt.target.value });
   }
+
   handleForwardTogetherRequest= () => {
     const userEmail = window.localStorage.getItem('email');
     const userName = window.localStorage.getItem('name');
@@ -207,6 +203,7 @@ class MenuMain extends React.Component {
       showTogetherModal: false,
     });
   }
+
   handleAcceptTogetherRequest = () => {
     const uName = window.localStorage.getItem('name');
     const email = window.localStorage.getItem('email');
@@ -242,13 +239,9 @@ class MenuMain extends React.Component {
         }, 1000);
 
         socket.emit('connectTogetherResponse', obj);
-        window.localStorage.removeItem('cartID');
         window.localStorage.setItem('cartID', newcartid);
-        window.localStorage.removeItem('togetherMenuText');
         window.localStorage.setItem('togetherMenuText', 'End Together');
-        window.localStorage.removeItem('togetherStatus');
         window.localStorage.setItem('togetherStatus', 1);
-        window.localStorage.removeItem(' togethersessionid');
         window.localStorage.setItem(' togethersessionid', sessionstr);
         this.setState({
           cartId: newcartid,
@@ -256,8 +249,6 @@ class MenuMain extends React.Component {
           togetherStatus: 1,
           togethersessionid: sessionstr,
           showTogetherReqModal: false,
-
-
         });
 
         const tlink = window.localStorage.getItem('togetherlink');
@@ -297,12 +288,7 @@ class MenuMain extends React.Component {
             }, 1000);
           }
         }
-
-
-        window.TogetherJSConfig_getUserName = function () {
-          // alert(this.state.userName);
-          return uName;
-        };
+        window.TogetherJSConfig_getUserName = () => uName;
         window.TogetherJS.refreshUserData();
       }
     });
@@ -319,9 +305,21 @@ class MenuMain extends React.Component {
 
     });
   }
-  onMessage = (message) => {
-    console.log(message);
+
+  segregateCartOfSession = () => {
+    fetch(`/api/v1/cart/segregateCartOfSession/${this.state.togethersessionid}`)
+      .then(res => res.json())
+      .then((resJSON) => {
+        if (resJSON.statusCode === 201) {
+          console.log('Items in the cart successfully segragated');
+        } else if (resJSON.statusCode === 204) {
+          console.log('No items to segragate');
+        } else if (resJSON.statusCode === 400) {
+          console.log('Invalid cart ID');
+        }
+      }).catch(console.log);
   }
+
   toggleTogether = () => {
     const uName = window.localStorage.getItem('name');
     // alert(uName);
@@ -332,7 +330,7 @@ class MenuMain extends React.Component {
     window.TogetherJS.refreshUserData();
 
 
-    if (this.state.togetherStatus != 1) {
+    if (this.state.togetherStatus !== 1) {
       const getturl = setInterval(() => {
         const turl = window.TogetherJS.shareUrl();
         if (turl !== null) {
@@ -355,15 +353,11 @@ class MenuMain extends React.Component {
       axios.get(url).then((origCart) => {
         if (origCart.data.statusCode === 200) {
           console.log(origCart.data.message);
-          window.localStorage.removeItem(' cartID');
-          window.localStorage.removeItem(' togetherMenuText');
-          window.localStorage.removeItem(' togetherStatus');
-          window.localStorage.removeItem(' togethersessionid');
           window.localStorage.setItem('cartID', origCart.data.message.cartID);
           window.localStorage.setItem(' togethersessionid', '');
           window.localStorage.setItem('togetherStatus', 0);
           window.localStorage.setItem('togetherMenuText', 'Together');
-
+          this.segregateCartOfSession();
           this.setState({
             togetherStatus: 0,
             togetherMenuText: 'Together',
@@ -506,4 +500,3 @@ class MenuMain extends React.Component {
 
 
 export default MenuMain;
-
