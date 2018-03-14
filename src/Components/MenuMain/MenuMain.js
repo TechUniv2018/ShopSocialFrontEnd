@@ -3,6 +3,7 @@ import axios from 'axios';
 import socketIOClient from 'socket.io-client';
 import { Navbar, Nav, NavItem, Modal, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import SnackBar from 'react-material-snackbar';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import RegisterLoginModal from '../RegisterLoginModal/RegisterLoginModal';
 import CartModal from '../CartModal/CartModal';
@@ -31,6 +32,8 @@ class MenuMain extends React.Component {
       togetherReqfrom: '',
       togetherReqfromEmail: '',
       togethersessionid: '',
+      alertText: '',
+      alertState: false,
     };
   }
 
@@ -79,7 +82,16 @@ class MenuMain extends React.Component {
       const userEmail = window.localStorage.getItem('email');
       const togetherStatus = window.localStorage.getItem('togetherStatus');
       if (connectRes.respondto === userEmail && connectRes.togetherresponse === 'rejected') {
-        alert(connectRes.rejectmessage);
+        this.setState({
+          alertState: true,
+          alertText: connectRes.rejectmessage,
+        });
+        setTimeout(() => {
+          this.setState({
+            alertState: false,
+            alertText: '',
+          });
+        }, 6000);
         window.localStorage.removeItem('togetherMenuText');
         window.localStorage.setItem('togetherMenuText', 'Together');
         window.localStorage.removeItem('togetherStatus');
@@ -88,7 +100,6 @@ class MenuMain extends React.Component {
           window.TogetherJS();
         }, 1000);
         this.setState({
-
           togetherReqfrom: '',
           togetherReqfromEmail: '',
           togetherMenuText: 'Together',
@@ -200,25 +211,26 @@ class MenuMain extends React.Component {
     };
 
     socket.emit('connectTogether', obj);
-
-
-    alert('Request sent');
     this.setState({
       showTogetherModal: false,
+      alertState: true,
+      alertText: 'Request sent',
     });
+    setTimeout(() => {
+      this.setState({
+        alertState: false,
+        alertText: '',
+      });
+    }, 6000);
   }
   handleAcceptTogetherRequest = () => {
     const uName = window.localStorage.getItem('name');
     const email = window.localStorage.getItem('email');
     const sessionstr = this.state.togetherReqfromEmail + email;
-    window.TogetherJSConfig_getUserName = function () {
-      // alert(this.state.userName);
-      return uName;
-    };
+    window.TogetherJSConfig_getUserName = () => uName;
     window.TogetherJS.refreshUserData();
     const url = `/api/v1/cart/initTogetherCart/${sessionstr}`;
     axios.get(url).then((togetherCart) => {
-      // console.log(togetherCart.data);
       const newcartid = togetherCart.data.message;
       if (togetherCart.data.statusCode === 201) {
         const obj = {
@@ -228,16 +240,10 @@ class MenuMain extends React.Component {
 
           respondto: this.state.togetherReqfromEmail,
         };
-        window.TogetherJSConfig_getUserName = function () {
-          // alert(this.state.userName);
-          return uName;
-        };
+        window.TogetherJSConfig_getUserName = () => uName;
         window.TogetherJS.refreshUserData();
         setTimeout(() => {
-          window.TogetherJSConfig_getUserName = function () {
-            // alert(this.state.userName);
-            return uName;
-          };
+          window.TogetherJSConfig_getUserName = () => uName;
           window.TogetherJS.refreshUserData();
         }, 1000);
 
@@ -256,8 +262,6 @@ class MenuMain extends React.Component {
           togetherStatus: 1,
           togethersessionid: sessionstr,
           showTogetherReqModal: false,
-
-
         });
 
         const tlink = window.localStorage.getItem('togetherlink');
@@ -298,11 +302,7 @@ class MenuMain extends React.Component {
           }
         }
 
-
-        window.TogetherJSConfig_getUserName = function () {
-          // alert(this.state.userName);
-          return uName;
-        };
+        window.TogetherJSConfig_getUserName = () => uName;
         window.TogetherJS.refreshUserData();
       }
     });
@@ -324,13 +324,8 @@ class MenuMain extends React.Component {
   }
   toggleTogether = () => {
     const uName = window.localStorage.getItem('name');
-    // alert(uName);
-    window.TogetherJSConfig_getUserName = function () {
-      // alert(this.state.userName);
-      return uName;
-    };
+    window.TogetherJSConfig_getUserName = () => uName;
     window.TogetherJS.refreshUserData();
-
 
     if (this.state.togetherStatus != 1) {
       const getturl = setInterval(() => {
@@ -338,7 +333,6 @@ class MenuMain extends React.Component {
         if (turl !== null) {
           window.localStorage.setItem('togetherStatus', 1);
           window.localStorage.setItem('togetherMenuText', 'End Together');
-
           this.setState({
             togetherStatus: 1,
             togetherMenuText: 'End Together',
@@ -417,7 +411,6 @@ class MenuMain extends React.Component {
     if (!this.state.isAuthenticated) {
       return (
         <Navbar className="NavbarMain">
-
           <Navbar.Header>
             <Navbar.Brand>
               <Link to="/" ><div className="NavbarIcon" /></Link>
@@ -499,6 +492,7 @@ class MenuMain extends React.Component {
           cartId={window.localStorage.getItem('cartID')}
           showCart={this.state.showCart}
         />
+        <SnackBar show={this.state.alertState} timer={6000}><p>{this.state.alertText}</p></SnackBar>
       </Navbar>
     );
   }
