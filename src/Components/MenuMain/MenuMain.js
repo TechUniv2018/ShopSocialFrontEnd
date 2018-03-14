@@ -189,13 +189,6 @@ class MenuMain extends React.Component {
     this.setState({ requestemail: evt.target.value });
   }
   handleForwardTogetherRequest= () => {
-    // const socket = socketIOClient(this.state.endpoint)
-
-    // this emits an event to the socket (your server) with an argument of 'red'
-    // you can make the argument any color you would like, or any kind of data you want to send.
-    // alert(this.state.requestemail);
-    // const socket = socketIOClient('http://127.0.0.1:8080');
-    // const socket = socketIOClient('http://127.0.0.1:8080');
     const userEmail = window.localStorage.getItem('email');
     const userName = window.localStorage.getItem('name');
     const obj = {
@@ -207,15 +200,12 @@ class MenuMain extends React.Component {
     };
 
     socket.emit('connectTogether', obj);
-    // socket.emit('change color', 'red', 'yellow') | you can have multiple arguments
 
 
     alert('Request sent');
     this.setState({
       showTogetherModal: false,
     });
-
-    // socket.emit('change color', 'red', 'yellow') | you can have multiple arguments
   }
   handleAcceptTogetherRequest = () => {
     const uName = window.localStorage.getItem('name');
@@ -269,7 +259,7 @@ class MenuMain extends React.Component {
 
 
         });
-        // alert(window.localStorage.getItem('togetherlink'));
+
         const tlink = window.localStorage.getItem('togetherlink');
         const nowurl = window.location.href;
         const indexcurr = nowurl.lastIndexOf(':');
@@ -283,38 +273,25 @@ class MenuMain extends React.Component {
         if (subcurr === subtog) {
           if (valbeforehash !== '/') {
             const newtlink = `${tlink.substring(0, hashindex)}/${tlink.substring(hashindex)}`;
-            // window.location.assign(newtlink);
-            // window.location.reload();
             window.self.location = newtlink;
-            // alert(newtlink);
             setTimeout(() => {
               window.location.reload(false);
             }, 1000);
           } else {
-            // window.location.assign(tlink);
-            // window.location.reload();
             window.self.location = tlink;
-            // alert(tlink);
             setTimeout(() => {
               window.location.reload(false);
             }, 1000);
           }
         } else if (subcurr != subtog) {
-          // alert('differnt url');
           if (valbeforehash !== '/') {
             const newtlink = `${tlink.substring(0, hashindex)}/${tlink.substring(hashindex)}`;
-            // window.location.assign(newtlink);
-            // window.location.reload();
             window.self.location = newtlink;
-            // alert(newtlink);
             setTimeout(() => {
               window.location.reload(false);
             }, 1000);
           } else {
-            // window.location.assign(tlink);
-          // window.location.reload();
             window.self.location = tlink;
-            // alert(tlink);
             setTimeout(() => {
               window.location.reload(false);
             }, 1000);
@@ -322,15 +299,11 @@ class MenuMain extends React.Component {
         }
 
 
-        // window.location.reload(true);
-        // window.location.href = window.localStorage.getItem('togetherlink');
-        // window.TogetherJSConfig_getUserName = function () {
-        //   // alert(this.state.userName);
-        //   return uName;
-        // };
-        // window.TogetherJS.refreshUserData();
-        // window.TogetherJS();
-        // window.location.assign(window.localStorage.getItem('togetherlink'));
+        window.TogetherJSConfig_getUserName = function () {
+          // alert(this.state.userName);
+          return uName;
+        };
+        window.TogetherJS.refreshUserData();
       }
     });
   }
@@ -350,7 +323,7 @@ class MenuMain extends React.Component {
     console.log(message);
   }
   toggleTogether = () => {
-    const uName = this.state.userName;
+    const uName = window.localStorage.getItem('name');
     // alert(uName);
     window.TogetherJSConfig_getUserName = function () {
       // alert(this.state.userName);
@@ -359,10 +332,7 @@ class MenuMain extends React.Component {
     window.TogetherJS.refreshUserData();
 
 
-    // alert(this.state.togetherStatus);
     if (this.state.togetherStatus != 1) {
-      // alert('fgfg');
-
       const getturl = setInterval(() => {
         const turl = window.TogetherJS.shareUrl();
         if (turl !== null) {
@@ -375,9 +345,6 @@ class MenuMain extends React.Component {
             showTogetherModal: true,
             togetherlink: window.TogetherJS.shareUrl(),
           });
-
-          // alert(window.TogetherJS.shareUrl());
-          // window.TogetherJS.refreshUserData();
           clearInterval(getturl);
         }
       }, 1000);
@@ -387,16 +354,12 @@ class MenuMain extends React.Component {
 
       axios.get(url).then((origCart) => {
         if (origCart.data.statusCode === 200) {
-          // alert(window.localStorage.getItem('cartID'));
-          // alert(origCart.data.message.cartID);
-          // alert(origCart.data.message);
           console.log(origCart.data.message);
           window.localStorage.removeItem(' cartID');
           window.localStorage.removeItem(' togetherMenuText');
           window.localStorage.removeItem(' togetherStatus');
           window.localStorage.removeItem(' togethersessionid');
           window.localStorage.setItem('cartID', origCart.data.message.cartID);
-
           window.localStorage.setItem(' togethersessionid', '');
           window.localStorage.setItem('togetherStatus', 0);
           window.localStorage.setItem('togetherMenuText', 'Together');

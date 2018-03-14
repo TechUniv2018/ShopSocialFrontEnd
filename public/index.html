@@ -29,8 +29,60 @@
   var TogetherJSConfig_disableWebRTC = true;
   var TogetherJSConfig_inviteFromRoom = false;
   var TogetherJSConfig_suppressJoinConfirmation = true;
+  
 </script>
+<style>
+  #togetherjs-dock {
+    background-color: rgba(0,0,0,0.4) !important;
+  }
+  #togetherjs-buttons {
+    background-color: rgba(0,0,0,0.4) !important;
+  }
+  .togetherjs{
+    background-color: rgba(0,0,0,0.4) !important;
+  }
+  .togetherjs #togetherjs-buttons #togetherjs-chat-button.togetherjs-active {
+    background-color: rgba(58, 56, 56, 0.9) !important;
+  }
+  #togetherjs-buttons .togetherjs-button:hover {
+    background-color: rgba(0,0,0,0.9) !important;
+}
+.togetherjs .togetherjs-window > header {
+    background-color: rgba(0,0,0,0.9) !important;
+    border:  rgba(0,0,0,0.9) !important;
+}
+ .togetherjs .togetherjs-subtitle{
+    background-color: rgba(0,0,0,0.9) !important;
+    border:  rgba(0,0,0,0.9) !important;
+ }
+ .togetherjs .togetherjs-window header button.togetherjs-close{
+     border-left:  rgba(0,0,0,0.9) !important;
+ }
+.togetherjs .togetherjs-modal > header{
+  background-color: rgba(0,0,0,0.9) !important;
+}
+.togetherjs-primary{
+   background-color: rgba(0,0,0,0.9) !important;
+}
+ .togetherjs .togetherjs-modal header button.togetherjs-close{
+   border-left:  rgba(0,0,0,0.9) !important;
+ } 
+ #togetherjs-profile-arrow{
+   -webkit-filter: grayscale(100%) !important; /* Safari 6.0 - 9.0 */
+    filter: grayscale(100%) !important;
+ }
+ #togetherjs-dock.togetherjs-dock-right #togetherjs-dock-anchor-horizontal{
+   -webkit-filter: grayscale(100%) !important; /* Safari 6.0 - 9.0 */
+    filter: grayscale(100%) !important;
+ }
+ .togetherjs #togetherjs-buttons #togetherjs-share-button{
+   display : none !important;
+ }
+.togetherjs #togetherjs-buttons .togetherjs-button{
+   height:105px !important;
+ }
 
+</style>
 <script src="https://togetherjs.com/togetherjs-min.js" > </script>
 
 
