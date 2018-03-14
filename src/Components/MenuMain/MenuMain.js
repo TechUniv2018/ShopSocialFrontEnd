@@ -26,7 +26,7 @@ class MenuMain extends React.Component {
       showCart: false,
       togetherMenuText: 'Together',
       togetherStatus: 0,
-      showTogetherModal: false,
+      showTogetherModal: true,
       togetherlink: '',
       showTogetherReqModal: false,
       togetherReqfrom: '',
@@ -454,7 +454,7 @@ class MenuMain extends React.Component {
             <Navbar.Toggle />
           </Navbar.Header>
           <Navbar.Collapse>
-            <Nav pullRight classname="NavbarMain">
+            <Nav pullRight>
               <NavItem eventKey={1} >
                 <div
                   className="NavbarText"
@@ -481,7 +481,7 @@ class MenuMain extends React.Component {
           <Navbar.Toggle />
         </Navbar.Header>
         <Navbar.Collapse>
-          <Nav pullRight classname="NavbarMain">
+          <Nav pullRight >
             <NavItem eventKey={1} href="#">
               <div className="NavbarText">Hi {window.localStorage.getItem('name')}</div>
             </NavItem>
@@ -497,28 +497,28 @@ class MenuMain extends React.Component {
             </NavItem>
           </Nav>
         </Navbar.Collapse>
-        <Modal show={this.state.showTogetherModal} onHide={this.handleTogetherModalClose} >
-          <Modal.Header closeButton >
-            <Modal.Title>Lets Shop Together</Modal.Title>
+        <Modal show={this.state.showTogetherModal} onHide={this.handleTogetherModalClose} className="TogetherRequestModal">
+          <Modal.Header>
+            <Modal.Title className="TogetherModalTitle">Lets Shop Together</Modal.Title>
           </Modal.Header >
-          <Modal.Body >
-            <input type="text" placeholder="Enter email of friend to shop with" onChange={this.handleTogetherInputEmail} />
-            <button onClick={this.handleForwardTogetherRequest}>Send request </button>
+          <Modal.Body className="TogetherModalBody">
+            <input className="TogetherModalEmailField" type="text" placeholder="Enter the email of a friend to shop with" onChange={this.handleTogetherInputEmail} />
+            <button className="TogetherModalSendButton" onClick={this.handleForwardTogetherRequest}>Send request </button>
           </Modal.Body>
           <Modal.Footer>
-            <Button onClick={this.handleTogetherModalClose}>Close</Button>
+            <Button className="TogetherModalCloseButton" onClick={this.handleTogetherModalClose}>Close</Button>
           </Modal.Footer>
         </Modal>
         <Modal show={this.state.showTogetherReqModal} onHide={this.handleTogetherReqModalClose}>
           <Modal.Header closeButton>
             <Modal.Title>Your Friend {this.state.togetherReqfrom}  Sent a Request to Shop Together</Modal.Title>
           </Modal.Header>
-          <Modal.Body >
-            <button onClick={this.handleAcceptTogetherRequest}>Accept Request </button>
-            <button onClick={this.handleRejectTogetherRequest}>Reject Request </button>
+          <Modal.Body className="TogetherModalBody">
+            <button className="TogetherModalButton" onClick={this.handleAcceptTogetherRequest}>Accept Request </button>
+            <button className="TogetherModalButton" onClick={this.handleRejectTogetherRequest}>Reject Request </button>
           </Modal.Body>
           <Modal.Footer>
-            <Button onClick={this.handleTogetherReqModalClose}>Close</Button>
+            <Button className="TogetherModalCloseButton" onClick={this.handleTogetherReqModalClose}>Close</Button>
           </Modal.Footer>
         </Modal>
         <CartModal
