@@ -468,10 +468,10 @@ class MenuMain extends React.Component {
             </NavItem>
           </Nav>
         </Navbar.Collapse>
-        <Modal show={this.state.showTogetherModal} onHide={this.handleTogetherModalClose}>
-          <Modal.Header closeButton>
+        <Modal show={this.state.showTogetherModal} onHide={this.handleTogetherModalClose} >
+          <Modal.Header closeButton >
             <Modal.Title>Lets Shop Together</Modal.Title>
-          </Modal.Header>
+          </Modal.Header >
           <Modal.Body >
             <input type="text" placeholder="Enter email of friend to shop with" onChange={this.handleTogetherInputEmail} />
             <button onClick={this.handleForwardTogetherRequest}>Send request </button>
