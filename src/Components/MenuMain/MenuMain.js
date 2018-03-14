@@ -81,6 +81,7 @@ class MenuMain extends React.Component {
     socket.on('relayConnectTogetherResponse', (connectRes) => {
       const userEmail = window.localStorage.getItem('email');
       const togetherStatus = window.localStorage.getItem('togetherStatus');
+      window.localStorage.setItem('pingStatus', 0);
       if (connectRes.respondto === userEmail && connectRes.togetherresponse === 'rejected') {
         this.setState({
           alertState: true,
@@ -120,9 +121,35 @@ class MenuMain extends React.Component {
         });
       }
     });
+
+    socket.on('responsePingRequest', (connectReq) => {
+    // const gettstatus = window.localStorage.getItem('togetherStatus');
+
+      const userEmail = window.localStorage.getItem('email');
+
+
+      if (connectReq.senderEmail === userEmail) {
+      // const pingStatus = window.localStorage.getItem('pingStatus');
+      // window.localStorage.setItem('pingStatus', 0);
+        setTimeout(() => {
+          const pingStatus = window.localStorage.getItem('pingStatus');
+          window.localStorage.setItem('pingStatus', 0);
+          if (pingStatus == 1) {
+            this.setState({
+              alertState: true,
+              alertText: `${this.state.requestemail} is unavailable now. Please try later.`,
+            });
+            setTimeout(() => {
+              this.setState({
+                alertState: false,
+                alertText: '',
+              });
+            }, 6000);
+          }
+        }, 30000);
+      }
+    });
   }
-
-
   onLogin = (userObject) => {
     const cartId = window.localStorage.getItem('cartID');
     const cartContents = [];
@@ -209,6 +236,15 @@ class MenuMain extends React.Component {
       togetherlink: this.state.togetherlink,
 
     };
+    const pingobj = {
+      senderEmail: userEmail,
+      requestEmail: this.state.requestemail,
+    };
+    window.localStorage.setItem('pingStatus', 1);
+    setTimeout(() => {
+      socket.emit('mypingrequest', pingobj);
+    }, 1000);
+
 
     socket.emit('connectTogether', obj);
     this.setState({
