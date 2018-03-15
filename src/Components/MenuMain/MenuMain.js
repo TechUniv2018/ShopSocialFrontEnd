@@ -53,11 +53,7 @@ class MenuMain extends React.Component {
         togethersessionid: window.localStorage.getItem('togethersessionid'),
       });
     }
-    if (this.state.togethersessionid !== null || window.localStorage.getItem('togethersessionid' !== null)) {
-      this.addStyleString2('#togetherjs-container.togetherjs { display: block !important; }');
-    } else if (this.state.togethersessionid === null) {
-      this.addStyleString2('#togetherjs-container.togetherjs { display: none !important; }');
-    }
+
     socket.on('relayConnectTogether', (connectReq) => {
       const gettstatus = window.localStorage.getItem('togetherStatus');
 
@@ -272,19 +268,14 @@ class MenuMain extends React.Component {
     }, 6000);
   }
   handleAcceptTogetherRequest = () => {
-    // this.addStyleString2('#togetherjs-container.togetherjs { display: block !important; }');
-
     const uName = window.localStorage.getItem('name');
     const email = window.localStorage.getItem('email');
     const sessionstr = this.state.togetherReqfromEmail + email;
     window.localStorage.setItem(' togethersessionid', sessionstr);
-    alert(window.localStorage.getItem(' togethersessionid'));
-    this.setState({
-      togethersessionid: sessionstr,
-    });
-    // this.addStyleString2('#togetherjs-container.togetherjs { display: block !important; }');
+
     window.TogetherJSConfig_getUserName = () => uName;
     window.TogetherJS.refreshUserData();
+
     const url = `/api/v1/cart/initTogetherCart/${sessionstr}`;
     axios.get(url).then((togetherCart) => {
       const newcartid = togetherCart.data.message;
@@ -296,13 +287,11 @@ class MenuMain extends React.Component {
 
           respondto: this.state.togetherReqfromEmail,
         };
-        window.TogetherJSConfig_getUserName = () => uName;
+        window.TogetherJSConfig_getUserName = () => this.state.userName;
         window.TogetherJS.refreshUserData();
         setTimeout(() => {
           window.TogetherJSConfig_getUserName = () => uName;
           window.TogetherJS.refreshUserData();
-
-          window.localStorage.setItem(' togethersessionid', sessionstr);
         }, 1000);
 
         socket.emit('connectTogetherResponse', obj);
@@ -338,12 +327,12 @@ class MenuMain extends React.Component {
             window.self.location = newtlink;
             setTimeout(() => {
               window.location.reload(false);
-            }, 1000);
+            }, 2000);
           } else {
             window.self.location = tlink;
             setTimeout(() => {
               window.location.reload(false);
-            }, 1000);
+            }, 2000);
           }
         } else if (subcurr != subtog) {
           if (valbeforehash !== '/') {
@@ -351,12 +340,12 @@ class MenuMain extends React.Component {
             window.self.location = newtlink;
             setTimeout(() => {
               window.location.reload(false);
-            }, 1000);
+            }, 2000);
           } else {
             window.self.location = tlink;
             setTimeout(() => {
               window.location.reload(false);
-            }, 1000);
+            }, 2000);
           }
         }
 
@@ -476,11 +465,22 @@ class MenuMain extends React.Component {
     }
   }
   render() {
-    if (this.state.togethersessionid !== null || window.localStorage.getItem('togethersessionid') !== null) {
-      this.addStyleString2('#togetherjs-container.togetherjs { display: block !important; }');
-    } else if (this.state.togethersessionid === null) {
-      this.addStyleString2('#togetherjs-container.togetherjs { display: none !important; }');
-    }
+    setTimeout(() => {
+      const uName = window.localStorage.getItem('name');
+      window.TogetherJSConfig_getUserName = () => uName;
+
+      setTimeout(() => {
+        window.TogetherJS.refreshUserData();
+      }, 1000);
+    }, 1000);
+    setTimeout(() => {
+      // const uName = window.localStorage.getItem('name');
+      window.TogetherJSConfig_getUserName = () => this.state.userName;
+      window.TogetherJS.refreshUserData();
+      setTimeout(() => {
+        window.TogetherJS.refreshUserData();
+      }, 1000);
+    }, 1000);
     if (!this.state.isAuthenticated) {
       return (
         <Navbar className="NavbarMain">

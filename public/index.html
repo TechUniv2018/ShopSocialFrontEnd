@@ -19,7 +19,9 @@
     var TogetherJSConfig_suppressJoinConfirmation = true;
     var TogetherJSConfig_dontShowClicks = true;
   </script>
-    <script src="./together/togetherjs-min.js" > </script>
+    <!-- <script src="./together/togetherjs-min.js" > </script> -->
+
+<script src="https://togetherjs.com/togetherjs-min.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Exo" rel="stylesheet">
     <title>ShopSocial</title>
 
@@ -76,9 +78,15 @@
   .togetherjs #togetherjs-buttons .togetherjs-button{
     height:105px !important;
   }
-  #togetherjs-container.togetherjs{
+  .togetherjs .togetherjs-modal{
      display : none !important;
   }
+  #togetherjs-modal-background{
+     display : none !important;
+  }
+  /* #togetherjs-container.togetherjs{
+     display : none !important;
+  } */
 
   </style>
   
