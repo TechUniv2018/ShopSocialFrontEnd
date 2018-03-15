@@ -1,59 +1,73 @@
-.product-container-display-body{
-    border-radius: 10px;
-    background-color: white;
+.ProductDisplay{
+    min-height: 85vh;
+    padding-top: 150px;
+    width: 75%;
 }
-.product-display-card-contents{
+.ProductDisplayImage{
+    padding-top: 10%;
+}
+.ProductDisplayImageIcon{
+    padding-top: 4%;
+}
+.ProductDisplayImageIcon>div:first-child{
+    border-radius: 8px;
+    border: 2px solid #418b8e;
+}
+.ProductImagePickerArrow{
+    font-size: 2rem;
+    color: grey;
+    text-align: center;
+}
+.ProductImagePickerArrowContainer{
+    text-align: center;
+}
+.ProductDetailsContainer{
+    padding-top: 2%;
+}
+.ProductDetailName{
+    font-family: 'Oswald', Arial, sans-serif;
+    font-weight: 350;
     padding: 4%;
 }
-.card {
-    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-    transition: 0.3s;
-}
-
-.btn-product-view{
-    background-color: #666666; 
-    border: none;
-    color: white;
-    padding: 3%;
+.ProductDetailDisplayPrice{
     text-align: center;
-    margin-top: 15%;
-    font-size: 2.7rem;
-    border-radius: 10px;
-    width: 85%;
-    box-shadow: 18px 34px 30px -22px hsla(0,0%,0%,.2);
-    transition:all .3s ease;
+    padding: 6%;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    font-family: 'Oswald', Arial, sans-serif;
 }
-.btn-product-view:hover{
-    background-color: #FFA726;
-    color: white;
-    box-shadow:2px 8px 4px -6px hsla(0,0%,0%,.3);
+.ProductDetailsCartButton{
+    width: 80%;
+    padding: 3%;
+    margin-top: 10%;
+    font-size: 2rem;
+    border: 2px solid rgb(90, 88, 88);
+    color: rgb(90, 88, 88);
+    font-family: 'Oswald', Arial, sans-serif;
 }
-.do-flex{
-    display: flex;
-    flex-direction: row;
-    width: 95vw;
-    justify-content: space-between;
-    align-items: stretch;
+.ProductDetailsCartButton:hover{
+    color: #418b8e;
+    background-color: #fff;
+    border: 2px solid #418b8e;
 }
-.product-container-flex{
-    flex-grow: 1;
+.ProductDetailDescContainer{
+    background-color: white;
+    margin-top: 5%;
+    color: rgb(90, 88, 88);
+    font-family: 'Oswald', Arial, sans-serif;
+    border-radius: 8px;
 }
-.product-view-card{
-    height: 70vh;
-    margin-top: 120px;
+.ProductDetailDescContainer>h3{
+    font-weight: 350;
+    font-size: 2.3rem;
 }
-.product-price{
-    margin-top: 15%;
-    color: #FFA726;
+.ProductDetailDescContainer>p{
+    font-weight: 350;
+    font-size: 1.7rem;
 }
-.product-desc-text{
-    padding-top: 2%;
-    font-size: 1.8rem;
+.ProductPermaLink{
+    font-family: 'Oswald', Arial, sans-serif;
+    margin-top: -10px;
+    margin-bottom: 20px;
     font-weight: 300;
-    min-height: 10vh;
-}
-@media only screen and (max-width: 768px) {
-    .product-container-flex{
-       margin-top: 0px;
-    }
 }
