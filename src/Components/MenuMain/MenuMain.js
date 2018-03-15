@@ -26,7 +26,7 @@ class MenuMain extends React.Component {
       showCart: false,
       togetherMenuText: 'Together',
       togetherStatus: 0,
-      showTogetherModal: true,
+      showTogetherModal: false,
       togetherlink: '',
       showTogetherReqModal: false,
       togetherReqfrom: '',
