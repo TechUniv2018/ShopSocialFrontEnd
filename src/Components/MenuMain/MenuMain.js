@@ -92,7 +92,7 @@ class MenuMain extends React.Component {
           togetherStatus: 0,
           togetherlink: '',
         });
-        this.segregateCartOfSession();
+        this.segregateCartContentsOfSession();
       } else if (connectRes.respondto === userEmail && connectRes.togetherresponse === 'accepted') {
         window.localStorage.setItem('cartID', connectRes.togethercartid);
         window.localStorage.setItem('togethersessionid', connectRes.togethersessionid);
@@ -306,12 +306,19 @@ class MenuMain extends React.Component {
     });
   }
 
-  segregateCartOfSession = () => {
-    fetch(`/api/v1/cart/segregateCartOfSession/${this.state.togethersessionid}`)
-      .then(res => res.json())
+  segregateCartContentsOfSession = () => {
+    const sessionID = { sessionID: this.state.togethersessionid };
+    fetch('/api/v1/cart/segregateCartContentsOfSession', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(sessionID),
+    }).then(response => response.json())
       .then((resJSON) => {
         if (resJSON.statusCode === 201) {
-          console.log('Items in the cart successfully segragated');
+          console.log('Items in the cart successfully segregated');
         } else if (resJSON.statusCode === 204) {
           console.log('No items to segragate');
         } else if (resJSON.statusCode === 400) {
@@ -357,7 +364,7 @@ class MenuMain extends React.Component {
           window.localStorage.setItem(' togethersessionid', '');
           window.localStorage.setItem('togetherStatus', 0);
           window.localStorage.setItem('togetherMenuText', 'Together');
-          this.segregateCartOfSession();
+          this.segregateCartContentsOfSession();
           this.setState({
             togetherStatus: 0,
             togetherMenuText: 'Together',
@@ -377,12 +384,26 @@ class MenuMain extends React.Component {
       showCart: false,
     });
   }
+
   handleCartModalOpen = () => {
-    this.setState({
-      showCart: true,
-      cartContents: JSON.parse(window.localStorage.getItem('cartContents')),
-    });
+    const sessionID = { sessionID: this.state.togethersessionid };
+    fetch('/api/v1/cart/getCartContentsOfSession', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(sessionID),
+    }).then(response => response.json())
+      .then((resJSON) => {
+        window.localStorage.setItem('cartContents', JSON.stringify(resJSON.products));
+        this.setState({
+          showCart: true,
+          cartContents: JSON.parse(window.localStorage.getItem('cartContents')),
+        });
+      });
   }
+
   deleteCartContents = (productId, cartId) => {
     const currentCartContents = this.state.cartContents;
     for (let i = 0; i < currentCartContents.length; i += 1) {
