@@ -22,3 +22,60 @@
     font-size: 1.8rem;
     font-weight: 600;
 }
+.TogetherRequestModal>div>div{
+    border: 3px solid #418b8e;
+}
+.TogetherModalCloseButton{
+    width: 20%;
+    padding: 1%;
+    margin-top: 2%;
+    font-size: 2rem;
+    border: 2px solid #418b8e;
+    color: #418b8e;
+    border-radius: 6px;
+}
+.TogetherModalCloseButton:hover{
+    color: rgb(90, 88, 88);
+    background-color: #fff;
+    border: 2px solid rgb(90, 88, 88);
+}
+.TogetherModalSendButton{
+    padding: 1%;
+    font-size: 1.7rem;
+    float: right;
+    border: 2px solid #418b8e;
+    color: #418b8e;
+    border-radius: 6px;
+}
+.TogetherModalSendButton:hover{
+    color: rgb(90, 88, 88);
+    background-color: #fff;
+    border: 2px solid rgb(90, 88, 88);
+}
+.TogetherModalTitle{
+    font-size: 2.2rem;
+}
+.TogetherModalBody{
+    min-height: 100px;
+}
+.TogetherModalButton{
+    padding: 1%;
+    font-size: 2rem;
+    border: 2px solid #418b8e;
+    color: #418b8e;
+    border-radius: 6px;
+    margin-right: 2%;
+}
+.TogetherModalButton:hover{
+    color: rgb(90, 88, 88);
+    background-color: #fff;
+    border: 2px solid rgb(90, 88, 88);
+}
+.TogetherModalEmailField{
+    border: 2px solid #418b8e;
+    border-radius: 6px;
+    width: 60%;
+    padding: 1%;
+    color: #418b8e;
+    font-size: 1.7rem;
+}

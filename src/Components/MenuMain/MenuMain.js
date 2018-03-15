@@ -3,6 +3,7 @@ import axios from 'axios';
 import socketIOClient from 'socket.io-client';
 import { Navbar, Nav, NavItem, Modal, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import SnackBar from 'react-material-snackbar';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import RegisterLoginModal from '../RegisterLoginModal/RegisterLoginModal';
 import CartModal from '../CartModal/CartModal';
@@ -25,12 +26,14 @@ class MenuMain extends React.Component {
       showCart: false,
       togetherMenuText: 'Together',
       togetherStatus: 0,
-      showTogetherModal: false,
+      showTogetherModal: true,
       togetherlink: '',
       showTogetherReqModal: false,
       togetherReqfrom: '',
       togetherReqfromEmail: '',
       togethersessionid: '',
+      alertText: '',
+      alertState: false,
     };
   }
 
@@ -78,8 +81,18 @@ class MenuMain extends React.Component {
     socket.on('relayConnectTogetherResponse', (connectRes) => {
       const userEmail = window.localStorage.getItem('email');
       const togetherStatus = window.localStorage.getItem('togetherStatus');
+      window.localStorage.setItem('pingStatus', 0);
       if (connectRes.respondto === userEmail && connectRes.togetherresponse === 'rejected') {
-        alert(connectRes.rejectmessage);
+        this.setState({
+          alertState: true,
+          alertText: connectRes.rejectmessage,
+        });
+        setTimeout(() => {
+          this.setState({
+            alertState: false,
+            alertText: '',
+          });
+        }, 6000);
         window.localStorage.removeItem('togetherMenuText');
         window.localStorage.setItem('togetherMenuText', 'Together');
         window.localStorage.removeItem('togetherStatus');
@@ -88,7 +101,6 @@ class MenuMain extends React.Component {
           window.TogetherJS();
         }, 1000);
         this.setState({
-
           togetherReqfrom: '',
           togetherReqfromEmail: '',
           togetherMenuText: 'Together',
@@ -109,9 +121,35 @@ class MenuMain extends React.Component {
         });
       }
     });
+
+    socket.on('responsePingRequest', (connectReq) => {
+    // const gettstatus = window.localStorage.getItem('togetherStatus');
+
+      const userEmail = window.localStorage.getItem('email');
+
+
+      if (connectReq.senderEmail === userEmail) {
+      // const pingStatus = window.localStorage.getItem('pingStatus');
+      // window.localStorage.setItem('pingStatus', 0);
+        setTimeout(() => {
+          const pingStatus = window.localStorage.getItem('pingStatus');
+          window.localStorage.setItem('pingStatus', 0);
+          if (pingStatus == 1) {
+            this.setState({
+              alertState: true,
+              alertText: `${this.state.requestemail} is unavailable now. Please try later.`,
+            });
+            setTimeout(() => {
+              this.setState({
+                alertState: false,
+                alertText: '',
+              });
+            }, 6000);
+          }
+        }, 30000);
+      }
+    });
   }
-
-
   onLogin = (userObject) => {
     const cartId = window.localStorage.getItem('cartID');
     const cartContents = [];
@@ -189,13 +227,6 @@ class MenuMain extends React.Component {
     this.setState({ requestemail: evt.target.value });
   }
   handleForwardTogetherRequest= () => {
-    // const socket = socketIOClient(this.state.endpoint)
-
-    // this emits an event to the socket (your server) with an argument of 'red'
-    // you can make the argument any color you would like, or any kind of data you want to send.
-    // alert(this.state.requestemail);
-    // const socket = socketIOClient('http://127.0.0.1:8080');
-    // const socket = socketIOClient('http://127.0.0.1:8080');
     const userEmail = window.localStorage.getItem('email');
     const userName = window.localStorage.getItem('name');
     const obj = {
@@ -205,30 +236,37 @@ class MenuMain extends React.Component {
       togetherlink: this.state.togetherlink,
 
     };
+    const pingobj = {
+      senderEmail: userEmail,
+      requestEmail: this.state.requestemail,
+    };
+    window.localStorage.setItem('pingStatus', 1);
+    setTimeout(() => {
+      socket.emit('mypingrequest', pingobj);
+    }, 1000);
+
 
     socket.emit('connectTogether', obj);
-    // socket.emit('change color', 'red', 'yellow') | you can have multiple arguments
-
-
-    alert('Request sent');
     this.setState({
       showTogetherModal: false,
+      alertState: true,
+      alertText: 'Request sent',
     });
-
-    // socket.emit('change color', 'red', 'yellow') | you can have multiple arguments
+    setTimeout(() => {
+      this.setState({
+        alertState: false,
+        alertText: '',
+      });
+    }, 6000);
   }
   handleAcceptTogetherRequest = () => {
     const uName = window.localStorage.getItem('name');
     const email = window.localStorage.getItem('email');
     const sessionstr = this.state.togetherReqfromEmail + email;
-    window.TogetherJSConfig_getUserName = function () {
-      // alert(this.state.userName);
-      return uName;
-    };
+    window.TogetherJSConfig_getUserName = () => uName;
     window.TogetherJS.refreshUserData();
     const url = `/api/v1/cart/initTogetherCart/${sessionstr}`;
     axios.get(url).then((togetherCart) => {
-      // console.log(togetherCart.data);
       const newcartid = togetherCart.data.message;
       if (togetherCart.data.statusCode === 201) {
         const obj = {
@@ -238,16 +276,10 @@ class MenuMain extends React.Component {
 
           respondto: this.state.togetherReqfromEmail,
         };
-        window.TogetherJSConfig_getUserName = function () {
-          // alert(this.state.userName);
-          return uName;
-        };
+        window.TogetherJSConfig_getUserName = () => uName;
         window.TogetherJS.refreshUserData();
         setTimeout(() => {
-          window.TogetherJSConfig_getUserName = function () {
-            // alert(this.state.userName);
-            return uName;
-          };
+          window.TogetherJSConfig_getUserName = () => uName;
           window.TogetherJS.refreshUserData();
         }, 1000);
 
@@ -266,10 +298,8 @@ class MenuMain extends React.Component {
           togetherStatus: 1,
           togethersessionid: sessionstr,
           showTogetherReqModal: false,
-
-
         });
-        // alert(window.localStorage.getItem('togetherlink'));
+
         const tlink = window.localStorage.getItem('togetherlink');
         const nowurl = window.location.href;
         const indexcurr = nowurl.lastIndexOf(':');
@@ -283,54 +313,33 @@ class MenuMain extends React.Component {
         if (subcurr === subtog) {
           if (valbeforehash !== '/') {
             const newtlink = `${tlink.substring(0, hashindex)}/${tlink.substring(hashindex)}`;
-            // window.location.assign(newtlink);
-            // window.location.reload();
             window.self.location = newtlink;
-            // alert(newtlink);
             setTimeout(() => {
               window.location.reload(false);
             }, 1000);
           } else {
-            // window.location.assign(tlink);
-            // window.location.reload();
             window.self.location = tlink;
-            // alert(tlink);
             setTimeout(() => {
               window.location.reload(false);
             }, 1000);
           }
         } else if (subcurr != subtog) {
-          // alert('differnt url');
           if (valbeforehash !== '/') {
             const newtlink = `${tlink.substring(0, hashindex)}/${tlink.substring(hashindex)}`;
-            // window.location.assign(newtlink);
-            // window.location.reload();
             window.self.location = newtlink;
-            // alert(newtlink);
             setTimeout(() => {
               window.location.reload(false);
             }, 1000);
           } else {
-            // window.location.assign(tlink);
-          // window.location.reload();
             window.self.location = tlink;
-            // alert(tlink);
             setTimeout(() => {
               window.location.reload(false);
             }, 1000);
           }
         }
 
-
-        // window.location.reload(true);
-        // window.location.href = window.localStorage.getItem('togetherlink');
-        // window.TogetherJSConfig_getUserName = function () {
-        //   // alert(this.state.userName);
-        //   return uName;
-        // };
-        // window.TogetherJS.refreshUserData();
-        // window.TogetherJS();
-        // window.location.assign(window.localStorage.getItem('togetherlink'));
+        window.TogetherJSConfig_getUserName = () => uName;
+        window.TogetherJS.refreshUserData();
       }
     });
   }
@@ -350,34 +359,22 @@ class MenuMain extends React.Component {
     console.log(message);
   }
   toggleTogether = () => {
-    const uName = this.state.userName;
-    // alert(uName);
-    window.TogetherJSConfig_getUserName = function () {
-      // alert(this.state.userName);
-      return uName;
-    };
+    const uName = window.localStorage.getItem('name');
+    window.TogetherJSConfig_getUserName = () => uName;
     window.TogetherJS.refreshUserData();
 
-
-    // alert(this.state.togetherStatus);
     if (this.state.togetherStatus != 1) {
-      // alert('fgfg');
-
       const getturl = setInterval(() => {
         const turl = window.TogetherJS.shareUrl();
         if (turl !== null) {
           window.localStorage.setItem('togetherStatus', 1);
           window.localStorage.setItem('togetherMenuText', 'End Together');
-
           this.setState({
             togetherStatus: 1,
             togetherMenuText: 'End Together',
             showTogetherModal: true,
             togetherlink: window.TogetherJS.shareUrl(),
           });
-
-          // alert(window.TogetherJS.shareUrl());
-          // window.TogetherJS.refreshUserData();
           clearInterval(getturl);
         }
       }, 1000);
@@ -387,16 +384,12 @@ class MenuMain extends React.Component {
 
       axios.get(url).then((origCart) => {
         if (origCart.data.statusCode === 200) {
-          // alert(window.localStorage.getItem('cartID'));
-          // alert(origCart.data.message.cartID);
-          // alert(origCart.data.message);
           console.log(origCart.data.message);
           window.localStorage.removeItem(' cartID');
           window.localStorage.removeItem(' togetherMenuText');
           window.localStorage.removeItem(' togetherStatus');
           window.localStorage.removeItem(' togethersessionid');
           window.localStorage.setItem('cartID', origCart.data.message.cartID);
-
           window.localStorage.setItem(' togethersessionid', '');
           window.localStorage.setItem('togetherStatus', 0);
           window.localStorage.setItem('togetherMenuText', 'Together');
@@ -454,7 +447,6 @@ class MenuMain extends React.Component {
     if (!this.state.isAuthenticated) {
       return (
         <Navbar className="NavbarMain">
-
           <Navbar.Header>
             <Navbar.Brand>
               <Link to="/" ><div className="NavbarIcon" /></Link>
@@ -462,7 +454,7 @@ class MenuMain extends React.Component {
             <Navbar.Toggle />
           </Navbar.Header>
           <Navbar.Collapse>
-            <Nav pullRight classname="NavbarMain">
+            <Nav pullRight>
               <NavItem eventKey={1} >
                 <div
                   className="NavbarText"
@@ -489,7 +481,7 @@ class MenuMain extends React.Component {
           <Navbar.Toggle />
         </Navbar.Header>
         <Navbar.Collapse>
-          <Nav pullRight classname="NavbarMain">
+          <Nav pullRight >
             <NavItem eventKey={1} href="#">
               <div className="NavbarText">Hi {window.localStorage.getItem('name')}</div>
             </NavItem>
@@ -505,28 +497,28 @@ class MenuMain extends React.Component {
             </NavItem>
           </Nav>
         </Navbar.Collapse>
-        <Modal show={this.state.showTogetherModal} onHide={this.handleTogetherModalClose}>
-          <Modal.Header closeButton>
-            <Modal.Title>Lets Shop Together</Modal.Title>
-          </Modal.Header>
-          <Modal.Body >
-            <input type="text" placeholder="Enter email of friend to shop with" onChange={this.handleTogetherInputEmail} />
-            <button onClick={this.handleForwardTogetherRequest}>Send request </button>
+        <Modal show={this.state.showTogetherModal} onHide={this.handleTogetherModalClose} className="TogetherRequestModal">
+          <Modal.Header>
+            <Modal.Title className="TogetherModalTitle">Lets Shop Together</Modal.Title>
+          </Modal.Header >
+          <Modal.Body className="TogetherModalBody">
+            <input className="TogetherModalEmailField" type="text" placeholder="Enter the email of a friend to shop with" onChange={this.handleTogetherInputEmail} />
+            <button className="TogetherModalSendButton" onClick={this.handleForwardTogetherRequest}>Send request </button>
           </Modal.Body>
           <Modal.Footer>
-            <Button onClick={this.handleTogetherModalClose}>Close</Button>
+            <Button className="TogetherModalCloseButton" onClick={this.handleTogetherModalClose}>Close</Button>
           </Modal.Footer>
         </Modal>
         <Modal show={this.state.showTogetherReqModal} onHide={this.handleTogetherReqModalClose}>
           <Modal.Header closeButton>
             <Modal.Title>Your Friend {this.state.togetherReqfrom}  Sent a Request to Shop Together</Modal.Title>
           </Modal.Header>
-          <Modal.Body >
-            <button onClick={this.handleAcceptTogetherRequest}>Accept Request </button>
-            <button onClick={this.handleRejectTogetherRequest}>Reject Request </button>
+          <Modal.Body className="TogetherModalBody">
+            <button className="TogetherModalButton" onClick={this.handleAcceptTogetherRequest}>Accept Request </button>
+            <button className="TogetherModalButton" onClick={this.handleRejectTogetherRequest}>Reject Request </button>
           </Modal.Body>
           <Modal.Footer>
-            <Button onClick={this.handleTogetherReqModalClose}>Close</Button>
+            <Button className="TogetherModalCloseButton" onClick={this.handleTogetherReqModalClose}>Close</Button>
           </Modal.Footer>
         </Modal>
         <CartModal
@@ -536,6 +528,7 @@ class MenuMain extends React.Component {
           cartId={window.localStorage.getItem('cartID')}
           showCart={this.state.showCart}
         />
+        <SnackBar show={this.state.alertState} timer={6000}><p>{this.state.alertText}</p></SnackBar>
       </Navbar>
     );
   }
