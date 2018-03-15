@@ -31,7 +31,7 @@ class MenuMain extends React.Component {
       showTogetherReqModal: false,
       togetherReqfrom: '',
       togetherReqfromEmail: '',
-      togethersessionid: '',
+      togethersessionid: null,
       alertText: '',
       alertState: false,
     };
@@ -50,15 +50,23 @@ class MenuMain extends React.Component {
       this.setState({
         togetherMenuText: window.localStorage.getItem('togetherMenuText'),
         togetherStatus: window.localStorage.getItem('togetherStatus'),
+        togethersessionid: window.localStorage.getItem('togethersessionid'),
       });
+    }
+    if (this.state.togethersessionid !== null || window.localStorage.getItem('togethersessionid' !== null)) {
+      this.addStyleString2('#togetherjs-container.togetherjs { display: block !important; }');
+    } else if (this.state.togethersessionid === null) {
+      this.addStyleString2('#togetherjs-container.togetherjs { display: none !important; }');
     }
     socket.on('relayConnectTogether', (connectReq) => {
       const gettstatus = window.localStorage.getItem('togetherStatus');
 
       const userEmail = window.localStorage.getItem('email');
-      const togetherStatus = window.localStorage.getItem('togetherStatus');
+
 
       if (connectReq.requestEmail === userEmail && this.state.togetherStatus == 0) {
+        // this.addStyleString2('#togetherjs-container.togetherjs { display: block !important; }');
+
         window.localStorage.setItem('togetherlink', connectReq.togetherlink);
         this.setState({
           showTogetherReqModal: true,
@@ -108,6 +116,7 @@ class MenuMain extends React.Component {
           togetherlink: '',
         });
       } else if (connectRes.respondto === userEmail && connectRes.togetherresponse === 'accepted') {
+        // this.addStyleString('#togetherjs-container.togetherjs { display: block !important; }');
         window.localStorage.removeItem('cartID');
         window.localStorage.setItem('cartID', connectRes.togethercartid);
         window.localStorage.removeItem('togethersessionid');
@@ -145,11 +154,14 @@ class MenuMain extends React.Component {
                 alertText: '',
               });
             }, 6000);
+            this.toggleTogether();
           }
         }, 30000);
       }
     });
   }
+
+
   onLogin = (userObject) => {
     const cartId = window.localStorage.getItem('cartID');
     const cartContents = [];
@@ -260,9 +272,17 @@ class MenuMain extends React.Component {
     }, 6000);
   }
   handleAcceptTogetherRequest = () => {
+    // this.addStyleString2('#togetherjs-container.togetherjs { display: block !important; }');
+
     const uName = window.localStorage.getItem('name');
     const email = window.localStorage.getItem('email');
     const sessionstr = this.state.togetherReqfromEmail + email;
+    window.localStorage.setItem(' togethersessionid', sessionstr);
+    alert(window.localStorage.getItem(' togethersessionid'));
+    this.setState({
+      togethersessionid: sessionstr,
+    });
+    // this.addStyleString2('#togetherjs-container.togetherjs { display: block !important; }');
     window.TogetherJSConfig_getUserName = () => uName;
     window.TogetherJS.refreshUserData();
     const url = `/api/v1/cart/initTogetherCart/${sessionstr}`;
@@ -281,6 +301,8 @@ class MenuMain extends React.Component {
         setTimeout(() => {
           window.TogetherJSConfig_getUserName = () => uName;
           window.TogetherJS.refreshUserData();
+
+          window.localStorage.setItem(' togethersessionid', sessionstr);
         }, 1000);
 
         socket.emit('connectTogetherResponse', obj);
@@ -290,7 +312,7 @@ class MenuMain extends React.Component {
         window.localStorage.setItem('togetherMenuText', 'End Together');
         window.localStorage.removeItem('togetherStatus');
         window.localStorage.setItem('togetherStatus', 1);
-        window.localStorage.removeItem(' togethersessionid');
+
         window.localStorage.setItem(' togethersessionid', sessionstr);
         this.setState({
           cartId: newcartid,
@@ -358,6 +380,16 @@ class MenuMain extends React.Component {
   onMessage = (message) => {
     console.log(message);
   }
+  addStyleString = (str) => {
+    const togethercontainer = document.createElement('style');
+    togethercontainer.innerHTML = str;
+    document.body.appendChild(togethercontainer);
+  };
+  addStyleString2 = (str) => {
+    const togethercontainer2 = document.createElement('style');
+    togethercontainer2.innerHTML = str;
+    document.body.appendChild(togethercontainer2);
+  };
   toggleTogether = () => {
     const uName = window.localStorage.getItem('name');
     window.TogetherJSConfig_getUserName = () => uName;
@@ -390,7 +422,7 @@ class MenuMain extends React.Component {
           window.localStorage.removeItem(' togetherStatus');
           window.localStorage.removeItem(' togethersessionid');
           window.localStorage.setItem('cartID', origCart.data.message.cartID);
-          window.localStorage.setItem(' togethersessionid', '');
+          window.localStorage.setItem('togethersessionid', null);
           window.localStorage.setItem('togetherStatus', 0);
           window.localStorage.setItem('togetherMenuText', 'Together');
 
@@ -400,7 +432,7 @@ class MenuMain extends React.Component {
             togetherlink: '',
             togetherReqfrom: '',
             togetherReqfromEmail: '',
-            togethersessionid: '',
+            togethersessionid: null,
           });
         }
       });
@@ -444,6 +476,11 @@ class MenuMain extends React.Component {
     }
   }
   render() {
+    if (this.state.togethersessionid !== null || window.localStorage.getItem('togethersessionid') !== null) {
+      this.addStyleString2('#togetherjs-container.togetherjs { display: block !important; }');
+    } else if (this.state.togethersessionid === null) {
+      this.addStyleString2('#togetherjs-container.togetherjs { display: none !important; }');
+    }
     if (!this.state.isAuthenticated) {
       return (
         <Navbar className="NavbarMain">
