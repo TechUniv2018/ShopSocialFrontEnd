@@ -386,22 +386,30 @@ class MenuMain extends React.Component {
   }
 
   handleCartModalOpen = () => {
-    const sessionID = { sessionID: this.state.togethersessionid };
-    fetch('/api/v1/cart/getCartContentsOfSession', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(sessionID),
-    }).then(response => response.json())
-      .then((resJSON) => {
-        window.localStorage.setItem('cartContents', JSON.stringify(resJSON.products));
-        this.setState({
-          showCart: true,
-          cartContents: JSON.parse(window.localStorage.getItem('cartContents')),
+    if (this.state.togetherStatus !== 0) {
+      const sessionID = { sessionID: this.state.togethersessionid };
+      fetch('/api/v1/cart/getCartContentsOfSession', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(sessionID),
+      }).then(response => response.json())
+        .then((resJSON) => {
+          console.log(resJSON);
+          window.localStorage.setItem('cartContents', JSON.stringify(resJSON.products));
+          this.setState({
+            showCart: true,
+            cartContents: JSON.parse(window.localStorage.getItem('cartContents')),
+          });
         });
+    } else {
+      this.setState({
+        showCart: true,
+        cartContents: JSON.parse(window.localStorage.getItem('cartContents')),
       });
+    }
   }
 
   deleteCartContents = (productId, cartId) => {
