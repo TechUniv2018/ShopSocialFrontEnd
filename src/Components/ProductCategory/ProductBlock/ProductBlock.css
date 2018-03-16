@@ -5,13 +5,13 @@
   position: relative;
   float: left;
   margin: 3%;
-  min-width: 230px;
-  max-width: 350px;
+  min-width: 250px;
+  max-width: 360px;
   max-height: 500px;
   width: 100%;
-  background: #ffffff;
+  background: #F7F7F7;
   text-align: center;
-  color: #000000;
+  color: rgb(90, 88, 88);
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
   font-size: 16px;
   padding: 2% 2%;
@@ -98,4 +98,10 @@
 
 .ion-checkmark-round {
   background-color: #55AA54 !important;
+}
+.ProductImage{
+  background: url('./images/product_filler.jpg');
+  max-width: 300px;
+  min-width: 275px;
+  min-height: 275px;
 }
