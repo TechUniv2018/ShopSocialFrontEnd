@@ -316,7 +316,7 @@ class MenuMain extends React.Component {
   }
   handleAcceptTogetherRequest = () => {
     const uName = window.localStorage.getItem('name');
-    alert(uName);
+    // alert(uName);
     const email = window.localStorage.getItem('email');
     const sessionstr = this.state.togetherReqfromEmail + email;
     window.localStorage.setItem(' togethersessionid', sessionstr);
