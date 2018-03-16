@@ -155,12 +155,57 @@ class MenuMain extends React.Component {
         }, 30000);
       }
     });
+    socket.on('urlTogetherChangeRelay', (connectReq) => {
+      const gettstatus = window.localStorage.getItem('togetherStatus');
+
+      const userEmail = window.localStorage.getItem('email');
+      const myemail = window.localStorage.getItem('togetheruser1email');
+      const friendemail = window.localStorage.getItem('togetheruser2email');
+      const myurl = window.localStorage.getItem('currurl');
+
+      // const friendemail = window.localStorage.getItem('togetheruser2email');
+      // const str = `Myemail: ${myemail}firend emeail ${friendemail}rec myemail ${connectReq.rEmail}senderrecemail: ${connectReq.sEmail}`;
+      // alert(str);
+      // alert('got here');
+      // window.localStorage.setItem('currurl', newurllocal);
+      if (connectReq.rEmail === myemail && connectReq.sEmail === friendemail && myurl !== connectReq.urltoload) {
+        // this.addStyleString2('#togetherjs-container.togetherjs { display: block !important; }');
+        // alert('got here');
+        setTimeout(() => {
+          window.self.location = connectReq.urltoload;
+        }, 5000);
+
+        setTimeout(() => {
+          window.location.reload(false);
+        }, 7000);
+        this.setState({
+          alertState: true,
+          alertText: `${friendemail} has  gone to page ${connectReq.urltoload}. Let's go!`,
+        });
+        setTimeout(() => {
+          this.setState({
+            alertState: false,
+            alertText: '',
+          });
+        }, 4000);
+      }
+    });
+  }
+  componentDidUpdate() {
+    const uName = window.localStorage.getItem('name');
+    if (uName !== null) {
+      window.TogetherJSConfig_getUserName = function () { return uName; };
+
+      window.TogetherJS.refreshUserData();
+    }
   }
 
 
   onLogin = (userObject) => {
     const cartId = window.localStorage.getItem('cartID');
     const cartContents = [];
+    const currurl = window.location.href;
+    window.localStorage.setItem('currurl', currurl);
     axios.get(`/api/v1/cart/fetchCart/${cartId}`).then((cartContentsResponse) => {
       if (!(cartContentsResponse.data.message.length === 0)) {
         cartContentsResponse.data.message.forEach((product) => {
@@ -237,6 +282,8 @@ class MenuMain extends React.Component {
   handleForwardTogetherRequest= () => {
     const userEmail = window.localStorage.getItem('email');
     const userName = window.localStorage.getItem('name');
+    window.localStorage.setItem('togetheruser1email', userEmail);
+    window.localStorage.setItem('togetheruser2email', this.state.requestemail);
     const obj = {
       senderEmail: userEmail,
       senderName: userName,
@@ -269,17 +316,21 @@ class MenuMain extends React.Component {
   }
   handleAcceptTogetherRequest = () => {
     const uName = window.localStorage.getItem('name');
+    alert(uName);
     const email = window.localStorage.getItem('email');
     const sessionstr = this.state.togetherReqfromEmail + email;
     window.localStorage.setItem(' togethersessionid', sessionstr);
 
-    window.TogetherJSConfig_getUserName = () => uName;
-    window.TogetherJS.refreshUserData();
+    // window.TogetherJSConfig_getUserName = () => uName;
+    // window.TogetherJS.refreshUserData();
 
     const url = `/api/v1/cart/initTogetherCart/${sessionstr}`;
     axios.get(url).then((togetherCart) => {
       const newcartid = togetherCart.data.message;
       if (togetherCart.data.statusCode === 201) {
+        const myemail = window.localStorage.getItem('email');
+        window.localStorage.setItem('togetheruser1email', myemail);
+        window.localStorage.setItem('togetheruser2email', this.state.togetherReqfromEmail);
         const obj = {
           togetherresponse: 'accepted',
           togethercartid: newcartid,
@@ -287,12 +338,12 @@ class MenuMain extends React.Component {
 
           respondto: this.state.togetherReqfromEmail,
         };
-        window.TogetherJSConfig_getUserName = () => this.state.userName;
-        window.TogetherJS.refreshUserData();
-        setTimeout(() => {
-          window.TogetherJSConfig_getUserName = () => uName;
-          window.TogetherJS.refreshUserData();
-        }, 1000);
+        // window.TogetherJSConfig_getUserName = () => this.state.userName;
+        // window.TogetherJS.refreshUserData();
+        // setTimeout(() => {
+        //   window.TogetherJSConfig_getUserName = () => uName;
+        //   window.TogetherJS.refreshUserData();
+        // }, 1000);
 
         socket.emit('connectTogetherResponse', obj);
         window.localStorage.removeItem('cartID');
@@ -410,6 +461,8 @@ class MenuMain extends React.Component {
           window.localStorage.removeItem(' togetherMenuText');
           window.localStorage.removeItem(' togetherStatus');
           window.localStorage.removeItem(' togethersessionid');
+          window.localStorage.removeItem('togetheruser1email');
+          window.localStorage.removeItem('togetheruser1email');
           window.localStorage.setItem('cartID', origCart.data.message.cartID);
           window.localStorage.setItem('togethersessionid', null);
           window.localStorage.setItem('togetherStatus', 0);
@@ -465,22 +518,29 @@ class MenuMain extends React.Component {
     }
   }
   render() {
-    setTimeout(() => {
-      const uName = window.localStorage.getItem('name');
+    const uName = window.localStorage.getItem('name');
+    if (uName !== null) {
       window.TogetherJSConfig_getUserName = () => uName;
-
-      setTimeout(() => {
-        window.TogetherJS.refreshUserData();
-      }, 1000);
-    }, 1000);
-    setTimeout(() => {
-      // const uName = window.localStorage.getItem('name');
-      window.TogetherJSConfig_getUserName = () => this.state.userName;
       window.TogetherJS.refreshUserData();
-      setTimeout(() => {
-        window.TogetherJS.refreshUserData();
-      }, 1000);
-    }, 1000);
+    }
+    const newurllocal = window.location.href;
+    const oldurllocal = window.localStorage.getItem('currurl');
+    const myemail = window.localStorage.getItem('togetheruser1email');
+    const friendemail = window.localStorage.getItem('togetheruser2email');
+    if (newurllocal !== oldurllocal) {
+      window.localStorage.setItem('currurl', newurllocal);
+      const obj = {
+        sEmail: myemail,
+        rEmail: friendemail,
+        urltoload: newurllocal,
+      };
+      socket.emit('urlTogetherchange', obj);
+    }
+    // else {
+    //   window.TogetherJSConfig_getUserName = () => this.state.userName;
+    //   window.TogetherJS.refreshUserData();
+    // }
+
     if (!this.state.isAuthenticated) {
       return (
         <Navbar className="NavbarMain">
