@@ -192,6 +192,20 @@ class MenuMain extends React.Component {
         window.scrollTo(connectReq.hScroll, connectReq.vScroll);
       }
     });
+    window.addEventListener('scroll', function (event) {
+      const top = this.scrollY;
+      const left = this.scrollX;
+      const myemail = window.localStorage.getItem('togetheruser1email');
+      const friendemail = window.localStorage.getItem('togetheruser2email');
+      const obj = {
+        sEmail: myemail,
+        rEmail: friendemail,
+        hScroll: left,
+        vScroll: top,
+      };
+      socket.emit('scrollTogetherchange', obj);
+      // console.log(`Scroll X: ${left}px`, `Scroll Y: ${top}px`);
+    }, false);
   }
   componentDidUpdate() {
     const uName = window.localStorage.getItem('name');
@@ -199,6 +213,19 @@ class MenuMain extends React.Component {
       window.TogetherJSConfig_getUserName = function () { return uName; };
 
       window.TogetherJS.refreshUserData();
+    }
+    const newurllocal = window.location.href;
+    const oldurllocal = window.localStorage.getItem('currurl');
+    const myemail = window.localStorage.getItem('togetheruser1email');
+    const friendemail = window.localStorage.getItem('togetheruser2email');
+    if (newurllocal !== oldurllocal) {
+      window.localStorage.setItem('currurl', newurllocal);
+      const obj = {
+        sEmail: myemail,
+        rEmail: friendemail,
+        urltoload: newurllocal,
+      };
+      socket.emit('urlTogetherchange', obj);
     }
   }
 
@@ -520,48 +547,11 @@ class MenuMain extends React.Component {
     }
   }
   render() {
-    window.addEventListener('scroll', function (event) {
-      let top = this.scrollY,
-        left = this.scrollX;
-
-      let horizontalScroll = document.querySelector('.horizontalScroll'),
-        verticalScroll = document.querySelector('.verticalScroll');
-      const myemail = window.localStorage.getItem('togetheruser1email');
-      const friendemail = window.localStorage.getItem('togetheruser2email');
-      const obj = {
-        sEmail: myemail,
-        rEmail: friendemail,
-        hScroll: left,
-        vScroll: top,
-      };
-      socket.emit('scrollTogetherchange', obj);
-      console.log(`Scroll X: ${left}px`, `Scroll Y: ${top}px`);
-    }, false);
     const uName = window.localStorage.getItem('name');
     if (uName !== null) {
       window.TogetherJSConfig_getUserName = () => uName;
       window.TogetherJS.refreshUserData();
     }
-    const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
-    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-    const newurllocal = window.location.href;
-    const oldurllocal = window.localStorage.getItem('currurl');
-    const myemail = window.localStorage.getItem('togetheruser1email');
-    const friendemail = window.localStorage.getItem('togetheruser2email');
-    if (newurllocal !== oldurllocal) {
-      window.localStorage.setItem('currurl', newurllocal);
-      const obj = {
-        sEmail: myemail,
-        rEmail: friendemail,
-        urltoload: newurllocal,
-      };
-      socket.emit('urlTogetherchange', obj);
-    }
-    // else {
-    //   window.TogetherJSConfig_getUserName = () => this.state.userName;
-    //   window.TogetherJS.refreshUserData();
-    // }
-
     if (!this.state.isAuthenticated) {
       return (
         <Navbar className="NavbarMain">
