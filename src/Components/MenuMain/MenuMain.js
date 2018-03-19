@@ -168,7 +168,8 @@ class MenuMain extends React.Component {
       // alert(str);
       // alert('got here');
       // window.localStorage.setItem('currurl', newurllocal);
-      if (connectReq.rEmail === myemail && connectReq.sEmail === friendemail && myurl !== connectReq.urltoload) {
+
+      if (connectReq.rEmail === myemail && connectReq.sEmail === friendemail && myurl !== connectReq.urltoload && connectReq.urltoload.indexOf('togetherjs=') === -1) {
         // this.addStyleString2('#togetherjs-container.togetherjs { display: block !important; }');
         // alert('got here');
         setTimeout(() => {
