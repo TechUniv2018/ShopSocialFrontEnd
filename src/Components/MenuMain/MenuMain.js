@@ -156,22 +156,12 @@ class MenuMain extends React.Component {
       }
     });
     socket.on('urlTogetherChangeRelay', (connectReq) => {
-      const gettstatus = window.localStorage.getItem('togetherStatus');
-
-      const userEmail = window.localStorage.getItem('email');
       const myemail = window.localStorage.getItem('togetheruser1email');
       const friendemail = window.localStorage.getItem('togetheruser2email');
       const myurl = window.localStorage.getItem('currurl');
 
-      // const friendemail = window.localStorage.getItem('togetheruser2email');
-      // const str = `Myemail: ${myemail}firend emeail ${friendemail}rec myemail ${connectReq.rEmail}senderrecemail: ${connectReq.sEmail}`;
-      // alert(str);
-      // alert('got here');
-      // window.localStorage.setItem('currurl', newurllocal);
 
       if (connectReq.rEmail === myemail && connectReq.sEmail === friendemail && myurl !== connectReq.urltoload && connectReq.urltoload.indexOf('togetherjs=') === -1) {
-        // this.addStyleString2('#togetherjs-container.togetherjs { display: block !important; }');
-        // alert('got here');
         setTimeout(() => {
           window.self.location = connectReq.urltoload;
         }, 5000);
@@ -189,6 +179,17 @@ class MenuMain extends React.Component {
             alertText: '',
           });
         }, 4000);
+      }
+    });
+    socket.on('scrollTogetherChangeRelay', (connectReq) => {
+      // const gettstatus = window.localStorage.getItem('togetherStatus');
+
+      const myemail = window.localStorage.getItem('togetheruser1email');
+      const friendemail = window.localStorage.getItem('togetheruser2email');
+
+
+      if (connectReq.rEmail === myemail && connectReq.sEmail === friendemail) {
+        window.scrollTo(connectReq.hScroll, connectReq.vScroll);
       }
     });
   }
@@ -519,11 +520,30 @@ class MenuMain extends React.Component {
     }
   }
   render() {
+    window.addEventListener('scroll', function (event) {
+      let top = this.scrollY,
+        left = this.scrollX;
+
+      let horizontalScroll = document.querySelector('.horizontalScroll'),
+        verticalScroll = document.querySelector('.verticalScroll');
+      const myemail = window.localStorage.getItem('togetheruser1email');
+      const friendemail = window.localStorage.getItem('togetheruser2email');
+      const obj = {
+        sEmail: myemail,
+        rEmail: friendemail,
+        hScroll: left,
+        vScroll: top,
+      };
+      socket.emit('scrollTogetherchange', obj);
+      console.log(`Scroll X: ${left}px`, `Scroll Y: ${top}px`);
+    }, false);
     const uName = window.localStorage.getItem('name');
     if (uName !== null) {
       window.TogetherJSConfig_getUserName = () => uName;
       window.TogetherJS.refreshUserData();
     }
+    const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
     const newurllocal = window.location.href;
     const oldurllocal = window.localStorage.getItem('currurl');
     const myemail = window.localStorage.getItem('togetheruser1email');
