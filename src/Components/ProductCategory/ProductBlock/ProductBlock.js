@@ -90,9 +90,9 @@ export default class ProductBlock extends React.Component {
   render() {
     return (
       <figure className="ProductBox">
-        <img src={this.props.imageUrl} alt={this.props.name} />
+        <img src={this.props.imageUrl} alt="" className="ProductImage" />
         <figcaption>
-          <div className="ItemName">{this.props.name}</div>
+          <div className="ItemName">{this.props.name.split(' ').length > 15 ? `${this.props.name.substring(0, 60)}. . .` : this.props.name}</div>
           <div className="ItemDesc">{this.props.desc.substr(0, this.props.desc.lastIndexOf(' ', 80))}</div>
           <div className="ItemPrice">
             <s>{`$${Number(this.props.price) + 5}`}</s>{`$${this.props.price}`}

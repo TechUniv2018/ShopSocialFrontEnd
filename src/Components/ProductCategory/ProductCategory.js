@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import ProductGrid from './ProductGrid/ProductGrid';
 import FilterBar from './FilterBar/FilterBar';
 import ProductBlock from './ProductBlock/ProductBlock';
+import Footer from '../FooterMain/FooterMain';
 import './ProductCategory.css';
 
 export default class ProductCategory extends React.Component {
@@ -17,7 +18,6 @@ export default class ProductCategory extends React.Component {
   componentWillMount() {
     this.getProducts(0, 10000);
   }
-
 
   getProducts = (fromPrice, toPrice) => {
     const tempProductsArr = [];
@@ -67,13 +67,16 @@ handleSearch = (searchWord) => {
 
 render() {
   return (
-    <div className="ProductCategory">
-      <div className="col-15">
-        <FilterBar triggerFilter={this.triggerFilter} handleSearch={this.handleSearch} />
+    <div>
+      <div className="ProductCategory">
+        <div className="col-15">
+          <FilterBar triggerFilter={this.triggerFilter} handleSearch={this.handleSearch} />
+        </div>
+        <div className="col-85">
+          <ProductGrid products={this.state.productsForSearch} />
+        </div>
       </div>
-      <div className="col-85">
-        <ProductGrid products={this.state.productsForSearch} />
-      </div>
+      <Footer />
     </div>
   );
 }

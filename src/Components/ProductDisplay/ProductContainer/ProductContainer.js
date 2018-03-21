@@ -1,6 +1,8 @@
 import React from 'react';
-import { Grid, Row, Col, Image, Button } from 'react-bootstrap';
+import { Grid, Row, Col, Image, Button, Well } from 'react-bootstrap';
+import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 
+import Footer from '../../FooterMain/FooterMain';
 import './ProductContainer.css';
 
 const requestUrlbyId = '/api/v1/products/';
@@ -135,106 +137,84 @@ class ProductContainer extends React.Component {
   render() {
     if (window.localStorage.getItem('userID') === null) {
       return (
-        <div className="product-container-flex">
-          <Grid className="product-view-card">
-            <Row className="show-grid product-container-display-body card">
-              <div className="product-display-card-contents">
-                <Row>
-                  <Col xs={12} sm={12} md={7} lg={7} >
-                    <center> <Image src={this.state.productImage} responsive /> </center>
-                  </Col>
-                  <Col xs={12} sm={12} md={5} lg={5}>
-                    <h2> {this.state.productName} </h2>
-                    <strong className="product-price"> <h3><p> Best buy @ &#8377; {this.state.productPrice} </p> </h3> </strong>
-                    <div>
-                      <center>
-                        <Button onClick={() => { }} className="btn-product-view">Login to shop!</Button>
-                      </center>
-                    </div>
-                  </Col>
-                </Row>
-                <Row>
-                  <br />
-                  <Col >
-                    <div>
-                      <h1> Description </h1>
-                      <p className="product-desc-text"> {this.state.productDesc} </p>
-                    </div>
-                    <div />
-                  </Col>
-                </Row>
-                <Row>
-                  <Col xs={12} sm={12} md={4} lg={4}>
-                    <div className="product-manufacturer" >
-                      <h3>Manufacturer: <h5>{this.state.productMan}</h5></h3>
-                    </div>
-                  </Col>
-                  <Col xs={12} sm={12} md={4} lg={4}>
-                    <div className="product-model" >
-                      <h3>Model: <h5>{this.state.productModel}</h5></h3>
-                    </div>
-                  </Col>
-                  <Col xs={12} sm={12} md={4} lg={4}>
-                    <div className="product-upc" >
-                      <h3>UPC: <h5>{this.state.productUpc}</h5></h3>
-                    </div>
-                  </Col>
-                </Row>
-              </div>
+        <div>
+          <Grid className="ProductDisplay">
+            <Row>
+              <Col xs={6} sm={6} md={2} lg={2} className="ProductDisplayImageIcon">
+                <Well>
+                  <center> <Image src={this.state.productImage} responsive /> </center>
+                </Well>
+                <div className="ProductImagePickerArrow">
+                  <FontAwesomeIcon icon="arrow-circle-down" className="ProductImagePickerArrow" />
+                </div>
+              </Col>
+              <Col xs={12} sm={12} md={6} lg={6} className="ProductDisplayImage">
+                <center> <Image src={this.state.productImage} responsive /> </center>
+              </Col>
+              <Col xs={12} sm={12} md={4} lg={4} className="ProductDetailsContainer">
+                <h2 className="ProductDetailName"> {this.state.productName} </h2>
+                <h3 className="ProductDetailDisplayPrice">Best buy @ &#8377; {this.state.productPrice}</h3>
+                <div>
+                  <center>
+                    <Button onClick={() => { }} className="ProductDetailsCartButton">Login to shop!</Button>
+                  </center>
+                </div>
+                <Well className="ProductDetailDescContainer">
+                  <h3>The product:</h3>
+                  <p>{this.state.productDesc}</p>
+                  <h3>Manufacturer:</h3>
+                  <p>{this.state.productMan}</p>
+                  <h3>Model:</h3>
+                  <p>{this.state.productModel}</p>
+                  <h3>UPC:</h3>
+                  <p>{this.state.productUpc}</p>
+                </Well>
+              </Col>
             </Row>
+            <h4 className="ProductPermaLink"><FontAwesomeIcon icon="link" /> http://www.shopsocial.com/product/{this.state.productId}</h4>
           </Grid>
+          <Footer />
         </div>
       );
     }
     return (
-      <div className="product-container-flex">
-        <Grid className="product-view-card">
-          <Row className="show-grid product-container-display-body card">
-            <div className="product-display-card-contents">
-              <Row>
-                <Col xs={12} sm={12} md={7} lg={7} >
-                  <center> <Image src={this.state.productImage} responsive /> </center>
-                </Col>
-                <Col xs={12} sm={12} md={5} lg={5}>
-                  <h2> {this.state.productName} </h2>
-                  <strong className="product-price"> <h3><p> Best buy @ &#8377; {this.state.productPrice} </p> </h3> </strong>
-                  <div>
-                    <center>
-                      <Button onClick={() => { this.addProductToCart(); }} className="btn-product-view">{ this.state.productCartStatus === 0 ? 'Add to cart' : 'In cart'}</Button>
-                    </center>
-                  </div>
-                </Col>
-              </Row>
-              <Row>
-                <br />
-                <Col >
-                  <div>
-                    <h1> Description </h1>
-                    <p className="product-desc-text"> {this.state.productDesc} </p>
-                  </div>
-                  <div />
-                </Col>
-              </Row>
-              <Row>
-                <Col xs={12} sm={12} md={4} lg={4}>
-                  <div className="product-manufacturer" >
-                    <h3>Manufacturer: <h5>{this.state.productMan}</h5></h3>
-                  </div>
-                </Col>
-                <Col xs={12} sm={12} md={4} lg={4}>
-                  <div className="product-model" >
-                    <h3>Model: <h5>{this.state.productModel}</h5></h3>
-                  </div>
-                </Col>
-                <Col xs={12} sm={12} md={4} lg={4}>
-                  <div className="product-upc" >
-                    <h3>UPC: <h5>{this.state.productUpc}</h5></h3>
-                  </div>
-                </Col>
-              </Row>
-            </div>
+      <div>
+        <Grid className="ProductDisplay">
+          <Row>
+            <Col xs={6} sm={6} md={2} lg={2} className="ProductDisplayImageIcon">
+              <Well>
+                <center> <Image src={this.state.productImage} responsive /> </center>
+              </Well>
+              <div className="ProductImagePickerArrow">
+                <FontAwesomeIcon icon="arrow-circle-down" className="ProductImagePickerArrow" />
+              </div>
+            </Col>
+            <Col xs={12} sm={12} md={6} lg={6} className="ProductDisplayImage">
+              <center> <Image src={this.state.productImage} responsive /> </center>
+            </Col>
+            <Col xs={12} sm={12} md={4} lg={4} className="ProductDetailsContainer">
+              <h2 className="ProductDetailName"> {this.state.productName} </h2>
+              <h3 className="ProductDetailDisplayPrice">Best buy @ &#8377; {this.state.productPrice}</h3>
+              <div>
+                <center>
+                  <Button onClick={() => { this.addProductToCart(); }} className="ProductDetailsCartButton">{ this.state.productCartStatus === 0 ? 'Add to cart' : 'In cart'}</Button>
+                </center>
+              </div>
+              <Well className="ProductDetailDescContainer">
+                <h3>The product:</h3>
+                <p>{this.state.productDesc}</p>
+                <h3>Manufacturer:</h3>
+                <p>{this.state.productMan}</p>
+                <h3>Model:</h3>
+                <p>{this.state.productModel}</p>
+                <h3>UPC:</h3>
+                <p>{this.state.productUpc}</p>
+              </Well>
+            </Col>
           </Row>
+          <h4 className="ProductPermaLink"><FontAwesomeIcon icon="link" /> http://www.shopsocial.com/product/{this.state.productId}</h4>
         </Grid>
+        <Footer />
       </div>
     );
   }
