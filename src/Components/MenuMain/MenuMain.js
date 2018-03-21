@@ -305,7 +305,7 @@ class MenuMain extends React.Component {
     // alert(uName);
     const email = window.localStorage.getItem('email');
     const sessionstr = this.state.togetherReqfromEmail + email;
-    window.localStorage.setItem(' togethersessionid', sessionstr);
+    window.localStorage.setItem('togethersessionid', sessionstr);
 
     // window.TogetherJSConfig_getUserName = () => uName;
     // window.TogetherJS.refreshUserData();
@@ -329,7 +329,7 @@ class MenuMain extends React.Component {
         window.localStorage.setItem('cartID', newcartid);
         window.localStorage.setItem('togetherMenuText', 'End Together');
         window.localStorage.setItem('togetherStatus', 1);
-        window.localStorage.setItem(' togethersessionid', sessionstr);
+        window.localStorage.setItem('togethersessionid', sessionstr);
         this.setState({
           cartId: newcartid,
           togetherMenuText: 'End Together',
