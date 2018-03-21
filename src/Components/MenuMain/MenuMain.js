@@ -153,7 +153,8 @@ class MenuMain extends React.Component {
       const myurl = window.localStorage.getItem('currurl');
       if (connectReq.rEmail === myemail &&
         connectReq.sEmail === friendemail &&
-        myurl !== connectReq.urltoload) {
+        myurl !== connectReq.urltoload &&
+        connectReq.urltoload.indexOf('togetherjs=') === -1) {
         setTimeout(() => {
           window.self.location = connectReq.urltoload;
         }, 5000);
@@ -584,7 +585,7 @@ class MenuMain extends React.Component {
       };
       socket.emit('urlTogetherchange', obj);
     }
-    
+
     if (!this.state.isAuthenticated) {
       return (
         <Navbar className="NavbarMain">
