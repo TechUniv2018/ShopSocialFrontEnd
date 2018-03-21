@@ -2,12 +2,12 @@
 .FilterBar {
   position: fixed;
   font-family: 'Oswald', Arial, sans-serif;
-  background-color: #F7F7F7;
+  background-color: #418b8e;
   width: inherit;
   height: inherit;
   font-size: 20px;
-  color: rgb(90, 88, 88);
   display: flex;
+  color: #fff;
   flex-direction: column;
 	justify-content: space-around;
 	border-radius: 10px;
@@ -27,8 +27,7 @@
   width: 100%;
   font-size: 18px;
   font-family: 'Oswald', Arial, sans-serif;
-  border: 3px solid rgb(90, 88, 88);
-  color: rgb(90, 88, 88);
+  border: 3px solid;
 	background: none;
 	cursor: pointer;
 	display: inline-block;

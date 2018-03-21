@@ -131,7 +131,7 @@ class MenuMain extends React.Component {
         setTimeout(() => {
           const pingStatus = window.localStorage.getItem('pingStatus');
           window.localStorage.setItem('pingStatus', 0);
-          if (pingStatus == 1) {
+          if (pingStatus === 1) {
             this.setState({
               alertState: true,
               alertText: `${this.state.requestemail} is unavailable now. Please try later.`,
@@ -148,21 +148,12 @@ class MenuMain extends React.Component {
       }
     });
     socket.on('urlTogetherChangeRelay', (connectReq) => {
-      const gettstatus = window.localStorage.getItem('togetherStatus');
-
-      const userEmail = window.localStorage.getItem('email');
       const myemail = window.localStorage.getItem('togetheruser1email');
       const friendemail = window.localStorage.getItem('togetheruser2email');
       const myurl = window.localStorage.getItem('currurl');
-
-      // const friendemail = window.localStorage.getItem('togetheruser2email');
-      // const str = `Myemail: ${myemail}firend emeail ${friendemail}rec myemail ${connectReq.rEmail}senderrecemail: ${connectReq.sEmail}`;
-      // alert(str);
-      // alert('got here');
-      // window.localStorage.setItem('currurl', newurllocal);
-      if (connectReq.rEmail === myemail && connectReq.sEmail === friendemail && myurl !== connectReq.urltoload) {
-        // this.addStyleString2('#togetherjs-container.togetherjs { display: block !important; }');
-        // alert('got here');
+      if (connectReq.rEmail === myemail &&
+        connectReq.sEmail === friendemail &&
+        myurl !== connectReq.urltoload) {
         setTimeout(() => {
           window.self.location = connectReq.urltoload;
         }, 5000);
@@ -333,12 +324,6 @@ class MenuMain extends React.Component {
 
           respondto: this.state.togetherReqfromEmail,
         };
-        // window.TogetherJSConfig_getUserName = () => this.state.userName;
-        // window.TogetherJS.refreshUserData();
-        // setTimeout(() => {
-        //   window.TogetherJSConfig_getUserName = () => uName;
-        //   window.TogetherJS.refreshUserData();
-        // }, 1000);
 
         socket.emit('connectTogetherResponse', obj);
         window.localStorage.setItem('cartID', newcartid);
@@ -376,7 +361,7 @@ class MenuMain extends React.Component {
               window.location.reload(false);
             }, 2000);
           }
-        } else if (subcurr != subtog) {
+        } else if (subcurr !== subtog) {
           if (valbeforehash !== '/') {
             const newtlink = `${tlink.substring(0, hashindex)}/${tlink.substring(hashindex)}`;
             window.self.location = newtlink;
@@ -443,7 +428,7 @@ class MenuMain extends React.Component {
     window.TogetherJSConfig_getUserName = () => uName;
     window.TogetherJS.refreshUserData();
 
-    if (this.state.togetherStatus != 1) {
+    if (this.state.togetherStatus !== 1) {
       const getturl = setInterval(() => {
         const turl = window.TogetherJS.shareUrl();
         if (turl !== null) {
@@ -560,10 +545,6 @@ class MenuMain extends React.Component {
       };
       socket.emit('urlTogetherchange', obj);
     }
-    // else {
-    //   window.TogetherJSConfig_getUserName = () => this.state.userName;
-    //   window.TogetherJS.refreshUserData();
-    // }
 
     if (!this.state.isAuthenticated) {
       return (
