@@ -151,10 +151,7 @@ class MenuMain extends React.Component {
       const myemail = window.localStorage.getItem('togetheruser1email');
       const friendemail = window.localStorage.getItem('togetheruser2email');
       const myurl = window.localStorage.getItem('currurl');
-      if (connectReq.rEmail === myemail &&
-        connectReq.sEmail === friendemail &&
-        myurl !== connectReq.urltoload &&
-        connectReq.urltoload.indexOf('togetherjs=') === -1) {
+      if (connectReq.rEmail === myemail && connectReq.sEmail === friendemail && myurl !== connectReq.urltoload && connectReq.urltoload.indexOf('togetherjs=') === -1 && myemail !== null && friendemail !== null) {
         setTimeout(() => {
           window.self.location = connectReq.urltoload;
         }, 5000);
@@ -180,12 +177,11 @@ class MenuMain extends React.Component {
       const myemail = window.localStorage.getItem('togetheruser1email');
       const friendemail = window.localStorage.getItem('togetheruser2email');
 
-
-      if (connectReq.rEmail === myemail && connectReq.sEmail === friendemail) {
+      if (connectReq.rEmail === myemail && connectReq.sEmail === friendemail && myemail !== null && friendemail !== null) {
         window.scrollTo(connectReq.hScroll, connectReq.vScroll);
       }
     });
-    window.addEventListener('scroll', function (event) {
+    window.addEventListener('scroll', () => {
       const top = this.scrollY;
       const left = this.scrollX;
       const myemail = window.localStorage.getItem('togetheruser1email');
@@ -196,15 +192,15 @@ class MenuMain extends React.Component {
         hScroll: left,
         vScroll: top,
       };
-      socket.emit('scrollTogetherchange', obj);
-      // console.log(`Scroll X: ${left}px`, `Scroll Y: ${top}px`);
+      if (myemail !== null && friendemail !== null) {
+        socket.emit('scrollTogetherchange', obj);
+      }
     }, false);
   }
   componentDidUpdate() {
     const uName = window.localStorage.getItem('name');
     if (uName !== null) {
       window.TogetherJSConfig_getUserName = function () { return uName; };
-
       window.TogetherJS.refreshUserData();
     }
     const newurllocal = window.location.href;
@@ -218,7 +214,9 @@ class MenuMain extends React.Component {
         rEmail: friendemail,
         urltoload: newurllocal,
       };
-      socket.emit('urlTogetherchange', obj);
+      if (myemail !== null && friendemail !== null) {
+        socket.emit('urlTogetherchange', obj);
+      }
     }
   }
 
