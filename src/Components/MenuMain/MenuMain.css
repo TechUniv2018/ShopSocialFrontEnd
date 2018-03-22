@@ -40,11 +40,12 @@
     border: 2px solid rgb(90, 88, 88);
 }
 .TogetherModalSendButton{
-    padding: 1%;
+    padding: 2%;
     font-size: 1.7rem;
     float: right;
-    border: 2px solid #418b8e;
-    color: #418b8e;
+    border: 1px solid #418b8e;
+    color: white;
+    background-color: #418b8e;
     border-radius: 6px;
 }
 .TogetherModalSendButton:hover{

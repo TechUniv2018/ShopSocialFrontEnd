@@ -32,8 +32,6 @@ export default class ProductCategory extends React.Component {
               desc={product.description}
               price={product.price}
               id={product.productID}
-              cartId={window.localStorage.getItem('cartID')}
-              userId={window.localStorage.getItem('userID')}
               key={product.productID}
             />));
         } else if (resJSON.statusCode === 404) {

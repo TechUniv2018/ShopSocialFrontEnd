@@ -27,8 +27,8 @@ export default class ProductBlock extends React.Component {
     if (this.state.addToCartIcon === 'ion-android-cart') {
       const productToBeAdded = {
         productId: this.props.id,
-        cartId: this.props.cartId,
-        userId: this.props.userId,
+        cartId: window.localStorage.getItem('cartID'),
+        userId: window.localStorage.getItem('userID'),
       };
       fetch('/api/v1/cart/addToCart', {
         method: 'POST',
@@ -57,8 +57,8 @@ export default class ProductBlock extends React.Component {
     } else if (this.state.addToCartIcon === 'ion-checkmark-round') {
       const productToBeRemoved = {
         productId: this.props.id,
-        cartId: this.props.cartId,
-        userId: this.props.userId,
+        cartId: window.localStorage.getItem('cartID'),
+        userId: window.localStorage.getItem('userID'),
       };
       fetch('/api/v1/cart/removeFromCart', {
         method: 'DELETE',
@@ -114,6 +114,4 @@ ProductBlock.propTypes = {
   name: PropTypes.string.isRequired,
   price: PropTypes.number.isRequired,
   id: PropTypes.number.isRequired,
-  cartId: PropTypes.string.isRequired,
-  userId: PropTypes.string.isRequired,
 };
