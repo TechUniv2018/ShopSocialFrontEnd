@@ -194,7 +194,7 @@ class ProductContainer extends React.Component {
             </Col>
             <Col xs={12} sm={12} md={4} lg={4} className="ProductDetailsContainer">
               <h2 className="ProductDetailName"> {this.state.productName} </h2>
-              <h3 className="ProductDetailDisplayPrice">Best buy @ &#8377; {this.state.productPrice}</h3>
+              <h3 className="ProductDetailDisplayPrice">Best buy @ $ {this.state.productPrice}</h3>
               <div>
                 <center>
                   <Button onClick={() => { this.addProductToCart(); }} className="ProductDetailsCartButton">{ this.state.productCartStatus === 0 ? 'Add to cart' : 'In cart'}</Button>
