@@ -31,21 +31,19 @@ class CartModal extends React.Component {
     }
     return (
       <div >
-        <Modal show={this.props.showCart} onHide={() => { this.props.handleCartModalClose(); }}>
+        <Modal show={this.props.showCart} onHide={() => this.props.handleCartModalClose()}>
           <Modal.Header>
             <Modal.Title>Cart</Modal.Title>
           </Modal.Header>
           <Modal.Body >
-            {cartItems.length === 0 ? <h3>Oops! Please add some products</h3> : cartItems}
+            {cartItems.length === 0 ? <h3>Your cart is empty.</h3> : cartItems}
           </Modal.Body>
           <Modal.Footer>
             <Button className="ModalCartCloseButton" onClick={() => { this.props.handleCartModalClose(); }}> Close</Button>
             <Button
               className="ModalCartCheckoutButton"
               onClick={() => {
-              console.log('Performing checkout');
-              window.location.href = '/checkOut';
-}}
+              window.location.href = '/checkOut';}}
             > Checkout
             </Button>
           </Modal.Footer>
