@@ -1,5 +1,7 @@
 import React from 'react';
 import { Modal, Button } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
+
 import PropTypes from 'prop-types';
 
 import CartProductContainer from '../CartProductContainer/CartProductContainer';
@@ -38,7 +40,14 @@ class CartModal extends React.Component {
           </Modal.Body>
           <Modal.Footer>
             <Button className="ModalCartCloseButton" onClick={() => { this.props.handleCartModalClose(); }}> Close</Button>
-            <Button className="ModalCartCheckoutButton" onClick={() => { console.log('Performing checkout'); }}> Checkout</Button>
+            <Button
+              className="ModalCartCheckoutButton"
+              onClick={() => {
+              console.log('Performing checkout');
+              window.location.href = '/checkOut';
+}}
+            > Checkout
+            </Button>
           </Modal.Footer>
         </Modal>
       </div>
