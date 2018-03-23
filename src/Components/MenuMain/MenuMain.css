@@ -80,3 +80,24 @@
     color: #418b8e;
     font-size: 1.7rem;
 }
+.TogetherContactContainer{
+    height: 200px;
+    overflow-y: scroll;
+}
+.TogetherContactList{
+    list-style-type: none;
+}
+.TogetherContactList>li{
+    padding: 6px;
+}
+.TogetherContactList>li>input{
+    font-size: 1.7rem;
+    border: 2px solid #418b8e;
+    color: #418b8e;
+    border-radius: 6px;
+    width: 80%;
+}
+.TogetherContactList>li>input:hover{
+    color: rgb(255, 255, 255);
+    background-color: #418b8e;
+}

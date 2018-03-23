@@ -29,6 +29,7 @@ class MenuMain extends React.Component {
       togethersessionid: null,
       alertText: '',
       alertState: false,
+      friendsList: [],
     };
   }
 
@@ -49,10 +50,7 @@ class MenuMain extends React.Component {
     }
 
     socket.on('relayConnectTogether', (connectReq) => {
-      const gettstatus = window.localStorage.getItem('togetherStatus');
-
       const userEmail = window.localStorage.getItem('email');
-
 
       if (connectReq.requestEmail === userEmail && this.state.togetherStatus === 0) {
         window.localStorage.setItem('togetherlink', connectReq.togetherlink);
@@ -301,6 +299,12 @@ class MenuMain extends React.Component {
     const userName = window.localStorage.getItem('name');
     window.localStorage.setItem('togetheruser1email', userEmail);
     window.localStorage.setItem('togetheruser2email', this.state.requestemail);
+    axios.post('/addFriend', {
+      userId: window.localStorage.getItem('userID'),
+      friendsEmail: this.state.requestemail,
+    }).then((response) => {
+      console.log(response);
+    });
     const obj = {
       senderEmail: userEmail,
       senderName: userName,
@@ -464,7 +468,7 @@ class MenuMain extends React.Component {
     const uName = window.localStorage.getItem('name');
     window.TogetherJSConfig_getUserName = () => uName;
     window.TogetherJS.refreshUserData();
-
+    this.getTogetherContacts();
     if (this.state.togetherStatus === 0) {
       const getturl = setInterval(() => {
         const turl = window.TogetherJS.shareUrl();
@@ -565,13 +569,34 @@ class MenuMain extends React.Component {
       }
     }
   }
+  getTogetherContacts = () => {
+    const friendsListItem = [];
+    axios({
+      method: 'GET',
+      url: `/friends?id=${window.localStorage.getItem('userID')}`,
+    }).then((contactsResponse) => {
+      const { friendsList } = contactsResponse.data;
+      friendsList.forEach((friend) => {
+        friendsListItem.push(<li><input type="button" value={friend} onClick={(e) => { this.handleContactListTogetherRequest(e); }} /></li>);
+      });
+      this.setState({
+        friendsList: friendsListItem,
+      });
+    });
+  };
+  handleContactListTogetherRequest = (event) => {
+    this.setState({
+      requestemail: event.target.value,
+    }, () => {
+      this.handleForwardTogetherRequest();
+    });
+  }
   render() {
     const uName = window.localStorage.getItem('name');
     if (uName !== null) {
       window.TogetherJSConfig_getUserName = () => uName;
       window.TogetherJS.refreshUserData();
     }
-
     const newurllocal = window.location.href;
     const oldurllocal = window.localStorage.getItem('currurl');
     const myemail = window.localStorage.getItem('togetheruser1email');
@@ -585,7 +610,6 @@ class MenuMain extends React.Component {
       };
       socket.emit('urlTogetherchange', obj);
     }
-
     if (!this.state.isAuthenticated) {
       return (
         <Navbar className="NavbarMain">
@@ -646,6 +670,13 @@ class MenuMain extends React.Component {
           <Modal.Body className="TogetherModalBody">
             <input className="TogetherModalEmailField" type="text" placeholder="Enter the email of a friend to shop with" onChange={this.handleTogetherInputEmail} />
             <button className="TogetherModalSendButton" onClick={this.handleForwardTogetherRequest}>Send request </button>
+            <hr />
+            <h4>Recent contacts</h4>
+            <div className="TogetherContactContainer">
+              <ul className="TogetherContactList">
+                {this.state.friendsList}
+              </ul>
+            </div>
           </Modal.Body>
           <Modal.Footer>
             <Button className="TogetherModalCloseButton" onClick={this.handleTogetherModalClose}>Close</Button>
