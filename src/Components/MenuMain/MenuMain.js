@@ -16,11 +16,7 @@ class MenuMain extends React.Component {
     super(props);
     this.state = {
       isAuthenticated: false,
-      userId: '',
-      cartId: '',
       cartContents: [],
-      userName: '',
-      userEmail: '',
       showLogin: false,
       showCart: false,
       togetherMenuText: 'Together',
@@ -42,7 +38,6 @@ class MenuMain extends React.Component {
         cartContents: JSON.parse(window.localStorage.getItem('cartContents')),
         isAuthenticated: true,
         showLogin: false,
-
       });
     }
     if (window.localStorage.getItem('togetherMenuText') !== null) {
@@ -237,7 +232,6 @@ class MenuMain extends React.Component {
               cartContents,
               isAuthenticated: true,
               showLogin: false,
-
             });
           });
         });
@@ -254,7 +248,7 @@ class MenuMain extends React.Component {
 
   onLogout = () => {
     const togethermyStatus = window.localStorage.getItem('togetherStatus');
-    if (this.state.togetherStatus === 1 || togethermyStatus == 1) {
+    if (this.state.togetherStatus === 1 || togethermyStatus === 1) {
       this.toggleTogether();
     }
     axios.get('/user/logout').then((logoutResponse) => {
@@ -638,7 +632,7 @@ class MenuMain extends React.Component {
             </NavItem>
 
             <NavItem eventKey={1} href="#">
-              <div className="NavbarText" onClick={() => { this.handleCartModalOpen(); }}><FontAwesomeIcon icon="shopping-cart" /> {window.localStorage.getItem('togetherStatus') == 1 ? 'Our' : 'My'} Cart</div>
+              <div className="NavbarText" onClick={() => { this.handleCartModalOpen(); }}><FontAwesomeIcon icon="shopping-cart" /> {window.localStorage.getItem('togetherStatus') === 1 ? 'Our' : 'My'} Cart</div>
             </NavItem>
             <NavItem eventKey={1} href="#">
               <div className="NavbarText" onClick={() => { this.onLogout(); }}><FontAwesomeIcon icon="sign-out-alt" /> Logout</div>
@@ -659,7 +653,11 @@ class MenuMain extends React.Component {
         </Modal>
         <Modal show={this.state.showTogetherReqModal} onHide={this.handleTogetherReqModalClose}>
           <Modal.Header closeButton>
-            <Modal.Title>Your Friend {this.state.togetherReqfrom}  Sent a Request to Shop Together</Modal.Title>
+            <Modal.Title>Your Friend {
+              this.state.togetherReqfrom
+            }
+           Sent a Request to Shop Together
+            </Modal.Title>
           </Modal.Header>
           <Modal.Body className="TogetherModalBody">
             <button className="TogetherModalButton" onClick={this.handleAcceptTogetherRequest}>Accept Request </button>
@@ -672,7 +670,9 @@ class MenuMain extends React.Component {
         <CartModal
           cartContents={this.state.cartContents}
           handleCartModalClose={this.handleCartModalClose}
-          deleteCartContents={(productId, cartId) => { this.deleteCartContents(productId, cartId); }}
+          deleteCartContents={(productId, cartId) => {
+            this.deleteCartContents(productId, cartId);
+          }}
           cartId={window.localStorage.getItem('cartID')}
           showCart={this.state.showCart}
         />

@@ -7,6 +7,7 @@ import TestPage from './Components/TestComponents/TestPage';
 import Home from './Components/Home/Home';
 import ProductCategory from './Components/ProductCategory/ProductCategory';
 import MenuMain from '../src/Components/MenuMain/MenuMain';
+import CheckOut from './Components/CheckOut/CheckOut';
 
 class App extends Component {
   render() {
@@ -20,6 +21,7 @@ class App extends Component {
           <Route path="/category/:cgory" component={ProductCategory} />
           <Route path="/login" component={RegisterLoginModal} />
           <Route path="/test" component={TestPage} />
+          <Route path="/checkOut" component={CheckOut} />
         </Switch>
       </div>
     );
