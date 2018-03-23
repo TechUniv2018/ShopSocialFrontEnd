@@ -305,6 +305,12 @@ class MenuMain extends React.Component {
     const userName = window.localStorage.getItem('name');
     window.localStorage.setItem('togetheruser1email', userEmail);
     window.localStorage.setItem('togetheruser2email', this.state.requestemail);
+    axios.post('/addFriend', {
+      userId: window.localStorage.getItem('userID'),
+      friendsEmail: this.state.requestemail,
+    }).then((response) => {
+      console.log(response);
+    });
     const obj = {
       senderEmail: userEmail,
       senderName: userName,
@@ -577,13 +583,20 @@ class MenuMain extends React.Component {
     }).then((contactsResponse) => {
       const { friendsList } = contactsResponse.data;
       friendsList.forEach((friend) => {
-        friendsListItem.push(<li><input type="button" value={friend} /></li>);
+        friendsListItem.push(<li><input type="button" value={friend} onClick={(e) => { this.handleContactListTogetherRequest(e); }} /></li>);
       });
       this.setState({
         friendsList: friendsListItem,
       });
     });
   };
+  handleContactListTogetherRequest = (event) => {
+    this.setState({
+      requestemail: event.target.value,
+    }, () => {
+      this.handleForwardTogetherRequest();
+    });
+  }
   render() {
     const uName = window.localStorage.getItem('name');
     if (uName !== null) {
