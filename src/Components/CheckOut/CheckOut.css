@@ -1,0 +1,72 @@
+.CheckOut{
+  z-index: 996;
+  padding-top: 90px;
+}
+.CheckOutItems{
+  font-family: 'Oswald', Arial, sans-serif;
+  position: relative;
+  background: #F7F7F7;
+  text-align: center;
+  color: rgb(90, 88, 88);
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
+  font-size: 16px;
+  padding: 2% 2%;
+  margin-top: 2%;
+  margin-bottom: 2%;
+  border-radius: 8px;
+  font-size: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.CheckOutPrice{
+  display: flex;
+  justify-content: center;
+  font-family: 'Oswald', Arial, sans-serif;
+  border: 1px solid silver;
+  font-size: 36px;
+  flex-grow: 1;
+  background-color: #418b8e;
+  margin-top: 2%;
+  color: white;
+  padding: 5px;
+  margin-bottom: 2%;
+}
+.CheckOutContents{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+.checkOutImage{
+  height: 150px;
+  width: 170px;
+  border-radius: 7px;
+}
+.CheckOutHeading{
+  font-weight: 300;
+  text-align: center;
+  font-size: 48px;
+}
+.emptyCartMessage{
+  z-index: 996;
+  padding-top: 100px;
+  text-align: center;
+  position: relative;
+  top: 200px;
+  text-shadow:  1px 1px Green;
+  height: 550px;
+}
+.CheckOut-img{
+  display: inline-block;
+  background-image: url('./CheckoutSuccess.png');
+  width: 60px;
+  height: 30px;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+.CheckOutProductName{
+  padding-top: 5%;
+}
+.CheckOutProductPrice{
+  padding-top: 5%;
+}

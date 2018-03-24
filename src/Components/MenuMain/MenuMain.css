@@ -186,23 +186,24 @@
 }
 }  
 
-/* 
-@media
-
-
-.dropdown-suggestion-item{
-   
-    width:100%;
+.TogetherContactContainer{
+    height: 200px;
+    overflow-y: scroll;
 }
-.my-dropdown{
-    width:70%;
+.TogetherContactList{
+    list-style-type: none;
 }
-.search-input{
-    
+.TogetherContactList>li{
+    padding: 6px;
 }
-.searchNavItem{
-    width:40%;
+.TogetherContactList>li>input{
+    font-size: 1.7rem;
+    border: 2px solid #418b8e;
+    color: #418b8e;
+    border-radius: 6px;
+    width: 80%;
 }
-.navPulledRight{
-    width: 100%;}
-*/
+.TogetherContactList>li>input:hover{
+    color: rgb(255, 255, 255);
+    background-color: #418b8e;
+}

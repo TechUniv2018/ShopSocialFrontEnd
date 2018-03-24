@@ -1,5 +1,7 @@
 import React from 'react';
 import { Modal, Button } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
+
 import PropTypes from 'prop-types';
 
 import CartProductContainer from '../CartProductContainer/CartProductContainer';
@@ -37,8 +39,13 @@ class CartModal extends React.Component {
             {cartItems.length === 0 ? <h3>Your cart is empty.</h3> : cartItems}
           </Modal.Body>
           <Modal.Footer>
-            <Button className="ModalCartCloseButton" onClick={() => this.props.handleCartModalClose()}> Close</Button>
-            <Button className="ModalCartCheckoutButton" onClick={() => console.log('Performing checkout')}> Checkout</Button>
+            <Button className="ModalCartCloseButton" onClick={() => { this.props.handleCartModalClose(); }}> Close</Button>
+            <Button
+              className="ModalCartCheckoutButton"
+              onClick={() => {
+              window.location.href = '/checkOut';}}
+            > Checkout
+            </Button>
           </Modal.Footer>
         </Modal>
       </div>
