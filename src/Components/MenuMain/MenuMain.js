@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import socketIOClient from 'socket.io-client';
-import { Navbar, Nav, NavItem, Modal, Button } from 'react-bootstrap';
+import { Navbar, Nav, NavItem, Modal, Button, NavDropdown, MenuItem, Dropdown, Input } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import SnackBar from 'react-material-snackbar';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
@@ -16,6 +16,7 @@ class MenuMain extends React.Component {
     super(props);
     this.state = {
       isAuthenticated: false,
+      suggestions: [],
       userId: '',
       cartId: '',
       cartContents: [],
@@ -547,6 +548,15 @@ class MenuMain extends React.Component {
     }
   }
 
+  hideSuggestions=() => {
+    this.setState({
+      suggestions: [],
+    });
+  }
+
+  refreshPage=() => {
+    window.location.reload();
+  }
   deleteCartContents = (productId, cartId) => {
     const currentCartContents = this.state.cartContents;
     for (let i = 0; i < currentCartContents.length; i += 1) {
@@ -571,6 +581,38 @@ class MenuMain extends React.Component {
       }
     }
   }
+  getSuggestions=(event) => {
+    const productname = event.target.value;
+    fetch(`/search/${productname}`).then(response => response.json())
+      .then((resJSON) => {
+        if (resJSON !== undefined) {
+          this.setState({
+            suggestions: resJSON.data,
+          });
+          console.log(this.state.suggestions);
+        }
+        return resJSON.data;
+      }).catch(() => {
+        this.setState({
+          suggestions: [],
+        });
+      });
+
+    // fetch(`/search/${productname}`)
+    //   .then((selectedOp) => {
+    //     const newres = selectedOp.data;
+    //     return newres;
+    //   })
+    //   .then((data) => {
+    //     console.log(data.dataValues);
+    //
+    //   }).catch(() => {
+    //     this.setState({
+    //       suggestions: [],
+    //     });
+    //   });
+  }
+
   render() {
     const uName = window.localStorage.getItem('name');
     if (uName !== null) {
@@ -592,6 +634,30 @@ class MenuMain extends React.Component {
       socket.emit('urlTogetherchange', obj);
     }
 
+
+    const sugg = this.state.suggestions;
+    let suggestionList = [];
+
+    if (sugg === [] || sugg === undefined) {
+
+    } else {
+      suggestionList = sugg.map((step, index) =>
+        (
+
+          <div
+            key={index}
+            onClick={() => this.refreshPage()}
+            className="dropdown-suggestion-item"
+          >
+
+            <Link to={`/product/${step.productID}`} className="linkToItem">
+              {step.name}
+            </Link>
+          </div>
+
+        ));
+    }
+
     if (!this.state.isAuthenticated) {
       return (
         <Navbar className="NavbarMain">
@@ -601,6 +667,26 @@ class MenuMain extends React.Component {
             </Navbar.Brand>
             <Navbar.Toggle />
           </Navbar.Header>
+          <NavItem eventKey={1} href="#" className="searchNavItem" >
+            <div
+              className="my-dropdown"
+              onChange={event => this.getSuggestions(event)}
+              onMouseLeave={() => this.hideSuggestions()}
+            >
+              <input
+                type="text"
+                bsRole="toggle"
+                placeholder="Search.."
+                className="search-input"
+              />
+              <div className={(this.state.suggestions === [] || this.state.suggestions === null || this.state.suggestions === undefined)
+              ? 'hideSuggestions' : 'displaySuggestions'}
+              >
+
+                {suggestionList}
+              </div>
+            </div>
+          </NavItem>
           <Navbar.Collapse>
             <Nav pullRight>
               <NavItem eventKey={1} >
@@ -626,21 +712,45 @@ class MenuMain extends React.Component {
           <Navbar.Brand>
             <Link to="/" ><div className="NavbarIcon" /></Link>
           </Navbar.Brand>
+
           <Navbar.Toggle />
         </Navbar.Header>
-        <Navbar.Collapse>
-          <Nav pullRight >
-            <NavItem eventKey={1} href="#">
+        <NavItem eventKey={1} href="#" className="searchNavItem" >
+          <div
+            className="my-dropdown"
+            onChange={event => this.getSuggestions(event)}
+            onMouseLeave={() => this.hideSuggestions()}
+          >
+            <input
+              type="text"
+              bsRole="toggle"
+              placeholder="Search.."
+              className="search-input"
+            />
+            <div className={(this.state.suggestions === [] || this.state.suggestions === null || this.state.suggestions === undefined)
+              ? 'hideSuggestions' : 'displaySuggestions'}
+
+            >
+
+              {suggestionList}
+            </div>
+          </div>
+        </NavItem>
+        <Navbar.Collapse className="NavCollapse">
+
+          <Nav className="navPulledRight">
+
+            <NavItem eventKey={2} href="#">
               <div className="NavbarText">Hi {window.localStorage.getItem('name')}</div>
             </NavItem>
-            <NavItem eventKey={1} href="#">
+            <NavItem eventKey={3} href="#">
               <div className="NavbarText" onClick={() => { this.toggleTogether(); }}> <FontAwesomeIcon icon="handshake" /> {this.state.togetherMenuText}</div>
             </NavItem>
 
-            <NavItem eventKey={1} href="#">
+            <NavItem eventKey={4} href="#">
               <div className="NavbarText" onClick={() => { this.handleCartModalOpen(); }}><FontAwesomeIcon icon="shopping-cart" /> {window.localStorage.getItem('togetherStatus') == 1 ? 'Our' : 'My'} Cart</div>
             </NavItem>
-            <NavItem eventKey={1} href="#">
+            <NavItem eventKey={5} href="#">
               <div className="NavbarText" onClick={() => { this.onLogout(); }}><FontAwesomeIcon icon="sign-out-alt" /> Logout</div>
             </NavItem>
           </Nav>

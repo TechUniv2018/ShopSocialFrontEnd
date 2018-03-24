@@ -22,6 +22,7 @@
     font-size: 1.8rem;
     font-weight: 600;
 }
+
 .TogetherRequestModal>div>div{
     border: 3px solid #418b8e;
 }
@@ -34,6 +35,7 @@
     color: #418b8e;
     border-radius: 6px;
 }
+
 .TogetherModalCloseButton:hover{
     color: rgb(90, 88, 88);
     background-color: #fff;
@@ -80,3 +82,127 @@
     color: #418b8e;
     font-size: 1.7rem;
 }
+.searchNavItem{
+    margin: 0;
+    list-style: none;
+    width: 40%;
+    padding: 0;
+    float: left;
+    margin-top: 3%;
+ 
+}
+.my-dropdown{    width: 100%; }
+.search-input{    width: 100%;    border-radius: 5px;  padding:2px; padding-left:5px; }
+.dropdown-suggestion-item{
+   background-color: #fff;
+   opacity: 0.8;
+   z-index:2000;
+   padding:5px;
+}
+.displaySuggestions{
+   
+    display:block;
+   height: 200px;
+   overflow-y:auto;
+}
+
+.hideSuggestions{
+    display: none;
+}
+
+ @media(max-width:1200px) {
+   
+.searchNavItem{
+    margin: 0;
+    list-style: none;
+    width: 30%;
+    padding: 0;
+    float: left;
+    margin-top: 3%;
+}
+}
+
+@media(max-width:993px) {
+    .searchNavItem{
+        margin: 0;
+        list-style: none;
+        width: 20%;
+        padding: 0;
+        float: left;
+        margin-top: 3%;
+    }
+    .container{
+        margin:0;
+        width:100%;
+        
+    }  
+    .navPulledRight nav navbar-nav{
+       
+    }
+
+}  
+
+
+@media(max-width:847px) {
+    .searchNavItem{
+        margin: 0;
+        list-style: none;
+        width: 23%;
+        padding: 0;
+        float: left;
+        margin-top: 3%;
+    }
+    .container{
+        margin:0;
+        width:100%;
+        
+    }  
+    .navPulledRight div{
+        font-size: 100%;
+    }
+
+}  
+
+
+@media(max-width:767px) {
+    .searchNavItem{
+        margin: 0;
+        list-style: none;
+        width: 50%;
+        margin-left: 90px;
+        margin-top:-40px;
+        float: left;
+    }
+    .container{
+        margin:0;
+        width:100%;
+        
+    }  
+    .navPulledRight div{
+        font-size: 100%;
+    }
+.navbar-toggle{
+    margin-top: 35px;
+}
+}  
+
+/* 
+@media
+
+
+.dropdown-suggestion-item{
+   
+    width:100%;
+}
+.my-dropdown{
+    width:70%;
+}
+.search-input{
+    
+}
+.searchNavItem{
+    width:40%;
+}
+.navPulledRight{
+    width: 100%;}
+*/
