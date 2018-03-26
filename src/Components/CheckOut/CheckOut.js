@@ -69,7 +69,7 @@ class CheckOut extends React.Component {
       let flag = 0;
       let time = 0;
       if (parseInt(window.localStorage.getItem('togetherStatus')) !== 0) {
-        time = 2000;
+        time = 5000;
       }
       window.setTimeout(() => {
         for (let i = 0; i < checkOutCartContents.length; i += 1) {

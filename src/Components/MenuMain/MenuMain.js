@@ -537,6 +537,9 @@ class MenuMain extends React.Component {
             togethersessionid: null,
           });
           window.sessionStorage.clear();
+          setTimeout(() => {
+            window.location.reload(false);
+          }, 1500);
         }
       });
     }
