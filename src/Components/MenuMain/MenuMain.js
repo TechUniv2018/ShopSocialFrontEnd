@@ -16,6 +16,7 @@ class MenuMain extends React.Component {
     super(props);
     this.state = {
       isAuthenticated: false,
+      suggestions: [],
       cartContents: [],
       showLogin: false,
       showCart: false,
@@ -34,6 +35,9 @@ class MenuMain extends React.Component {
   }
 
   componentDidMount() {
+    socket.on('disconnect', () => {
+      socket.disconnect(0);
+    });
     if (window.localStorage.getItem('email') !== null) {
       this.setState({
         cartContents: JSON.parse(window.localStorage.getItem('cartContents')),
@@ -44,11 +48,10 @@ class MenuMain extends React.Component {
     if (window.localStorage.getItem('togetherMenuText') !== null) {
       this.setState({
         togetherMenuText: window.localStorage.getItem('togetherMenuText'),
-        togetherStatus: window.localStorage.getItem('togetherStatus'),
+        togetherStatus: parseInt(window.localStorage.getItem('togetherStatus')),
         togethersessionid: window.localStorage.getItem('togethersessionid'),
       });
     }
-
     socket.on('relayConnectTogether', (connectReq) => {
       const userEmail = window.localStorage.getItem('email');
 
@@ -70,6 +73,7 @@ class MenuMain extends React.Component {
         socket.emit('connectTogetherResponse', obj);
       }
     });
+
     socket.on('relayConnectTogetherResponse', (connectRes) => {
       const userEmail = window.localStorage.getItem('email');
       const togetherStatus = window.localStorage.getItem('togetherStatus');
@@ -144,8 +148,7 @@ class MenuMain extends React.Component {
       if (connectReq.rEmail === myemail && connectReq.sEmail === friendemail && myurl !== connectReq.urltoload && connectReq.urltoload.indexOf('togetherjs=') === -1 && myemail !== null && friendemail !== null) {
         setTimeout(() => {
           window.self.location = connectReq.urltoload;
-        }, 5000);
-
+        }, 1500);
         setTimeout(() => {
           window.location.reload(false);
         }, 7000);
@@ -161,7 +164,6 @@ class MenuMain extends React.Component {
         }, 4000);
       }
     });
-
     socket.on('scrollTogetherChangeRelay', (connectReq) => {
       // const gettstatus = window.localStorage.getItem('togetherStatus');
 
@@ -171,7 +173,6 @@ class MenuMain extends React.Component {
         window.scrollTo(connectReq.hScroll, connectReq.vScroll);
       }
     });
-
     window.addEventListener('scroll', (event) => {
       const top = window.scrollY;
       const left = window.scrollX;
@@ -212,7 +213,36 @@ class MenuMain extends React.Component {
       }
     }
   }
-
+  getCartContentsFromDatabase() {
+    const cartId = window.localStorage.getItem('cartID');
+    const cartContents = [];
+    const currurl = window.location.href;
+    window.localStorage.setItem('currurl', currurl);
+    axios.get(`/api/v1/cart/fetchCart/${cartId}`).then((cartContentsResponse) => {
+      if (!(cartContentsResponse.data.message.length === 0)) {
+        cartContentsResponse.data.message.forEach((product) => {
+          axios.get(`/api/v1/products/${product.productID}`).then((productDetailsResponse) => {
+            const productDetails = productDetailsResponse.data.data;
+            window.localStorage.setItem(productDetails.productID.toString(), 'ion-checkmark-round');
+            cartContents.push(productDetails);
+            window.localStorage.setItem('cartContents', JSON.stringify(cartContents));
+            this.setState({
+              cartContents,
+              isAuthenticated: true,
+              showCart: true,
+            });
+          });
+        });
+      } else {
+        window.localStorage.setItem('cartContents', JSON.stringify(cartContents));
+        this.setState({
+          cartContents,
+          isAuthenticated: true,
+          showCart: true,
+        });
+      }
+    });
+  }
   onLogin = (userObject) => {
     const cartId = window.localStorage.getItem('cartID');
     const cartContents = [];
@@ -229,7 +259,6 @@ class MenuMain extends React.Component {
             this.setState({
               cartContents,
               isAuthenticated: true,
-              showLogin: false,
             });
           });
         });
@@ -238,7 +267,6 @@ class MenuMain extends React.Component {
         this.setState({
           cartContents,
           isAuthenticated: true,
-          showLogin: false,
         });
       }
     });
@@ -342,7 +370,6 @@ class MenuMain extends React.Component {
     const sessionstr = this.state.togetherReqfromEmail + email;
     window.localStorage.setItem('togethersessionid', sessionstr);
 
-
     const url = `/api/v1/cart/initTogetherCart/${sessionstr}`;
     axios.get(url).then((togetherCart) => {
       const newcartid = togetherCart.data.message;
@@ -409,6 +436,7 @@ class MenuMain extends React.Component {
         }
         window.TogetherJSConfig_getUserName = () => uName;
         window.TogetherJS.refreshUserData();
+        window.localStorage.setItem('togetherjs.settings.defaultName', JSON.stringify(window.localStorage.getItem('name')));
       }
     });
   }
@@ -432,7 +460,7 @@ class MenuMain extends React.Component {
   }
 
   segregateCartContentsOfSession = () => {
-    const sessionID = { sessionID: this.state.togethersessionid };
+    const sessionID = { sessionID: window.localStorage.getItem('togethersessionid') };
     fetch('/api/v1/cart/segregateCartContentsOfSession', {
       method: 'POST',
       headers: {
@@ -470,6 +498,7 @@ class MenuMain extends React.Component {
     window.TogetherJS.refreshUserData();
     this.getTogetherContacts();
     if (this.state.togetherStatus === 0) {
+      const socket = socketIOClient('http://localhost:8080');
       const getturl = setInterval(() => {
         const turl = window.TogetherJS.shareUrl();
         console.log('turl', turl);
@@ -485,10 +514,12 @@ class MenuMain extends React.Component {
           clearInterval(getturl);
         }
       }, 1000);
+      window.localStorage.setItem('togetherjs.settings.defaultName', JSON.stringify(window.localStorage.getItem('name')));
     } else {
       const userId = window.localStorage.getItem('userID');
       const url = `/api/v1/cart/initCart/${userId}`;
-
+      socket.emit('disconnect');
+      this.segregateCartContentsOfSession();
       axios.get(url).then((origCart) => {
         if (origCart.data.statusCode === 200) {
           console.log(origCart.data.message);
@@ -496,6 +527,7 @@ class MenuMain extends React.Component {
           window.localStorage.setItem('togethersessionid', null);
           window.localStorage.setItem('togetherStatus', 0);
           window.localStorage.setItem('togetherMenuText', 'Together');
+          window.localStorage.setItem('togetheruser2email', null);
           this.setState({
             togetherStatus: 0,
             togetherMenuText: 'Together',
@@ -505,7 +537,9 @@ class MenuMain extends React.Component {
             togethersessionid: null,
           });
           window.sessionStorage.clear();
-          this.segregateCartContentsOfSession();
+          setTimeout(() => {
+            window.location.reload(false);
+          }, 1500);
         }
       });
     }
@@ -538,13 +572,19 @@ class MenuMain extends React.Component {
           });
         });
     } else {
-      this.setState({
-        showCart: true,
-        cartContents: JSON.parse(window.localStorage.getItem('cartContents')),
-      });
+      this.getCartContentsFromDatabase();
     }
   }
 
+  hideSuggestions=() => {
+    this.setState({
+      suggestions: [],
+    });
+  }
+
+  refreshPage=() => {
+    window.location.reload();
+  }
   deleteCartContents = (productId, cartId) => {
     const currentCartContents = this.state.cartContents;
     for (let i = 0; i < currentCartContents.length; i += 1) {
@@ -569,6 +609,24 @@ class MenuMain extends React.Component {
       }
     }
   }
+  getSuggestions=(event) => {
+    const productname = event.target.value;
+    fetch(`/search/${productname}`).then(response => response.json())
+      .then((resJSON) => {
+        if (resJSON !== undefined) {
+          this.setState({
+            suggestions: resJSON.data,
+          });
+          console.log(this.state.suggestions);
+        }
+        return resJSON.data;
+      }).catch(() => {
+        this.setState({
+          suggestions: [],
+        });
+      });
+  }
+
   getTogetherContacts = () => {
     const friendsListItem = [];
     axios({
@@ -610,6 +668,31 @@ class MenuMain extends React.Component {
       };
       socket.emit('urlTogetherchange', obj);
     }
+
+
+    const sugg = this.state.suggestions;
+    let suggestionList = [];
+
+    if (sugg === [] || sugg === undefined) {
+
+    } else {
+      suggestionList = sugg.map((step, index) =>
+        (
+
+          <div
+            key={index}
+            onClick={() => this.refreshPage()}
+            className="dropdown-suggestion-item"
+          >
+
+            <Link to={`/product/${step.productID}`} className="linkToItem">
+              {step.name}
+            </Link>
+          </div>
+
+        ));
+    }
+
     if (!this.state.isAuthenticated) {
       return (
         <Navbar className="NavbarMain">
@@ -619,6 +702,26 @@ class MenuMain extends React.Component {
             </Navbar.Brand>
             <Navbar.Toggle />
           </Navbar.Header>
+          <NavItem eventKey={1} href="#" className="searchNavItem" >
+            <div
+              className="my-dropdown"
+              onChange={event => this.getSuggestions(event)}
+              onMouseLeave={() => this.hideSuggestions()}
+            >
+              <input
+                type="text"
+                bsRole="toggle"
+                placeholder="Search.."
+                className="search-input"
+              />
+              <div className={(this.state.suggestions === [] || this.state.suggestions === null || this.state.suggestions === undefined)
+              ? 'hideSuggestions' : 'displaySuggestions'}
+              >
+
+                {suggestionList}
+              </div>
+            </div>
+          </NavItem>
           <Navbar.Collapse>
             <Nav pullRight>
               <NavItem eventKey={1} >
@@ -644,21 +747,49 @@ class MenuMain extends React.Component {
           <Navbar.Brand>
             <Link to="/" ><div className="NavbarIcon" /></Link>
           </Navbar.Brand>
+
           <Navbar.Toggle />
         </Navbar.Header>
-        <Navbar.Collapse>
-          <Nav pullRight >
-            <NavItem eventKey={1} href="#">
+        <NavItem eventKey={1} href="#" className="searchNavItem" >
+          <div
+            className="my-dropdown"
+            onChange={event => this.getSuggestions(event)}
+            onMouseLeave={() => this.hideSuggestions()}
+          >
+            <input
+              type="text"
+              bsRole="toggle"
+              placeholder="Search.."
+              className="search-input"
+            />
+            <div className={(this.state.suggestions === [] || this.state.suggestions === null || this.state.suggestions === undefined)
+              ? 'hideSuggestions' : 'displaySuggestions'}
+
+            >
+
+              {suggestionList}
+            </div>
+          </div>
+        </NavItem>
+        <Navbar.Collapse className="NavCollapse">
+
+          <Nav className="navPulledRight">
+
+            <NavItem eventKey={2} href="#">
               <div className="NavbarText">Hi {window.localStorage.getItem('name')}</div>
             </NavItem>
-            <NavItem eventKey={1} href="#">
+            <NavItem eventKey={3} href="#">
               <div className="NavbarText" onClick={() => { this.toggleTogether(); }}> <FontAwesomeIcon icon="handshake" /> {this.state.togetherMenuText}</div>
             </NavItem>
 
             <NavItem eventKey={1} href="#">
-              <div className="NavbarText" onClick={() => { this.handleCartModalOpen(); }}><FontAwesomeIcon icon="shopping-cart" /> {window.localStorage.getItem('togetherStatus') === 1 ? 'Our' : 'My'} Cart</div>
+              <div
+                className="NavbarText"
+                onClick={() => { this.handleCartModalOpen(); }}
+              ><FontAwesomeIcon icon="shopping-cart" /> {window.localStorage.getItem('togetherStatus') === 1 ? 'Our' : 'My'} Cart
+              </div>
             </NavItem>
-            <NavItem eventKey={1} href="#">
+            <NavItem eventKey={5} href="#">
               <div className="NavbarText" onClick={() => { this.onLogout(); }}><FontAwesomeIcon icon="sign-out-alt" /> Logout</div>
             </NavItem>
           </Nav>
