@@ -4,42 +4,58 @@ import { Grid, Row, Col } from 'react-bootstrap';
 import Footer from '../FooterMain/FooterMain';
 import './CheckOut.css';
 
-if (parseInt(window.localStorage.getItem('togetherStatus')) !== 0) {
-  const sessionID = { sessionID: window.localStorage.getItem('togethersessionid') };
-  fetch('/api/v1/cart/getCartContentsOfSession', {
-    method: 'POST',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(sessionID),
-  }).then(response => response.json())
-    .then((resJSON) => {
-      console.log(resJSON.products);
-      window.localStorage.setItem('cartContents', JSON.stringify(resJSON.products));
-    });
-} else {
-  const cartId = window.localStorage.getItem('cartID');
-  const cartContents = [];
-  const currurl = window.location.href;
-  window.localStorage.setItem('currurl', currurl);
-  axios.get(`/api/v1/cart/fetchCart/${cartId}`).then((cartContentsResponse) => {
-    if (!(cartContentsResponse.data.message.length === 0)) {
-      cartContentsResponse.data.message.forEach((product) => {
-        axios.get(`/api/v1/products/${product.productID}`).then((productDetailsResponse) => {
-          const productDetails = productDetailsResponse.data.data;
-          window.localStorage.setItem(productDetails.productID.toString(), 'ion-checkmark-round');
-          cartContents.push(productDetails);
-          window.localStorage.setItem('cartContents', JSON.stringify(cartContents));
-        });
-      });
-    } else {
-      window.localStorage.setItem('cartContents', JSON.stringify(cartContents));
-    }
-  });
-}
 class CheckOut extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      refresh: 0,
+    };
+  }
+  contents() {
+    if (parseInt(window.localStorage.getItem('togetherStatus')) !== 0) {
+      const sessionID = { sessionID: window.localStorage.getItem('togethersessionid') };
+      fetch('/api/v1/cart/getCartContentsOfSession', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(sessionID),
+      }).then(response => response.json())
+        .then((resJSON) => {
+          console.log(resJSON.products);
+          window.localStorage.setItem('cartContents', JSON.stringify(resJSON.products));
+          if (this.state.refresh === 0) { this.setState({ refresh: 1 }); }
+        });
+    } else {
+      const cartId = window.localStorage.getItem('cartID');
+      const cartContents = [];
+      const currurl = window.location.href;
+      window.localStorage.setItem('currurl', currurl);
+      axios.get(`/api/v1/cart/fetchCart/${cartId}`).then((cartContentsResponse) => {
+        if (!(cartContentsResponse.data.message.length === 0)) {
+          cartContentsResponse.data.message.forEach((product) => {
+            axios.get(`/api/v1/products/${product.productID}`).then((productDetailsResponse) => {
+              const productDetails = productDetailsResponse.data.data;
+              window.localStorage.setItem(productDetails.productID.toString(), 'ion-checkmark-round');
+              cartContents.push(productDetails);
+              window.localStorage.setItem('cartContents', JSON.stringify(cartContents));
+            });
+          });
+        } else {
+          window.localStorage.setItem('cartContents', JSON.stringify(cartContents));
+        }
+      });
+    }
+  }
   render() {
+    if (parseInt(window.localStorage.getItem('togetherStatus')) !== 0) {
+      setTimeout(() => {
+        this.contents();
+      }, 0);
+    } else {
+      this.contents();
+    }
     let checkOutCartContents = JSON.parse(window.localStorage.getItem('cartContents'));
     const checkOutItems = [];
     let total = 0;
