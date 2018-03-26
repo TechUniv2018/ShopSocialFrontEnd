@@ -43,7 +43,8 @@ class CartModal extends React.Component {
             <Button
               className="ModalCartCheckoutButton"
               onClick={() => {
-              window.location.href = '/checkOut';}}
+              window.location.href = '/checkOut';
+             }}
             > Checkout
             </Button>
           </Modal.Footer>
@@ -57,6 +58,7 @@ CartModal.propTypes = {
   cartContents: PropTypes.array,
   handleCartModalClose: PropTypes.func.isRequired,
   deleteCartContents: PropTypes.func.isRequired,
+  togetherCheckout: PropTypes.func.isRequired,
   showCart: PropTypes.bool.isRequired,
   cartId: PropTypes.string,
 };
