@@ -16,6 +16,8 @@
 .HomeCategories{
     margin-top: 2%;
     margin-bottom: 2%;
+    display: flex;
+    justify-content: center;
     width: 80%;
     align-self: center;
     margin-left: 2%;
@@ -98,11 +100,12 @@
 }
 .HomeAboutText {
     color: black;
-    font-size: 2.7rem;
+    font-size: 1.9rem;
     display: flex;
+    font-family: Arial, Helvetica, sans-serif;
     text-align: justify;
     align-self: center;
-    width: 50%;
+    width: 80%;
     margin-bottom: 2%;
     font-weight: 300;
 }

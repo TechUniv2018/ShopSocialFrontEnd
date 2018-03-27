@@ -21,52 +21,56 @@ export default class FilterBar extends React.Component {
 
   render() {
     return (
-      <div className="FilterBar">
-        <Form className="FilterForm FilterSearch" vertical="true">
-          <FormGroup controlId="instantSearch">
-            <h3>Filter by name</h3>
-            <ControlLabel>Search</ControlLabel>{' '}
-            <FormControl
-              type="text"
-              value={this.state.instantSearch}
-              onChange={(event) => {
+      <div className="filterOuter">
+        <div className="downarrow" onMouseOver="document.getElementsByClassName('FilterBar').style.display='flex';"> <center> ^ </center></div>
+        <div className="FilterBar">
+
+          <Form className="FilterForm FilterSearch" vertical="true">
+            <FormGroup controlId="instantSearch">
+              <h3>Filter by name</h3>
+              <ControlLabel>Search</ControlLabel>{' '}
+              <FormControl
+                type="text"
+                value={this.state.instantSearch}
+                onChange={(event) => {
                 this.setState({ instantSearch: event.target.value });
               }
             }
-              onKeyUp={() => this.props.handleSearch(this.state.instantSearch)}
-            />
-          </FormGroup>
-        </Form>
-        <Form className="FilterForm FilterPrice" vertical="true">
-          <FormGroup controlId="fromRange">
-            <h3>Filter by price</h3>
-            <ControlLabel>From</ControlLabel>{' '}
-            <FormControl
-              type="number"
-              placeholder="0"
-              value={this.state.fromRange}
-              onChange={(event) => {
+                onKeyUp={() => this.props.handleSearch(this.state.instantSearch)}
+              />
+            </FormGroup>
+          </Form>
+          <Form className="FilterForm FilterPrice" >
+            <FormGroup controlId="fromRange">
+              <h3>Filter by price</h3>
+              <ControlLabel>From</ControlLabel>{' '}
+              <FormControl
+                type="number"
+                placeholder="0"
+                value={this.state.fromRange}
+                onChange={(event) => {
                 if (event.target.value >= 0) {
                   this.setState({ fromRange: event.target.value });
                 }
               }}
-            />
-          </FormGroup>{' '}
-          <FormGroup controlId="toRange">
-            <ControlLabel>To</ControlLabel>{' '}
-            <FormControl
-              type="number"
-              placeholder="10000"
-              value={this.state.toRange}
-              onChange={(event) => {
+              />
+            </FormGroup>{' '}
+            <FormGroup controlId="toRange">
+              <ControlLabel>To</ControlLabel>{' '}
+              <FormControl
+                type="number"
+                placeholder="10000"
+                value={this.state.toRange}
+                onChange={(event) => {
                 if (event.target.value >= this.state.fromRange) {
                   this.setState({ toRange: event.target.value });
                 }
               }}
-            />
-          </FormGroup>{' '}
-          <div bsStyle="info" onClick={this.sendRange} className="FilterButton" role="button" onKeyPress={() => {}}>Filter</div>
-        </Form>
+              />
+            </FormGroup>{' '}
+            <div bsStyle="info" onClick={this.sendRange} className="FilterButton" role="button" onKeyPress={() => {}}>Filter</div>
+          </Form>
+        </div>
       </div>
     );
   }

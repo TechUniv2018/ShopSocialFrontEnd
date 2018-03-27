@@ -22,11 +22,13 @@ class FooterMain extends React.Component {
                 </div>
               </div>
             </Col>
-            <Col xs={12} md={5} mdOffset={3}>
+            <Col xs={12} md={6} mdOffset={3}>
               <div>
                 <h3 className="FooterCenterText"> Terms and Conditions </h3>
                 <br />
+
                 <div className="FooterJustifyText">
+
                   <h6> <FontAwesomeIcon icon={faCheck} /> Use of the Website is available only to persons who can form legally
                     binding contracts under Indian Contract Act, 1872.
                   </h6>
@@ -36,7 +38,9 @@ class FooterMain extends React.Component {
                   <h6> <FontAwesomeIcon icon={faCheck} /> If You use the Website, You shall be responsible for maintaining the confidentiality of your Display Name and Password and You shall be responsible for all activities that occur
                      under your Display Name and Password.
                   </h6>
+
                 </div>
+
               </div>
 
             </Col>
