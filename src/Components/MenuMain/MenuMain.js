@@ -289,6 +289,7 @@ class MenuMain extends React.Component {
       }
     });
     window.sessionStorage.clear();
+    window.localStorage.removeItem('currurl');
   }
 
   onMessage = (message) => {
@@ -575,6 +576,44 @@ class MenuMain extends React.Component {
       this.getCartContentsFromDatabase();
     }
   }
+  handleCartDataTogether = () => {
+    if (this.state.togetherStatus !== 0) {
+      const sessionID = { sessionID: this.state.togethersessionid };
+      fetch('/api/v1/cart/getCartContentsOfSession', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(sessionID),
+      }).then(response => response.json())
+        .then((resJSON) => {
+          // console.log(resJSON);
+          const oldcart = JSON.parse(window.localStorage.getItem('cartContents'));
+          console.log(oldcart);
+          console.log(resJSON.products);
+          console.log(oldcart.length);
+          console.log(resJSON.products.length);
+          if (oldcart.length !== resJSON.products.length) {
+            window.localStorage.setItem('cartContents', JSON.stringify(resJSON.products));
+
+            setInterval(() => {
+              for (let i = 0; i < window.localStorage.length; i += 1) {
+                if (window.localStorage.getItem(localStorage.key(i)) === 'ion-checkmark-round') {
+                  window.localStorage.removeItem(window.localStorage.key(i));
+                }
+              }
+              const cartArray = JSON.parse(window.localStorage.getItem('cartContents'));
+              for (let i = 0; i < cartArray.length; i += 1) {
+                const productId = cartArray[i].productID;
+                window.localStorage.setItem(productId.toString(), 'ion-checkmark-round');
+              }
+              window.location.reload(true);
+            }, 500);
+          }
+        });
+    }
+  }
 
   hideSuggestions=() => {
     this.setState({
@@ -650,6 +689,12 @@ class MenuMain extends React.Component {
     });
   }
   render() {
+    setInterval(() => {
+      const togetherStatus = +window.localStorage.getItem('togetherStatus');
+      if (togetherStatus !== 0) {
+        this.handleCartDataTogether();
+      }
+    }, 2000);
     const uName = window.localStorage.getItem('name');
     if (uName !== null) {
       window.TogetherJSConfig_getUserName = () => uName;
