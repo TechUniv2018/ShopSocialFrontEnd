@@ -13,6 +13,8 @@
       flex-direction: column;
       -ms-flex-pack: center;
       justify-content: center;
+      position: absolute;
+      z-index: 1;
 }
 .FooterContent{
       width:100%;

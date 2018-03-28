@@ -1,10 +1,10 @@
 .ProductCategory {
  
       display: flex;
-      -ms-flex-pack: start;
+     
       justify-content: flex-start;
-      -ms-flex-direction: row;
-      flex-direction: row;
+     
+      flex-direction: column;
       padding-top: 70px;
 }
 .NavbarMain{
@@ -12,19 +12,21 @@
   background-color: black;
 }
 
-.col-85 {
-           position: relative;
-           flex-grow: 3;
-           width: 80%;
+.col-85 { 
+  margin-left: 215px;
+    padding-top: 100px;
+    background-color: #272626;  
 }
  .col-15 {
-   /* z-index: 10000;
-   position: fixed;
-   height: 100px;
-   width: 80%;
-   align-self: center;
-   margin-top: 30px;
-   width: 215px; */
+  
+  z-index: 1;
+  width: 215px;
+  left: 0;
+  height: 100vh;
+  -ms-flex-item-align: center;
+  align-self: center;
+  margin-top: 30px;
+ 
  }
 .NothingFound {
   height: 100vh;
@@ -70,14 +72,12 @@
 
 /* Responsive layout - when the screen is less than 600px wide, make the two columns stack on top of each other instead of next to each other */
 @media (max-width: 760px) {
-  .ProductCategory {
-    display: flex;
-    flex-direction: column;
-  }
+
     .col-85 {
         width: 100%;
         padding-top:100px;
         background-color: #272626;
+        margin: 0;
     }
     .ProductCategory {
       display: flex;
@@ -89,9 +89,10 @@
       z-index: 1;
           position: fixed;
           height: 125px;
-          width: 80%;
+          width: 100%;
           align-self: center;
         margin-top: 30px;
+        
     }
   
 

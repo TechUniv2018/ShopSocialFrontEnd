@@ -1,19 +1,17 @@
 @import url(https://fonts.googleapis.com/css?family=Oswald:500);
 
-
-
 .FilterBar {
-	position: fixed;
--ms-flex-align: stretch;
-font-size: 18px;
-display: -ms-flexbox;
-display: flex;
-color: #fff;
--ms-flex-direction: column;
-flex-direction: column;
--ms-flex-pack: distribute;
-border-radius: 10px;
+	font-size: 18px;
+    display: -ms-flexbox;
+    display: flex;
+    color: #fff;
+    flex-direction: column;
+	border-radius: 10px;
+	padding-left: 15px;
+    padding-right: 15px;
+	
 }
+
 
 	.ProductCategory{
 		  display: flex;
@@ -31,6 +29,7 @@ border-radius: 10px;
 		    width: 80%;
 		    align-self: center;
 			margin-top: 30px;
+			background-color: teal;
 			
 	}
 
@@ -61,10 +60,28 @@ padding: 5px;
 	margin: 0;
 }
 
-
+.FilterFormGroup label{
+	font-size: 14px;
+	font-weight: 100;   
+	font-family: 'helvetica';
+}
+.FilterPriceGroupFrom label{
+	font-size: 14px;
+	font-weight: 100;   
+	font-family: 'helvetica';
+	margin:0;
+}
+.FilterPriceGroupTo label{
+	font-size: 14px;
+	font-weight: 100;   
+	font-family: 'helvetica';
+	margin:0;
+}
 
 .FilterForm {
- padding: 10px;
+	flex-grow: 1;
+    padding-top: 50px;
+    height: 200px;
 }
 
 .FilterButton {
@@ -120,7 +137,7 @@ padding: 5px;
 
 .FilterSearch{
 	flex-grow: 1;
-	padding-top: 10px;
+	padding-top: 60px;
 
 }
 
@@ -130,10 +147,10 @@ padding: 5px;
 
 @media (max-width: 760px) {
 	.FilterBar {
-		width:80%;
+	width: 100%;
 	    position: fixed;
 	background-color: black;
-	opacity: 0.5;
+	opacity: 0.8;
     -ms-flex-align: stretch;
     font-size: 18px;
     display: -ms-flexbox;
@@ -143,6 +160,9 @@ padding: 5px;
     flex-direction: row;
     -ms-flex-pack: distribute;
     border-radius: 10px;
+	}
+	.FilterSearch{
+		width: 50%;
 	}
 	.FilterLimit{
 		display: flex;
