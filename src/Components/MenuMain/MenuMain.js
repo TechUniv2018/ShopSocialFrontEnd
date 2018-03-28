@@ -590,10 +590,10 @@ class MenuMain extends React.Component {
         .then((resJSON) => {
           // console.log(resJSON);
           const oldcart = JSON.parse(window.localStorage.getItem('cartContents'));
-          console.log(oldcart);
-          console.log(resJSON.products);
-          console.log(oldcart.length);
-          console.log(resJSON.products.length);
+          // console.log(oldcart);
+          // console.log(resJSON.products);
+          // console.log(oldcart.length);
+          // console.log(resJSON.products.length);
           if (oldcart.length !== resJSON.products.length) {
             window.localStorage.setItem('cartContents', JSON.stringify(resJSON.products));
 
