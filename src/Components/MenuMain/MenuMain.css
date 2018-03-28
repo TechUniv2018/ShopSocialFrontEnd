@@ -2,9 +2,15 @@
     background-color: rgba(0, 0, 0, 0.6);
     position: fixed;
     width: 100%;
-    border: 0px;
+    border: none;
     border-radius: 0px;
     height: 100px;
+    outline: none;
+}
+.navbar-nav>li>a {
+    padding-top: 15px;
+    padding-bottom: 15px;
+    outline: none;
 }
 .NavbarIcon{
     background-image: url('./images/Icon_SS.png');

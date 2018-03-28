@@ -68,7 +68,22 @@ class ProductContainer extends React.Component {
         });
     }
   }
-
+  updateCartStatus = () => {
+    const cartContents = JSON.parse(window.localStorage.getItem('cartContents'));
+    if (cartContents !== null) {
+      cartContents.forEach((product) => {
+        if (product.productID === this.state.productId) {
+          this.setState({
+            productCartStatus: 1,
+          });
+        } else {
+          this.setState({
+            productCartStatus: 0,
+          });
+        }
+      });
+    }
+  }
   addProductToCart = () => {
     console.log(this.state);
     if (this.state.productCartStatus === 0) {
@@ -177,6 +192,14 @@ class ProductContainer extends React.Component {
         </div>
       );
     }
+
+    setInterval(() => {
+      const togetherStatus = +window.localStorage.getItem('togetherStatus');
+      if (togetherStatus !== 0) {
+        this.updateCartStatus();
+      }
+    }, 1500);
+
     return (
       <div>
         <Grid className="ProductDisplay">
