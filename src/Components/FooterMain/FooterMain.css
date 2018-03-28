@@ -33,3 +33,14 @@
     width: 50%;
     margin:0;
 }
+@media (max-width: 650px) {
+    .Footer .show-grid{
+        flex-direction: column;
+    }
+    .Footer .col-md-4{
+        width:100%;
+    }
+    .Footer .col-md-6{
+        width:100%;
+    }
+}

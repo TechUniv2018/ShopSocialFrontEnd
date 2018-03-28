@@ -1,20 +1,20 @@
 @import url(https://fonts.googleapis.com/css?family=Oswald:500);
+
+
+
 .FilterBar {
-	    /* position: fixed; */
-    background-color: #418b8e;
-    -ms-flex-align: stretch;
-    font-size: 18px;
-    display: -ms-flexbox;
-    display: flex;
-    color: #fff;
-    -ms-flex-direction: column;
-    flex-direction: column;
-    -ms-flex-pack: distribute;
-    border-radius: 10px;
-    border-right: 3px solid rgba(65,139,142, 1);
+	position: fixed;
+-ms-flex-align: stretch;
+font-size: 18px;
+display: -ms-flexbox;
+display: flex;
+color: #fff;
+-ms-flex-direction: column;
+flex-direction: column;
+-ms-flex-pack: distribute;
+border-radius: 10px;
 }
 
-@media (max-width: 110px) {
 	.ProductCategory{
 		  display: flex;
 		 
@@ -23,23 +23,7 @@
 		  flex-direction: column;
 		  padding-top: 70px;
 	}
-	.FilterBar {
-	 /* position: fixed; */
-	 background-color: #418b8e;
-	 -ms-flex-align: stretch;
-	 font-size: 18px;
-	 display: -ms-flexbox;
-	 display: flex;
-	 color: #fff;
-	 height: 100px;
-	 -ms-flex-direction: column;
-	 flex-direction: column;
-	 -ms-flex-pack: distribute;
-	 border-radius: 10px;
-	
-	 flex-direction: row;
-	 border-right: 3px solid rgba(65, 139, 142, 1);
-	}
+
 	.col-15{   
 		z-index: 10000;
 		    position: fixed;
@@ -47,8 +31,7 @@
 		    width: 80%;
 		    align-self: center;
 			margin-top: 30px;
-			    width: 215px;
-	background-color: #418b8e;
+			
 	}
 
 .FilterFormGroup form-group{
@@ -60,6 +43,7 @@ padding: 5px;
 	    margin: 0;
 }
 .instantSearch{
+	font-family: 'HelveticaNeue-Light', sans-serif;
 	max-width: 100%;
 	font-size: 13px;
 	
@@ -68,7 +52,7 @@ padding: 5px;
 	height: 30px;
 }
 .FilterPriceGroupFrom{
-	    padding: 5px;
+	    /* padding: 5px; */
 
 }
 .FilterPriceHeadingFrom{
@@ -76,48 +60,8 @@ padding: 5px;
 	font-weight: 600;
 	margin: 0;
 }
-}
-/* @media (max-width: 760px) {
-  .FilterBar {
-		font-size: 20px;
-		
-	
-		margin-top: 20px;
-	
-    
-		position: relative;
-		margin-bottom: 2px;
-	 display: none;
-	
-	}
-	.downarrow{
-		color: white;
-		margin-top: 30px;
-	}
-	
-	.FilterForm FilterPrice{
-		display: flex;
-		flex-direction: row-reverse;
-	}
-	.FilterBar h3{
-		font-size: 25px;
-
-	}
-	.FilterForm FilterSearch {
-		margin-top: -50px;
-	}
-	.instantSearch{
-		display: inline-block;
-	}
-   
-} */
 
 
-
-#instantSearch {
-  font-family: 'HelveticaNeue-Light', sans-serif;
-  font-size: 16px;
-}
 
 .FilterForm {
  padding: 10px;
@@ -172,15 +116,103 @@ padding: 5px;
 .FilterButton:active {
 	color: #418b8e;
 	background: #fff;
-  border: 3px solid #418b8e;
 }
 
 .FilterSearch{
 	flex-grow: 1;
-	padding-top: 20px;
+	padding-top: 10px;
 
 }
 
 .FilterPrice{
 	flex-grow: 3;
 }
+
+@media (max-width: 760px) {
+	.FilterBar {
+		width:80%;
+	    position: fixed;
+	background-color: black;
+	opacity: 0.5;
+    -ms-flex-align: stretch;
+    font-size: 18px;
+    display: -ms-flexbox;
+    display: flex;
+    color: #fff;
+    -ms-flex-direction: column;
+    flex-direction: row;
+    -ms-flex-pack: distribute;
+    border-radius: 10px;
+	}
+	.FilterLimit{
+		display: flex;
+		flex-direction: row;
+	}
+	.FilterPriceGroupFrom{
+		margin: 0;
+		height: 60px;
+	}
+	.FilterPriceGroupTo{
+		margin: 0;
+		height: 60px;
+	}
+	.FilterFormGroup label{
+		font-size: 14px;
+		font-weight: 100;   
+		font-family: 'helvetica';
+	}
+	.FilterPriceGroupFrom label{
+		font-size: 14px;
+		font-weight: 100;   
+		font-family: 'helvetica';
+		margin:0;
+	}
+	.FilterPriceGroupTo label{
+		font-size: 14px;
+		font-weight: 100;   
+		font-family: 'helvetica';
+		margin:0;
+	}
+	.FilterPriceInputFrom{
+
+		height: 30px;
+		width:90%
+	}
+	.FilterPriceInputTo{
+		height: 30px;
+		width:90%
+	}
+	.FilterFormGroup label{
+		margin: 0;
+	}
+	.FilterFormInput{
+		height: 30px;
+		width:90%
+	}
+
+
+.FilterButton
+ {
+	width: 20%;
+	font-size: 10px;
+	font-family: 'Oswald', Arial, sans-serif;
+	border: 1px solid;
+	  background: none;
+	  cursor: pointer;
+	  display: inline-block;
+	  text-transform: uppercase;
+	  letter-spacing: 1px;
+	margin-left: 35%;
+	  outline: none;
+	  position: relative;
+	  -webkit-transition: all 0.3s;
+	  -moz-transition: all 0.3s;
+	  transition: all 0.3s;
+	border-radius: 4px;
+	padding: 1.5% 1%;
+	text-align: center;
+  }
+  
+}
+
+

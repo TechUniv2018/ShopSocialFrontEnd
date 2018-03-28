@@ -18,14 +18,13 @@
            width: 80%;
 }
  .col-15 {
-   z-index: 10000;
+   /* z-index: 10000;
    position: fixed;
    height: 100px;
    width: 80%;
    align-self: center;
    margin-top: 30px;
-   width: 215px;
-   background-color: #418b8e;
+   width: 215px; */
  }
 .NothingFound {
   height: 100vh;
@@ -77,6 +76,8 @@
   }
     .col-85 {
         width: 100%;
+        padding-top:100px;
+        background-color: #272626;
     }
     .ProductCategory {
       display: flex;
@@ -84,15 +85,14 @@
       flex-direction: column;
       padding-top: 70px;
     }
-
-    .col-15 {
-      z-index: 10000;
-      position: fixed;
-      height: 100px;
-      width: 80%;
-      align-self: center;
-      margin-top: 30px;
-      width: 215px;
-      background-color: #418b8e;
+    .col-15{   
+      z-index: 1;
+          position: fixed;
+          height: 125px;
+          width: 80%;
+          align-self: center;
+        margin-top: 30px;
     }
+  
+
 }
