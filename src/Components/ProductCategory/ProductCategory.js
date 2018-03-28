@@ -64,6 +64,19 @@ handleSearch = (searchWord) => {
 }
 
 render() {
+  if (this.state.productsForSearch.length === 0) {
+    return (
+      <div>
+        <div className="ProductCategory">
+          <div className="col-15">
+            <FilterBar triggerFilter={this.triggerFilter} handleSearch={this.handleSearch} />
+          </div>
+          <div className="noproductsfound"><h1 className="noproductsfoundText">No Match Found.</h1></div>
+        </div>
+        {/* <Footer /> */}
+      </div>
+    );
+  }
   return (
     <div>
       <div className="ProductCategory">
@@ -74,7 +87,7 @@ render() {
           <ProductGrid products={this.state.productsForSearch} />
         </div>
       </div>
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 }
