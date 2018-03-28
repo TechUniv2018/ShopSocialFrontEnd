@@ -5,8 +5,9 @@
   color:white;
   opacity: 0.3;
   text-align: center;
-
-  margin-top: 20vh;
+position: fixed;
+margin-left: 320px;
+  margin-top: 13vh;
   font-size: 20px;
   font-family: Arial, Helvetica, sans-serif;
 }
@@ -110,6 +111,18 @@
         background-color:black;
         opacity: 0.8;
     }
-  
+  .noproductsfound{
+
+}
+.noproductsfoundText {
+  color:white;
+  opacity: 0.3;
+  text-align: center;
+  margin-left: 0;
+  position: static;
+  margin-top: 25vh;
+  font-size: 20px;
+  font-family: Arial, Helvetica, sans-serif;
+}
 
 }
