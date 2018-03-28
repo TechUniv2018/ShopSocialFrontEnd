@@ -597,19 +597,23 @@ class MenuMain extends React.Component {
           if (oldcart.length !== resJSON.products.length) {
             window.localStorage.setItem('cartContents', JSON.stringify(resJSON.products));
 
-            setInterval(() => {
-              for (let i = 0; i < window.localStorage.length; i += 1) {
-                if (window.localStorage.getItem(localStorage.key(i)) === 'ion-checkmark-round') {
-                  window.localStorage.removeItem(window.localStorage.key(i));
-                }
+
+            for (let i = 0; i < window.localStorage.length; i += 1) {
+              if (window.localStorage.getItem(localStorage.key(i)) === 'ion-checkmark-round') {
+                window.localStorage.removeItem(window.localStorage.key(i));
               }
-              const cartArray = JSON.parse(window.localStorage.getItem('cartContents'));
-              for (let i = 0; i < cartArray.length; i += 1) {
-                const productId = cartArray[i].productID;
-                window.localStorage.setItem(productId.toString(), 'ion-checkmark-round');
+            }
+            for (let i = 0; i < window.localStorage.length; i += 1) {
+              if (window.localStorage.getItem(localStorage.key(i)) === 'ion-checkmark-round') {
+                window.localStorage.removeItem(window.localStorage.key(i));
               }
-              window.location.reload(true);
-            }, 500);
+            }
+            const cartArray = JSON.parse(window.localStorage.getItem('cartContents'));
+            for (let i = 0; i < cartArray.length; i += 1) {
+              const productId = cartArray[i].productID;
+              window.localStorage.setItem(productId.toString(), 'ion-checkmark-round');
+            }
+            window.location.reload(true);
           }
         });
     }

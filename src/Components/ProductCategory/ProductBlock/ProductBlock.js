@@ -22,7 +22,22 @@ export default class ProductBlock extends React.Component {
       });
     }
   }
-
+  updateProductStatus = () => {
+    let found = 0;
+    for (let i = 0; i < window.localStorage.length; i += 1) {
+      if (localStorage.key(i) == this.props.id) {
+        this.setState({
+          addToCartIcon: 'ion-checkmark-round',
+        });
+        found = 1;
+      }
+    }
+    if (found === 0) {
+      this.setState({
+        addToCartIcon: 'ion-android-cart',
+      });
+    }
+  }
   addToCart = () => {
     if (this.state.addToCartIcon === 'ion-android-cart') {
       const productToBeAdded = {
