@@ -579,7 +579,7 @@ class MenuMain extends React.Component {
 
   hideSuggestions=() => {
     this.setState({
-      suggestions: [],
+      lengthOfInput: 0,
     });
   }
 
