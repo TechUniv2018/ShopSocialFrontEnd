@@ -92,7 +92,8 @@
           width: 100%;
           align-self: center;
         margin-top: 30px;
-        
+        background-color:black;
+        opacity: 0.8;
     }
   
 

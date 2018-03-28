@@ -147,6 +147,7 @@ padding: 5px;
 
 @media (max-width: 760px) {
 	.FilterBar {
+		height: 100px;
 	width: 100%;
 	    position: fixed;
 	background-color: black;
@@ -209,7 +210,8 @@ padding: 5px;
 		height: 30px;
 		width:90%
 	}
-
+.FilterPrice{    padding-top: 0px;}
+.FilterSearch{    padding-top: 0px;}
 
 .FilterButton
  {
