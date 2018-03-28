@@ -35,7 +35,9 @@ export default class ProductCategory extends React.Component {
               key={product.productID}
             />));
         } else if (resJSON.statusCode === 404) {
-          tempProductsArr.push(<div className="NothingFound"><div className="NothingFoundText">Oops! Nothing was found</div></div>);
+          this.setState({
+            productsForSearch: [],
+          });
         }
       })
       .then(() => this.setState({
@@ -71,7 +73,7 @@ render() {
           <div className="col-15">
             <FilterBar triggerFilter={this.triggerFilter} handleSearch={this.handleSearch} />
           </div>
-          <div className="noproductsfound"><h1 className="noproductsfoundText">No Match Found.</h1></div>
+          <div className="noproductsfound"><h1 className="noproductsfoundText">Oops! Nothing was found.</h1></div>
         </div>
         {/* <Footer /> */}
       </div>
