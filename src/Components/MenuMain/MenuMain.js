@@ -613,6 +613,16 @@ class MenuMain extends React.Component {
               const productId = cartArray[i].productID;
               window.localStorage.setItem(productId.toString(), 'ion-checkmark-round');
             }
+            this.setState({
+              alertState: true,
+              alertText: 'Your Cart has been updated!',
+            });
+            setTimeout(() => {
+              this.setState({
+                alertState: false,
+                alertText: '',
+              });
+            }, 5000);
             window.location.reload(true);
           }
         });
