@@ -1,6 +1,10 @@
 .ProductGrid {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  background-color: #272626;
+      display: flex;
+      -ms-flex-pack: center;
+      justify-content: center;
+      -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+      padding-bottom: 50px;
+      padding-top: 60px;
+      background-color: #272626;
 }

@@ -1,19 +1,83 @@
 @import url(https://fonts.googleapis.com/css?family=Oswald:500);
 .FilterBar {
-  position: fixed;
-  font-family: 'Oswald', Arial, sans-serif;
-  background-color: #418b8e;
-  width: inherit;
-  align-items: stretch;
-  font-size: 18px;
-  display: flex;
-  color: #fff;
-  flex-direction: column;
-	justify-content: space-around;
-	border-radius: 10px;
-	border-right: 3px solid rgba(65,139,142, 1);
+	    /* position: fixed; */
+    background-color: #418b8e;
+    -ms-flex-align: stretch;
+    font-size: 18px;
+    display: -ms-flexbox;
+    display: flex;
+    color: #fff;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -ms-flex-pack: distribute;
+    border-radius: 10px;
+    border-right: 3px solid rgba(65,139,142, 1);
 }
-@media (max-width: 760px) {
+
+@media (max-width: 110px) {
+	.ProductCategory{
+		  display: flex;
+		 
+		  justify-content: flex-start;
+		
+		  flex-direction: column;
+		  padding-top: 70px;
+	}
+	.FilterBar {
+	 /* position: fixed; */
+	 background-color: #418b8e;
+	 -ms-flex-align: stretch;
+	 font-size: 18px;
+	 display: -ms-flexbox;
+	 display: flex;
+	 color: #fff;
+	 height: 100px;
+	 -ms-flex-direction: column;
+	 flex-direction: column;
+	 -ms-flex-pack: distribute;
+	 border-radius: 10px;
+	
+	 flex-direction: row;
+	 border-right: 3px solid rgba(65, 139, 142, 1);
+	}
+	.col-15{   
+		z-index: 10000;
+		    position: fixed;
+		    height: 100px;
+		    width: 80%;
+		    align-self: center;
+			margin-top: 30px;
+			    width: 215px;
+	background-color: #418b8e;
+	}
+
+.FilterFormGroup form-group{
+padding: 5px;
+}
+.FilterFormGroupHeading{
+	    font-size: 15px;
+	    font-weight: 600;
+	    margin: 0;
+}
+.instantSearch{
+	max-width: 100%;
+	font-size: 13px;
+	
+}
+.FilterFormInput {
+	height: 30px;
+}
+.FilterPriceGroupFrom{
+	    padding: 5px;
+
+}
+.FilterPriceHeadingFrom{
+	font-size: 15px;
+	font-weight: 600;
+	margin: 0;
+}
+}
+/* @media (max-width: 760px) {
   .FilterBar {
 		font-size: 20px;
 		
@@ -46,7 +110,9 @@
 		display: inline-block;
 	}
    
-}
+} */
+
+
 
 #instantSearch {
   font-family: 'HelveticaNeue-Light', sans-serif;
@@ -54,7 +120,7 @@
 }
 
 .FilterForm {
-  padding: 0% 10%;
+ padding: 10px;
 }
 
 .FilterButton {
@@ -111,6 +177,7 @@
 
 .FilterSearch{
 	flex-grow: 1;
+	padding-top: 20px;
 
 }
 
