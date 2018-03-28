@@ -71,7 +71,14 @@ export default class FilterBar extends React.Component {
               }}
             />
           </FormGroup>{' '}
-          <div bsStyle="info" onClick={this.sendRange} className="FilterButton" role="button" onKeyPress={() => {}}>Filter</div>
+          <div
+            bsStyle="info"
+            onClick={this.sendRange}
+            className="FilterButton"
+            role="button"
+            onKeyPress={() => {}}
+          >Filter
+          </div>
         </Form>
       </div>
     );

@@ -1,3 +1,9 @@
+
+    .HomeCategories .show-grid{
+       flex-wrap: wrap;
+    }
+
+
 .HomeBodyImage{
     background-image: url('./images/Home_Page_SS_HQ.jpg');
     background-size: cover;
@@ -21,9 +27,10 @@
     width: 80%;
     align-self: center;
     margin-left: 2%;
+    
 }
 .CategoryTv{
-    background-size: contain;
+    /* background-size: contain; */
     height: 200px;
     width: 200px;
     background-repeat: no-repeat;
@@ -38,7 +45,7 @@
     box-shadow:2px 8px 4px -6px hsla(0,0%,0%,.3);
 }
 .CategoryDvd{
-    background-size: contain;
+    /* background-size: contain; */
     height: 200px;
     width: 200px;
     background-repeat: no-repeat;
@@ -53,7 +60,7 @@
     box-shadow:2px 8px 4px -6px hsla(0,0%,0%,.3);
 }
 .CategoryFurn{
-    background-size: contain;
+    /* background-size: contain; */
     height: 200px;
     width: 200px;
     background-repeat: no-repeat;
@@ -68,7 +75,7 @@
     box-shadow:2px 8px 4px -6px hsla(0,0%,0%,.3);
 }
 .CategoryAudio{
-    background-size: contain;
+    /* background-size: contain; */
     height: 200px;
     width: 200px;
     background-repeat: no-repeat;
