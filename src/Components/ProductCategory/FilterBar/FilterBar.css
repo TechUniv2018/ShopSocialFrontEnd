@@ -14,12 +14,10 @@
 
 
 .ProductCategory{
-		  display: flex;
-		 
-		  justify-content: flex-start;
-		
-		  flex-direction: column;
-		  padding-top: 70px;
+	display: flex;
+	justify-content: flex-start;
+	flex-direction: column;
+	padding-top: 70px;
 }
 
 	.col-15{   
