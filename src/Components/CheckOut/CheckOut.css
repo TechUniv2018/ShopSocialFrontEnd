@@ -11,13 +11,14 @@
   color: rgb(90, 88, 88);
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
   font-size: 16px;
-  padding: 2% 2%;
+  padding: 2%;
   margin-top: 2%;
   margin-bottom: 2%;
   border-radius: 8px;
   font-size: 20px;
   display: flex;
   flex-direction: row;
+  align-items: center;
   justify-content: space-between;
 }
 .CheckOutPrice{
@@ -46,7 +47,10 @@
 .CheckOutHeading{
   font-weight: 300;
   text-align: center;
-  font-size: 48px;
+  font-size: 32px;
+  font-family:'Oswald';
+  font-weight:400;
+  letter-spacing: 1px;
 }
 .emptyCartMessage{
   z-index: 996;
@@ -59,15 +63,25 @@
 }
 .CheckOut-img{
   display: inline-block;
-  background-image: url('./CheckoutSuccess.png');
+  background-image: url("https://i2.wp.com/blog.stylingandroid.com/wp-content/uploads/2017/06/toggle_checked.png?ssl=1");
   width: 60px;
   height: 30px;
   background-size: contain;
   background-repeat: no-repeat;
+  align-self: center;
+  margin-left: 49%;
+    height: 7vh;
+    margin-top: 5vh;
 }
 .CheckOutProductName{
-  padding-top: 5%;
 }
 .CheckOutProductPrice{
-  padding-top: 5%;
+  white-space: nowrap;
+  display: inline;
+}
+
+@media (max-width: 1080px) {
+.CheckOutItems{
+  flex-direction: column;
+}
 }
