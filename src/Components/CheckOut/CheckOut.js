@@ -117,7 +117,8 @@ class CheckOut extends React.Component {
       if (checkOutCartContents.length > 0) {
         return (
           <div className="CheckOut">
-            <h1 className="CheckOutHeading">Your order has been placed <div className="CheckOut-img" /> </h1>
+            <div className="CheckOut-img" />
+            <h1 className="CheckOutHeading">Your order has been placed</h1>
             <div className="CheckOutContents">
               <Grid>
                 <Row className="show-grid">

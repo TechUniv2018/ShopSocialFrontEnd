@@ -1,25 +1,49 @@
+.noproductsfound{
+
+}
+.noproductsfoundText {
+  color:white;
+  opacity: 0.3;
+  text-align: center;
+position: fixed;
+margin-left: 320px;
+  margin-top: 13vh;
+  font-size: 20px;
+  font-family: Arial, Helvetica, sans-serif;
+}
 .ProductCategory {
-  display: flex;
-  flex-direction: row;
-  z-index: 996;
-  padding-top: 70px;
+ 
+  background-color: #272626;
+
+      display: flex;
+     
+      justify-content: flex-start;
+     
+      flex-direction: column;
+      padding-top: 70px;
 }
 .NavbarMain{
   z-index: 997;
   background-color: black;
 }
-.col-15 {
-    float: left;
-    width: 15%;
-    height: 100%;
-}
 
-.col-85 {
-    float: left;
-    width: 85%;
-    position: relative;
-}
+.col-85 { 
 
+  margin-left: 215px;
+    padding-top: 0px;
+    background-color: #272626;  
+}
+ .col-15 {
+  
+  z-index: 1;
+  width: 215px;
+  left: 0;
+  height: 100vh;
+  -ms-flex-item-align: center;
+  align-self: center;
+  margin-top: 30px;
+ 
+ }
 .NothingFound {
   height: 100vh;
   background-image: url('../Home/images/Home_Page_SS_HQ.jpg');
@@ -58,15 +82,47 @@
 
 .FooterContent{
   padding-left: 10%;
+  padding-right: 10%;
 }
 
+
 /* Responsive layout - when the screen is less than 600px wide, make the two columns stack on top of each other instead of next to each other */
-@media (max-width: 600px) {
-  .ProductCategory {
-    display: flex;
-    flex-direction: column;
-  }
-    .col-15, .col-85 {
+@media (max-width: 760px) {
+
+    .col-85 {
         width: 100%;
+        padding-top:100px;
+        background-color: #272626;
+        margin: 0;
     }
+    .ProductCategory {
+      display: flex;
+      justify-content: flex-start;
+      flex-direction: column;
+      padding-top: 70px;
+    }
+    .col-15{   
+      z-index: 1;
+          position: fixed;
+          height: 125px;
+          width: 100%;
+          align-self: center;
+        margin-top: 30px;
+        background-color: #418b8e;
+       
+    }
+  .noproductsfound{
+
+}
+.noproductsfoundText {
+  color:white;
+  opacity: 0.3;
+  text-align: center;
+  margin-left: 0;
+  position: static;
+  margin-top: 25vh;
+  font-size: 20px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
 }

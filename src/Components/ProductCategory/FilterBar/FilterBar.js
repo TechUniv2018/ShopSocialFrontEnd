@@ -21,12 +21,16 @@ export default class FilterBar extends React.Component {
 
   render() {
     return (
+
+
       <div className="FilterBar">
+
         <Form className="FilterForm FilterSearch" vertical="true">
-          <FormGroup controlId="instantSearch">
-            <h3>Filter by name</h3>
-            <ControlLabel>Search</ControlLabel>{' '}
+          <FormGroup className="FilterFormGroup" controlId="instantSearch">
+            <h3 className="FilterFormGroupHeading">Filter by name</h3>
+            <ControlLabel className="FilterFormLabel">Search</ControlLabel>{' '}
             <FormControl
+              className="FilterFormInput"
               type="text"
               value={this.state.instantSearch}
               onChange={(event) => {
@@ -37,35 +41,48 @@ export default class FilterBar extends React.Component {
             />
           </FormGroup>
         </Form>
-        <Form className="FilterForm FilterPrice" vertical="true">
-          <FormGroup controlId="fromRange">
-            <h3>Filter by price</h3>
-            <ControlLabel>From</ControlLabel>{' '}
-            <FormControl
-              type="number"
-              placeholder="0"
-              value={this.state.fromRange}
-              onChange={(event) => {
+        <Form className="FilterForm FilterPrice" >
+          <h3 className="FilterPriceHeadingFrom">Filter by price</h3>
+          <div className="FilterLimit">
+
+            <FormGroup className="FilterPriceGroupFrom" controlId="fromRange">
+
+              <ControlLabel className="FilterPriceLabelFrom">From</ControlLabel>{' '}
+              <FormControl
+                className="FilterPriceInputFrom"
+                type="number"
+                placeholder="0"
+                value={this.state.fromRange}
+                onChange={(event) => {
                 if (event.target.value >= 0) {
                   this.setState({ fromRange: event.target.value });
                 }
               }}
-            />
-          </FormGroup>{' '}
-          <FormGroup controlId="toRange">
-            <ControlLabel>To</ControlLabel>{' '}
-            <FormControl
-              type="number"
-              placeholder="10000"
-              value={this.state.toRange}
-              onChange={(event) => {
+              />
+            </FormGroup>{' '}
+            <FormGroup className="FilterPriceGroupTo" controlId="toRange">
+              <ControlLabel className="FilterPriceLabelTo">To</ControlLabel>{' '}
+              <FormControl
+                className="FilterPriceInputTo"
+                type="number"
+                placeholder="10000"
+                value={this.state.toRange}
+                onChange={(event) => {
                 if (event.target.value >= this.state.fromRange) {
                   this.setState({ toRange: event.target.value });
                 }
               }}
-            />
-          </FormGroup>{' '}
-          <div bsStyle="info" onClick={this.sendRange} className="FilterButton" role="button" onKeyPress={() => {}}>Filter</div>
+              />
+            </FormGroup>{' '}
+          </div>
+          <div
+            bsStyle="info"
+            onClick={this.sendRange}
+            className="FilterButton"
+            role="button"
+            onKeyPress={() => {}}
+          >Filter
+          </div>
         </Form>
       </div>
     );

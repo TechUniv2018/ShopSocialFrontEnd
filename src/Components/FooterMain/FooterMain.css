@@ -3,7 +3,45 @@
 }
 .FooterJustifyText{
     text-align: justify;
+    align-items: center;
 }
 .Footer{
-    background-color: white;
+      background-color: lightgray;
+      display: -ms-flexbox;
+      display: flex;
+      -ms-flex-direction: column;
+      flex-direction: column;
+      -ms-flex-pack: center;
+      justify-content: center;
+     
+}
+.FooterContent{
+      width:100%;
+        margin:0;
+}
+.Footer .show-grid{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.Footer .col-xs-12{
+
+    width: 50%;
+    margin:0;
+}
+.Footer .col-md-6 {
+    width: 50%;
+    margin:0;
+}
+@media (max-width: 650px) {
+    .Footer .show-grid{
+        flex-direction: column;
+    }
+    .Footer .col-md-4{
+        width:100%;
+    }
+    .Footer .col-md-6{
+        width:100%;
+    }
 }

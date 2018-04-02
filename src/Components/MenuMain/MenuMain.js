@@ -15,6 +15,7 @@ class MenuMain extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      lengthOfInput: 0,
       isAuthenticated: false,
       suggestions: [],
       cartContents: [],
@@ -578,7 +579,7 @@ class MenuMain extends React.Component {
 
   hideSuggestions=() => {
     this.setState({
-      suggestions: [],
+      lengthOfInput: 0,
     });
   }
 
@@ -611,20 +612,29 @@ class MenuMain extends React.Component {
   }
   getSuggestions=(event) => {
     const productname = event.target.value;
-    fetch(`/search/${productname}`).then(response => response.json())
-      .then((resJSON) => {
-        if (resJSON !== undefined) {
-          this.setState({
-            suggestions: resJSON.data,
-          });
-          console.log(this.state.suggestions);
-        }
-        return resJSON.data;
-      }).catch(() => {
-        this.setState({
-          suggestions: [],
-        });
+
+    if (productname === '' || productname === null) {
+      this.setState({
+        suggestions: [],
       });
+
+      console.log(this.state.suggestions);
+    } else {
+      fetch(`/search/${productname}`).then(response => response.json())
+        .then((resJSON) => {
+          if (resJSON !== undefined) {
+            this.setState({
+              suggestions: resJSON.data,
+            });
+            console.log(this.state.suggestions);
+          }
+          return resJSON.data;
+        }).catch(() => {
+          this.setState({
+            suggestions: [],
+          });
+        });
+    }
   }
 
   getTogetherContacts = () => {
@@ -647,6 +657,12 @@ class MenuMain extends React.Component {
       requestemail: event.target.value,
     }, () => {
       this.handleForwardTogetherRequest();
+    });
+  }
+  onInputSearchField(event) {
+    const lengthOfInput = event.target.value.length;
+    this.setState({
+      lengthOfInput,
     });
   }
   render() {
@@ -714,10 +730,8 @@ class MenuMain extends React.Component {
                 placeholder="Search.."
                 className="search-input"
               />
-              <div className={(this.state.suggestions === [] || this.state.suggestions === null || this.state.suggestions === undefined)
-              ? 'hideSuggestions' : 'displaySuggestions'}
-              >
 
+              <div className={((this.state.suggestions === undefined)) ? 'hideSuggestions' : 'displaySuggestions'}>
                 {suggestionList}
               </div>
             </div>
@@ -757,12 +771,14 @@ class MenuMain extends React.Component {
             onMouseLeave={() => this.hideSuggestions()}
           >
             <input
+              onChange={event => this.onInputSearchField(event)}
               type="text"
               bsRole="toggle"
               placeholder="Search.."
               className="search-input"
             />
-            <div className={(this.state.suggestions === [] || this.state.suggestions === null || this.state.suggestions === undefined)
+
+            <div className={((this.state.suggestions === undefined) || (this.state.lengthOfInput === 0))
               ? 'hideSuggestions' : 'displaySuggestions'}
 
             >

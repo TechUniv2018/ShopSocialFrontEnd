@@ -105,3 +105,9 @@
   min-width: 275px;
   min-height: 275px;
 }
+
+@media (max-width: 760px) {
+  .ProductBox{
+    margin: 5%;
+  }
+}
