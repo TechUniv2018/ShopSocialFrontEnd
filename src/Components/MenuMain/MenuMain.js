@@ -31,6 +31,8 @@ class MenuMain extends React.Component {
       alertText: '',
       alertState: false,
       friendsList: [],
+      scrollXCache: 0,
+      scrollYCache: 0,
     };
   }
 
@@ -164,15 +166,22 @@ class MenuMain extends React.Component {
         }, 4000);
       }
     });
-    socket.on('scrollTogetherChangeRelay', (connectReq) => {
-      // const gettstatus = window.localStorage.getItem('togetherStatus');
 
+    socket.on('scrollTogetherChangeRelay', (connectReq) => {
       const myemail = window.localStorage.getItem('togetheruser1email');
       const friendemail = window.localStorage.getItem('togetheruser2email');
       if (connectReq.rEmail === myemail && connectReq.sEmail === friendemail && myemail !== null && friendemail !== null) {
-        window.scrollTo(connectReq.hScroll, connectReq.vScroll);
+        if (connectReq.hScroll > this.state.scrollXCache + 50 || connectReq.hScroll < this.state.scrollXCache - 50) {
+          window.scrollTo(connectReq.hScroll, this.state.scrollYCache);
+          this.setState({ scrollXCache: connectReq.hScroll });
+        }
+        if (connectReq.vScroll > this.state.scrollYCache + 50 || connectReq.vScroll < this.state.scrollYCache - 50) {
+          window.scrollTo(this.state.scrollXCache, connectReq.vScroll);
+          this.setState({ scrollYCache: connectReq.vScroll });
+        }
       }
     });
+
     window.addEventListener('scroll', (event) => {
       const top = window.scrollY;
       const left = window.scrollX;
