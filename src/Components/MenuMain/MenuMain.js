@@ -9,7 +9,7 @@ import RegisterLoginModal from '../RegisterLoginModal/RegisterLoginModal';
 import CartModal from '../CartModal/CartModal';
 import './MenuMain.css';
 
-const socket = socketIOClient('http://localhost:8080');
+const socket = socketIOClient('http://172.30.194.80:8080'); // To be changed
 
 class MenuMain extends React.Component {
   constructor(props) {
@@ -67,7 +67,7 @@ class MenuMain extends React.Component {
           togetherlink: connectReq.togetherlink,
         });
       } else if (connectReq.requestEmail === userEmail && this.state.togetherStatus === 1) {
-        setTimeout(() => {}, 1000);
+        setTimeout(() => { }, 1000);
         const obj = {
           togetherresponse: 'rejected',
           rejectmessage: 'User is busy in another session',
@@ -117,14 +117,14 @@ class MenuMain extends React.Component {
     });
 
     socket.on('responsePingRequest', (connectReq) => {
-    // const gettstatus = window.localStorage.getItem('togetherStatus');
+      // const gettstatus = window.localStorage.getItem('togetherStatus');
 
       const userEmail = window.localStorage.getItem('email');
 
 
       if (connectReq.senderEmail === userEmail) {
-      // const pingStatus = window.localStorage.getItem('pingStatus');
-      // window.localStorage.setItem('pingStatus', 0);
+        // const pingStatus = window.localStorage.getItem('pingStatus');
+        // window.localStorage.setItem('pingStatus', 0);
         setTimeout(() => {
           const pingStatus = window.localStorage.getItem('pingStatus');
           window.localStorage.setItem('pingStatus', 0);
@@ -332,7 +332,7 @@ class MenuMain extends React.Component {
     this.setState({ requestemail: evt.target.value });
   }
 
-  handleForwardTogetherRequest= () => {
+  handleForwardTogetherRequest = () => {
     const userEmail = window.localStorage.getItem('email');
     const userName = window.localStorage.getItem('name');
     window.localStorage.setItem('togetheruser1email', userEmail);
@@ -586,13 +586,13 @@ class MenuMain extends React.Component {
     }
   }
 
-  hideSuggestions=() => {
+  hideSuggestions = () => {
     this.setState({
       lengthOfInput: 0,
     });
   }
 
-  refreshPage=() => {
+  refreshPage = () => {
     window.location.reload();
   }
   deleteCartContents = (productId, cartId) => {
@@ -619,7 +619,7 @@ class MenuMain extends React.Component {
       }
     }
   }
-  getSuggestions=(event) => {
+  getSuggestions = (event) => {
     const productname = event.target.value;
 
     if (productname === '' || productname === null) {
@@ -843,7 +843,7 @@ class MenuMain extends React.Component {
             <Modal.Title>Your Friend {
               this.state.togetherReqfrom
             }
-           Sent a Request to Shop Together
+              Sent a Request to Shop Together
             </Modal.Title>
           </Modal.Header>
           <Modal.Body className="TogetherModalBody">

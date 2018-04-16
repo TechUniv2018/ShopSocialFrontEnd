@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="theme-color" content="#000000">
-    <link rel="manifest" href="%PUBLIC_URL%/manifest.json">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="theme-color" content="#000000">
+  <link rel="manifest" href="%PUBLIC_URL%/manifest.json">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+    crossorigin="anonymous">
+  <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
   <script src="/socket.io/socket.io.js"></script>
   <script>
     // var TogetherJSConfig_hubBase = "http://localhost:8090";
@@ -19,78 +21,169 @@
     var TogetherJSConfig_suppressJoinConfirmation = true;
     var TogetherJSConfig_dontShowClicks = true;
   </script>
-    <!-- <script src="./together/togetherjs-min.js" > </script> -->
+  <!-- <script src="./together/togetherjs-min.js" > </script> -->
 
   <script src="https://togetherjs.com/togetherjs-min.js"></script>
   <link href="https://fonts.googleapis.com/css?family=Exo" rel="stylesheet">
-    <!-- together scripts -->
+  <!-- together scripts -->
   <script src="/socket.io/socket.io.js"></script>
-  
+
   <style>
     #togetherjs-dock {
-      background-color: rgba(0,0,0,0.8) !important;
+      background-color: rgba(0, 0, 0, 0.8) !important;
     }
+
     #togetherjs-buttons {
-      background-color: rgba(0,0,0,0.8) !important;
+      background-color: rgba(0, 0, 0, 0.8) !important;
     }
-    .togetherjs{
-      background-color: rgba(0,0,0,0.4) !important;
+
+    .togetherjs {
+      background-color: rgba(0, 0, 0, 0.4) !important;
     }
+
     .togetherjs #togetherjs-buttons #togetherjs-chat-button.togetherjs-active {
       background-color: rgba(58, 56, 56, 0.9) !important;
     }
+
     #togetherjs-buttons .togetherjs-button:hover {
-      background-color: rgba(0,0,0,0.9) !important;
+      background-color: rgba(0, 0, 0, 0.9) !important;
     }
-    .togetherjs .togetherjs-window > header {
-      background-color: rgba(0,0,0,0.9) !important;
-      border:  rgba(0,0,0,0.9) !important;
+
+    .togetherjs .togetherjs-window>header {
+      background-color: rgba(0, 0, 0, 0.9) !important;
+      border: rgba(0, 0, 0, 0.9) !important;
     }
-    .togetherjs .togetherjs-subtitle{
-      background-color: rgba(0,0,0,0.9) !important;
-      border:  rgba(0,0,0,0.9) !important;
+
+    .togetherjs .togetherjs-subtitle {
+      background-color: rgba(0, 0, 0, 0.9) !important;
+      border: rgba(0, 0, 0, 0.9) !important;
     }
-    .togetherjs .togetherjs-window header button.togetherjs-close{
-      border-left:  rgba(0,0,0,0.9) !important;
+
+    .togetherjs .togetherjs-window header button.togetherjs-close {
+      border-left: rgba(0, 0, 0, 0.9) !important;
     }
-    .togetherjs .togetherjs-modal > header{
-      background-color: rgba(0,0,0,0.9) !important;
+
+    .togetherjs .togetherjs-modal>header {
+      background-color: rgba(0, 0, 0, 0.9) !important;
     }
-    .togetherjs-primary{
-      background-color: rgba(0,0,0,0.9) !important;
+
+    .togetherjs-primary {
+      background-color: rgba(0, 0, 0, 0.9) !important;
     }
-    .togetherjs .togetherjs-modal header button.togetherjs-close{
-      border-left:  rgba(0,0,0,0.9) !important;
-    } 
-    #togetherjs-profile-arrow{
-      -webkit-filter: grayscale(100%) !important; /* Safari 6.0 - 9.0 */
+
+    .togetherjs .togetherjs-modal header button.togetherjs-close {
+      border-left: rgba(0, 0, 0, 0.9) !important;
+    }
+
+    #togetherjs-profile-arrow {
+      -webkit-filter: grayscale(100%) !important;
+      /* Safari 6.0 - 9.0 */
       filter: grayscale(100%) !important;
     }
-    #togetherjs-dock.togetherjs-dock-right #togetherjs-dock-anchor-horizontal{
-      -webkit-filter: grayscale(100%) !important; /* Safari 6.0 - 9.0 */
+
+    #togetherjs-dock.togetherjs-dock-right #togetherjs-dock-anchor-horizontal {
+      -webkit-filter: grayscale(100%) !important;
+      /* Safari 6.0 - 9.0 */
       filter: grayscale(100%) !important;
     }
-    .togetherjs #togetherjs-buttons #togetherjs-share-button{
-      display : none !important;
+
+    .togetherjs #togetherjs-buttons #togetherjs-share-button {
+      display: none !important;
     }
-    .togetherjs #togetherjs-buttons .togetherjs-button{
-      height:90px !important;
+
+    .togetherjs #togetherjs-buttons .togetherjs-button {
+      height: 90px !important;
     }
-    .togetherjs .togetherjs-modal{
-      display : none !important;
+
+    .togetherjs .togetherjs-modal {
+      display: none !important;
     }
-    #togetherjs-modal-background{
-      display : none !important;
+
+    #togetherjs-modal-background {
+      display: none !important;
+    }
+
+    @media only screen and (max-width: 767px) {
+      /* For mobile phones: */
+      .togetherjs #togetherjs-buttons .togetherjs-button {
+        height: 40px !important;
+        float: left;
+      }
+      .togetherjs-mobile-browser #togetherjs-dock.togetherjs-dock-right {
+        left: 0px;
+        bottom: 0px;
+        top: 90vh;
+        width: 40%;
+        float: left;
+      }
+      .togetherjs .togetherjs-modal>header {
+        background-color: rgb(93, 148, 149) !important;
+      }
+      .togetherjs-primary {
+        background-color: rgb(93, 148, 149) !important;
+      }
+      #togetherjs-dock {
+        background-color: rgb(93, 148, 149) !important;
+      }
+      #togetherjs-buttons {
+        background-color: rgb(93, 148, 149) !important;
+      }
+      .togetherjs {
+        background-color: rgb(93, 148, 149) !important;
+      }
+      .togetherjs #togetherjs-buttons #togetherjs-chat-button.togetherjs-active {
+        background-color: rgb(93, 148, 149) !important;
+      }
+      #togetherjs-buttons .togetherjs-button:hover {
+        background-color: rgb(93, 148, 149) !important;
+      }
+    }
+
+    @media only screen and (min-width: 768px) and (max-width: 1024px) {
+      .togetherjs-mobile-browser #togetherjs-dock.togetherjs-dock-right {
+        left: 0px;
+        bottom: 0px;
+        top: 90vh;
+        width: 25%;
+        float: left;
+      }
+      .togetherjs #togetherjs-buttons .togetherjs-button {
+        height: 40px !important;
+        float: left;
+      }
+      .togetherjs .togetherjs-modal>header {
+        background-color: rgb(93, 148, 149) !important;
+      }
+      .togetherjs-primary {
+        background-color: rgb(93, 148, 149) !important;
+      }
+      #togetherjs-dock {
+        background-color: rgb(93, 148, 149) !important;
+      }
+      #togetherjs-buttons {
+        background-color: rgb(93, 148, 149) !important;
+      }
+      .togetherjs {
+        background-color: rgb(93, 148, 149) !important;
+      }
+      .togetherjs #togetherjs-buttons #togetherjs-chat-button.togetherjs-active {
+        background-color: rgb(93, 148, 149) !important;
+      }
+      #togetherjs-buttons .togetherjs-button:hover {
+        background-color: rgb(93, 148, 149) !important;
+      }
     }
   </style>
 
   <link href="https://fonts.googleapis.com/css?family=Exo" rel="stylesheet">
   <title>ShopSocial</title>
-  </head>
-  <body>
-    <noscript>
-      You need to enable JavaScript to run this app.
-    </noscript>
-    <div id="root"></div>
-  </body>
+</head>
+
+<body>
+  <noscript>
+    You need to enable JavaScript to run this app.
+  </noscript>
+  <div id="root"></div>
+</body>
+
 </html>
